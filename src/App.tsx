@@ -1,9 +1,9 @@
 
-function App() {
-
+import Login from './layout/auth/Login';
+const App = () => {
   return (
     <div className="App">
-      <h1 className="text-4xl text-center">Hellow</h1>
+      <Login />
     </div>
   )
 }
