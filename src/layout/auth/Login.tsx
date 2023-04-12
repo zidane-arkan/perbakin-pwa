@@ -3,7 +3,7 @@ import Layout from '../../components/Layout'
 const Login = () => {
     return (
         <>
-            <Layout>
+            <Layout className={'pt-[20%]'}>
                 <div className='max-w-full text-center text-[#036BB0]'>
                     <h1 className='pb-2 text-4xl font-extrabold'>Log In</h1>
                     <h4 className='text-base text-[#6A7682] font-normal'>Silahkan masukkan username dan password yang telah disediakan oleh admin</h4>

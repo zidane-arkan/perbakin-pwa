@@ -1,11 +1,13 @@
 import React from 'react'
 
 type Props = {
-    children?: string | JSX.Element
+    children?: string | JSX.Element | React.ReactNode
+    className?: string
 }
-const Layout = (props: any) => {
+const Layout = (props: Props) => {
+    const classCustom = `${props.className} container h-screen flex flex-col gap-4 px-8 pb-[15%] bg-white  `;
     return (
-        <div className='container h-screen flex flex-col gap-4 items-center px-8 pt-[20%] pb-[15%] bg-white'>
+        <div className={classCustom}>
             {props.children}
         </div>
     )

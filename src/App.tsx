@@ -1,9 +1,10 @@
 
-import Login from './layout/auth/Login';
+// import Login from './layout/auth/Login';
+import Penembak from './layout/pages/Penembak';
 const App = () => {
   return (
     <div className="App">
-      <Login />
+      <Penembak />
     </div>
   )
 }
