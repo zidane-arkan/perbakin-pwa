@@ -11,6 +11,9 @@ body {
   box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
+.shadow-card {
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.1);
+}
 h2 {
   font-family: "Manrope";
   font-style: normal;
@@ -30,14 +33,21 @@ h5 {
   font-size: 1rem;
   line-height: 2.5rem;
 }
+h6 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 150%;
+}
 button {
   font-family: "Manrope";
   font-style: normal;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 13px;
 }
-li {
+li,
+p {
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

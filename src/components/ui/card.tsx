@@ -1,11 +1,12 @@
 import React from 'react'
 
 type Props = {
+    title? : string
     children?: string | JSX.Element | React.ReactNode
     className?: string
 }
-const Card = (props: Props) => {
-    const customClass = `${props.className} flex flex-col max-w-full gap-4 px-8`;
+export const Card = (props: Props) => {
+    const customClass = `${props.className} flex max-w-full`;
     return (
         <section className={customClass}>
             {props.children}
@@ -13,4 +14,12 @@ const Card = (props: Props) => {
     )
 }
 
-export default Card
+export const CardText = (props: Props) => {
+    const customClass = `${props.className} flex flex-col gap-2 w-[345px] items-start`;
+    return (
+        <section className={customClass}>
+            <h4>{props.title}</h4>
+            {props.children}
+        </section>
+    )
+}

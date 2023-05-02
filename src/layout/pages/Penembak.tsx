@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout, LayoutChild } from '../../components/Layout'
-import Card from '../../components/ui/Card';
+import { Card } from '../../components/ui/Card';
 import user1 from '../../app-assets/user1.png';
 import avatar from '../../app-assets/avatar.png';
 import { BgHeader } from '../../components/Header';
