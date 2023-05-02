@@ -1,5 +1,5 @@
 import React from 'react'
-import Layout from '../../components/Layout'
+import { Layout, LayoutChild } from '../../components/Layout'
 import { Header } from '../../components/Header'
 import Card from '../../components/ui/Card'
 import user1 from '../../app-assets/userbig1.png';
@@ -14,7 +14,7 @@ const KetentuanUmum = () => {
                     <span></span>
                 </div>
             </Header>
-            <Card className='pb-12'>
+            <LayoutChild className='pb-12'>
                 <section className='flex flex-row items-center justify-between gap-4'>
                     <div className='flex flex-col gap-2'>
                         <span>
@@ -50,7 +50,7 @@ const KetentuanUmum = () => {
                 <section className='pt-5'>
                     <button className='w-full px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>Selanjutnya</button>
                 </section>
-            </Card>
+            </LayoutChild>
         </Layout>
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import Layout from '../../components/Layout'
+import { Layout, LayoutChild } from '../../components/Layout'
 import Card from '../../components/ui/Card';
 import user1 from '../../app-assets/user1.png';
 import avatar from '../../app-assets/avatar.png';
@@ -24,7 +24,7 @@ const Penembak = () => {
                         </section>
                     </div>
                 </BgHeader>
-                <Card>
+                <LayoutChild>
                     <span className='inline text-left'>
                         <h3 className='text-lg font-bold'>List Penembak</h3>
                     </span>
@@ -91,7 +91,7 @@ const Penembak = () => {
                             <button className="px-2 py-1 text-4xl text-[#036BB0]">{'>'}</button>
                         </div>
                     </div>
-                </Card>
+                </LayoutChild>
             </Layout>
         </>
     )
