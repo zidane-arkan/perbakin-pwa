@@ -14,7 +14,7 @@ const KetentuanUmum = () => {
                     <span></span>
                 </div>
             </Header>
-            <Card className='pb-8'>
+            <Card className='pb-12'>
                 <section className='flex flex-row items-center justify-between gap-4'>
                     <div className='flex flex-col gap-2'>
                         <span>
@@ -47,7 +47,7 @@ const KetentuanUmum = () => {
                         <li>Peserta yang tidak lulus pada Ujian Sertifikasi kali ini, dipersilahkan untuk mengikuti jadwal Pengujian Sertifikasi berikutnya. </li>
                     </ol>
                 </section>
-                <section>
+                <section className='pt-5'>
                     <button className='w-full px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>Selanjutnya</button>
                 </section>
             </Card>
