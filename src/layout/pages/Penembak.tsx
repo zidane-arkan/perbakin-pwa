@@ -1,17 +1,21 @@
 import React from 'react'
 import Layout from '../../components/Layout'
+import Card from '../../components/ui/Card';
 import user1 from '../../app-assets/user1.png';
+import { BgHeader } from '../../components/Header';
 const Penembak = () => {
     return (
         <>
-            <section className='absolute w-full top-0 flex max-w-full px-10 pt-10 pb-20 bg-blue-600 z-[-1]'>
+            {/* <section className='absolute w-full top-0 flex max-w-full px-10 pt-10 pb-20 bg-blue-600 z-[-1]'>
                 1
-            </section>
+            </section> */}
+
             <Layout className={'rounded-3xl mt-28 pt-[10%]'}>
-                <span className='inline text-left'>
-                    <h3 className='text-lg font-bold'>List Penembak</h3>
-                </span>
-                <section className='flex flex-col max-w-full gap-8'>
+                <BgHeader />
+                <Card>
+                    <span className='inline text-left'>
+                        <h3 className='text-lg font-bold'>List Penembak</h3>
+                    </span>
                     <div className="flex max-w-md overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 shadow-custom">
                         <div className="flex items-center w-1/6">
                             <img className='min-w-[65px]' src={user1} />
@@ -75,7 +79,7 @@ const Penembak = () => {
                             <button className="px-2 py-1 text-4xl text-[#036BB0]">{'>'}</button>
                         </div>
                     </div>
-                </section>
+                </Card>
             </Layout>
         </>
     )

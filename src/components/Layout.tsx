@@ -5,7 +5,7 @@ type Props = {
     className?: string
 }
 const Layout = (props: Props) => {
-    const classCustom = `${props.className} container h-screen flex flex-col gap-4 px-8 pb-[15%] bg-white  `;
+    const classCustom = `${props.className} container h-screen flex flex-col gap-4 pb-[15%] bg-white  `;
     return (
         <div className={classCustom}>
             {props.children}

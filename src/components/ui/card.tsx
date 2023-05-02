@@ -1,9 +1,15 @@
 import React from 'react'
 
-const card = () => {
+type Props = {
+    children?: string | JSX.Element | React.ReactNode
+    className?: string
+}
+const Card = (props: Props) => {
     return (
-        <div>card</div>
+        <section className='flex flex-col max-w-full gap-8 px-8'>
+            {props.children}
+        </section>
     )
 }
 
-export default card
+export default Card
