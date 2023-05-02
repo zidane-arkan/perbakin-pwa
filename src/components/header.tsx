@@ -7,20 +7,22 @@ type customHeader = {
 };
 export const BgHeader: React.FC = () => {
   return (
-    <header className='absolute w-full top-0 flex max-w-full px-10 pt-10 pb-20 bg-blue-600 z-[-1]'>
+    <header className='absolute w-full top-0 flex text-white max-w-full px-10 pt-10 pb-20 bg-[#036BB0] z-[-1]'>
       <span
         style={{ backgroundImage: `url(${target})` }}
         className='absolute left-0'
       ></span>
-      <section>
-        <h2>Halo, Penguji</h2>
-        <span>Nama Penguji 1</span>
-      </section>
-      <section>
-        <button>
-          <img src={avatar} />
-        </button>
-      </section>
+      <div className='flex items-start justify-between w-full'>
+        <section className='flex flex-col items-start'>
+          <h2>Halo, Penguji</h2>
+          <h5>Nama Penguji 1</h5>
+        </section>
+        <section>
+          <button>
+            <img src={avatar} />
+          </button>
+        </section>
+      </div>
     </header>
   )
 }
