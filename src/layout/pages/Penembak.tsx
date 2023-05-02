@@ -2,6 +2,7 @@ import React from 'react'
 import Layout from '../../components/Layout'
 import Card from '../../components/ui/Card';
 import user1 from '../../app-assets/user1.png';
+import avatar from '../../app-assets/avatar.png';
 import { BgHeader } from '../../components/Header';
 const Penembak = () => {
     return (
@@ -9,9 +10,20 @@ const Penembak = () => {
             {/* <section className='absolute w-full top-0 flex max-w-full px-10 pt-10 pb-20 bg-blue-600 z-[-1]'>
                 1
             </section> */}
-
             <Layout className={'rounded-3xl mt-28 pt-[10%]'}>
-                <BgHeader />
+                <BgHeader>
+                    <div className='flex items-start justify-between w-full'>
+                        <section className='flex flex-col items-start'>
+                            <h2>Halo, Penguji</h2>
+                            <h5>Nama Penguji 1</h5>
+                        </section>
+                        <section>
+                            <button>
+                                <img src={avatar} />
+                            </button>
+                        </section>
+                    </div>
+                </BgHeader>
                 <Card>
                     <span className='inline text-left'>
                         <h3 className='text-lg font-bold'>List Penembak</h3>
