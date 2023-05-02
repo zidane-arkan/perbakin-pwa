@@ -5,8 +5,9 @@ type Props = {
     className?: string
 }
 const Card = (props: Props) => {
+    const customClass = `${props.className} flex flex-col max-w-full gap-4 px-8`;
     return (
-        <section className='flex flex-col max-w-full gap-4 px-8'>
+        <section className={customClass}>
             {props.children}
         </section>
     )

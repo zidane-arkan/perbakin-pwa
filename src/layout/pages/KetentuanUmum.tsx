@@ -14,7 +14,7 @@ const KetentuanUmum = () => {
                     <span></span>
                 </div>
             </Header>
-            <Card>
+            <Card className='pb-8'>
                 <section className='flex flex-row items-center justify-between gap-4'>
                     <div className='flex flex-col gap-2'>
                         <span>
@@ -40,6 +40,11 @@ const KetentuanUmum = () => {
                         <li>Penguji berhak untuk menghentikan peserta dari ujian apabila menganggap perlengkapan peserta tidak memenuhi prosedur keamanan.</li>
                         <li>Minimal 50% tembakan pada setiap sasaran (target) mengenai bidang “A” dan tidak ada tembakan yang tidak mengenai sasaran (miss).</li>
                         <li>Peserta boleh menembak lebih pada sasaran penilaian apabila jumlah tembakan pada bidang “A” kurang dari yang ditentukan diatas dan selama waktu yang diberikan masih mencukupi. </li>
+                        <li>Peserta boleh menembak lebih pada sasaran penilaian apabila jumlah tembakan pada bidang “A” kurang dari yang ditentukan diatas dan selama waktu yang diberikan masih mencukupi. </li>
+                        <li>Jari harus berada di luar pengaman picu pada saat melakukan pergerakkan (perpindahan posisi)/mengganti magasin atau memperbaiki senjata dan arah laras senjata harus selalu mengarah ke downrange. </li>
+                        <li>Peserta akan di diskualifikasi apabila melakukan pelanggaran prosedur keamanan dan dinyatakan gagal (tidak lulus) pada Ujian Sertifikasi ini. </li>
+                        <li>Hasil Ujian Sertifikasi ini harus dikembalikan kepada Ketua Tim Penatar baik peserta yang lulus maupun gagal sebagai bukti otentik keikutsertaan peserta pada Ujian Sertifikasi ini. </li>
+                        <li>Peserta yang tidak lulus pada Ujian Sertifikasi kali ini, dipersilahkan untuk mengikuti jadwal Pengujian Sertifikasi berikutnya. </li>
                     </ol>
                 </section>
                 <section>
