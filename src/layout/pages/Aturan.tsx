@@ -3,6 +3,12 @@ import { HeaderBlue } from '../../components/Header';
 import { Layout, LayoutChild } from '../../components/Layout'
 import { Card, CardText } from '../../components/ui/Card'
 import jarak from '../../app-assets/jarak.png';
+
+type Props = {
+    children?: string | JSX.Element | React.ReactNode
+    className?: string
+}
+
 const Aturan = (props: any) => {
     return (
         <Layout className={'rounded-3xl mt-28 pt-[10%]'}>
@@ -15,34 +21,34 @@ const Aturan = (props: any) => {
             </HeaderBlue>
             <LayoutChild>
                 <section className='flex justify-between w-full gap-4'>
-                    <Card className='w-[160px] pr-4 pl-6 py-2 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
+                    <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
                         <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
                         <div>
                             <h6>Jarak</h6>
-                            <p>20 Meter</p>
+                            <p className='text-[12px]'>20 Meter</p>
                         </div>
                     </Card>
-                    <Card className='w-[160px] pr-4 pl-6 py-2 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
+                    <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
                         <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
                         <div>
-                            <h6>Jarak</h6>
-                            <p>20 Meter</p>
+                            <h6>Waktu</h6>
+                            <p className='text-[12px]'>20 Meter</p>
                         </div>
                     </Card>
                 </section>
                 <section className='flex justify-between w-full gap-4'>
-                    <Card className='w-[160px] pr-4 pl-6 py-2 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
+                    <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
                         <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
                         <div>
-                            <h6>Jarak</h6>
-                            <p>20 Meter</p>
+                            <h6>Sasaran</h6>
+                            <p className='text-[12px]'>1 buah Sasaran IPSC</p>
                         </div>
                     </Card>
-                    <Card className='w-[160px] pr-4 pl-6 py-2 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
+                    <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
                         <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
                         <div>
-                            <h6>Jarak</h6>
-                            <p>20 Meter</p>
+                            <h6>Total Tembakan Maksimal</h6>
+                            <p className='text-[12px]'>20 Meter</p>
                         </div>
                     </Card>
                 </section>
