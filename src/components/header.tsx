@@ -1,6 +1,7 @@
 import React from 'react'
 import target from '../app-assets/target.png';
-
+import arrowLeft from '../app-assets/arrowleft.png';
+import close from '../app-assets/close.png';
 type Props = {
   children?: string | JSX.Element | React.ReactNode
   className?: string
@@ -26,4 +27,29 @@ export const HeaderBlue = (props: Props) => {
       {props.children}
     </header>
   )
+}
+
+type propsBlueCustom = {
+  children?: string | JSX.Element | React.ReactNode
+  className?: string
+  title: string,
+  typeIcon: string
+}
+const IconType: string | any = {
+  'close': close,
+  'return': arrowLeft
+};
+
+export const HeaderBlueCustom = (props: propsBlueCustom) => {
+  return (
+    <HeaderBlue>
+      <div className='flex flex-row items-center justify-between w-full'>
+        <button className='w-[24px] h-[24px]' type='button'>
+          <img src={IconType[props.typeIcon]} alt='icon' />
+        </button>
+        <h2>{props.title}</h2>
+        <span></span>
+      </div>
+    </HeaderBlue>
+  );
 }

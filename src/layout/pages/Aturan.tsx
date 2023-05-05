@@ -1,38 +1,39 @@
 import React from 'react'
-import { HeaderBlue } from '../../components/Header';
+import { HeaderBlueCustom } from '../../components/Header';
 import { Layout, LayoutChild } from '../../components/Layout'
 import { Card, CardText } from '../../components/ui/Card'
+import arrowLeft from '../../app-assets/arrowleft.png';
+import close from '../../app-assets/close.png';
 import jarak from '../../app-assets/jarak.png';
 
 type Props = {
     children?: string | JSX.Element | React.ReactNode
-    className?: string
+    className?: string,
+    title: string,
+    jarak: string,
+    waktu: string,
+    sasaran: string,
+    tembakMaks: string,
 }
 
-const Aturan = (props: any) => {
+const Aturan = (props: Props) => {
     return (
         <Layout className={'rounded-3xl mt-28 pt-[10%]'}>
-            <HeaderBlue>
-                <div className='flex flex-row justify-between w-full '>
-                    <button type='button'>{'<'}</button>
-                    <h2>{props.title}</h2>
-                    <span></span>
-                </div>
-            </HeaderBlue>
+            <HeaderBlueCustom typeIcon='close' title='Ujian Kualifikasi 20 Meter' />
             <LayoutChild>
                 <section className='flex justify-between w-full gap-4'>
                     <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
                         <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
                         <div>
                             <h6>Jarak</h6>
-                            <p className='text-[12px]'>20 Meter</p>
+                            <p className='text-[12px]'>{props.jarak} Meter</p>
                         </div>
                     </Card>
                     <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
                         <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
                         <div>
                             <h6>Waktu</h6>
-                            <p className='text-[12px]'>20 Meter</p>
+                            <p className='text-[12px]'>{props.waktu} Detik</p>
                         </div>
                     </Card>
                 </section>
@@ -41,14 +42,14 @@ const Aturan = (props: any) => {
                         <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
                         <div>
                             <h6>Sasaran</h6>
-                            <p className='text-[12px]'>1 buah Sasaran IPSC</p>
+                            <p className='text-[12px]'>{props.sasaran} Buah Sasaran IPSC</p>
                         </div>
                     </Card>
                     <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
                         <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
                         <div>
                             <h6>Total Tembakan Maksimal</h6>
-                            <p className='text-[12px]'>20 Meter</p>
+                            <p className='text-[12px]'>{props.tembakMaks} Butir</p>
                         </div>
                     </Card>
                 </section>
