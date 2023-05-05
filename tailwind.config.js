@@ -8,6 +8,7 @@ export default {
     extend: {
       opacity: {
         '60': '.6',
+        '30' : '.3'
       }
     },
   },
