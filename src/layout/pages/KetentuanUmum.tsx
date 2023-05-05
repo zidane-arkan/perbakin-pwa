@@ -1,19 +1,19 @@
 import React from 'react'
 import { Layout, LayoutChild } from '../../components/Layout'
-import { Header } from '../../components/Header'
+import { HeaderBlue } from '../../components/Header'
 import { Card } from '../../components/ui/Card'
 import user1 from '../../app-assets/userbig1.png';
 import arrowleft from '../../app-assets/arrowleft.png';
 const KetentuanUmum = () => {
     return (
         <Layout className={'rounded-3xl mt-28 pb-[15%] pt-[10%]'}>
-            <Header>
+            <HeaderBlue>
                 <div className='flex flex-row justify-between w-full '>
                     <button type='button'>{'<'}</button>
                     <h2>Memulai Ujian</h2>
                     <span></span>
                 </div>
-            </Header>
+            </HeaderBlue>
             <LayoutChild className='pb-12'>
                 <section className='flex flex-row items-center justify-between gap-4'>
                     <div className='flex flex-col gap-2'>

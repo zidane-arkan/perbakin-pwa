@@ -20,7 +20,7 @@ export const BgHeader = (props: Props) => {
   )
 }
 
-export const Header = (props: Props) => {
+export const HeaderBlue = (props: Props) => {
   return (
     <header className='absolute w-full top-0 flex text-white max-w-full px-10 pt-14 pb-20 bg-[#036BB0] z-[-1]'>
       {props.children}
