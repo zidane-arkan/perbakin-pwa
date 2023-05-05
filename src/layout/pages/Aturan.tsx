@@ -20,7 +20,7 @@ const Aturan = (props: Props) => {
     return (
         <Layout className={'rounded-3xl mt-28 pt-[10%]'}>
             <HeaderBlueCustom typeIcon='close' title='Ujian Kualifikasi 20 Meter' />
-            <LayoutChild>
+            <LayoutChild className='flex-col'>
                 <section className='flex justify-between w-full gap-4'>
                     <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
                         <img className='mt-1 w-[20px] h-[20px]' src={jarak} />

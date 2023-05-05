@@ -46,6 +46,10 @@ button {
   font-size: 1rem;
   line-height: 13px;
 }
+.button-gagal{
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.6);
+}
 li,
 p {
   font-style: normal;

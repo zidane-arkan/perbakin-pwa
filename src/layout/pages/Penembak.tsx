@@ -24,7 +24,7 @@ const Penembak = () => {
                         </section>
                     </div>
                 </BgHeader>
-                <LayoutChild>
+                <LayoutChild className='flex-col'>
                     <span className='inline text-left'>
                         <h3 className='text-lg font-bold'>List Penembak</h3>
                     </span>

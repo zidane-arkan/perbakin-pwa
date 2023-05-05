@@ -14,7 +14,7 @@ const KetentuanUmum = () => {
                     <span></span>
                 </div>
             </HeaderBlue>
-            <LayoutChild className='pb-12'>
+            <LayoutChild className='flex-col pb-12'>
                 <section className='flex flex-row items-center justify-between gap-4'>
                     <div className='flex flex-col gap-2'>
                         <span>

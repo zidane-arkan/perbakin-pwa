@@ -14,7 +14,7 @@ export const Layout = (props: Props) => {
 }
 
 export const LayoutChild = (props: Props) => {
-    const customClass = `${props.className} flex flex-col max-w-full gap-4 px-8`;
+    const customClass = `${props.className} flex max-w-full gap-4 px-8`;
     return (
         <section className={customClass}>
             {props.children}
