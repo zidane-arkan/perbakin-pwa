@@ -4,7 +4,7 @@ import { HeaderBlue } from '../../components/Header'
 import { Card } from '../../components/ui/Card'
 import user1 from '../../app-assets/userbig1.png';
 import arrowleft from '../../app-assets/arrowleft.png';
-const KetentuanUmum = () => {
+const KetentuanUmum = (props: any) => {
     return (
         <Layout className={'rounded-3xl mt-28 pb-[15%] pt-[10%]'}>
             <HeaderBlue>
@@ -19,15 +19,15 @@ const KetentuanUmum = () => {
                     <div className='flex flex-col gap-2'>
                         <span>
                             <h4>Nama Lengkap</h4>
-                            <h5>Nama Penembak 1</h5>
+                            <h5>{props.penembak}ak 1</h5>
                         </span>
                         <span>
                             <h4>PengProv</h4>
-                            <h5>Nama Penembak 1</h5>
+                            <h5>{props.pengprov}ak 1</h5>
                         </span>
                         <span>
                             <h4>Klub Menembak</h4>
-                            <h5>Asal klub 1</h5>
+                            <h5>{props.klub}</h5>
                         </span>
                     </div>
                     <div>
