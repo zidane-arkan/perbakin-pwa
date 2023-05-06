@@ -1,5 +1,6 @@
 
 import Penguji from "./layout/routes/Penguji"
+import Detail from "./components/overlay/Detail"
 // import Login from './layout/auth/Login';
 // import Penembak from './layout/pages/Penembak';
 // import KetentuanUmum from './layout/pages/KetentuanUmum';
