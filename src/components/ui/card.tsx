@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import user1 from '../../app-assets/user1.png';
+import { Link } from 'react-router-dom'
+
 type Props = {
     title?: string
     children?: string | JSX.Element | React.ReactNode
@@ -38,9 +40,9 @@ export const CardPenembak = (props: any) => {
                     <button className="px-2 py-1 text-xs font-bold text-white uppercase transition-colors duration-300 transform bg-[#62DE5F] rounded">Stage 2</button>
                 </div>
             </div>
-            <div className="flex items-center w-1/6">
+            <Link to={'/kualifikasi_ketentuan'} className="flex items-center w-1/6">
                 <button className="px-2 py-1 text-4xl text-[#036BB0]">{'>'}</button>
-            </div>
+            </Link>
         </div>
     );
 }
