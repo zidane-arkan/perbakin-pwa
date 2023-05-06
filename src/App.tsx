@@ -1,13 +1,15 @@
 
-import Login from './layout/auth/Login';
-import Penembak from './layout/pages/Penembak';
-import KetentuanUmum from './layout/pages/KetentuanUmum';
+import Penguji from "./layout/routes/Penguji"
+// import Login from './layout/auth/Login';
+// import Penembak from './layout/pages/Penembak';
+// import KetentuanUmum from './layout/pages/KetentuanUmum';
 // import Aturan from './layout/pages/Aturan';
-import TandaTangan from './layout/pages/TandaTangan';
+// import TandaTangan from './layout/pages/TandaTangan';
 const App = () => {
   return (
     <div className="App">
-      <Penembak />
+      <Penguji />
+      {/* <Penembak /> */}
       {/* <Aturan
         title="Ujian Kualifikasi 20 Meter"
         jarak="8"
