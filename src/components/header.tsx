@@ -21,6 +21,28 @@ export const BgHeader = (props: Props) => {
   )
 }
 
+export const HeaderWhite = (props: Props) => {
+  return (
+    <header className='absolute w-full top-0 flex text-white max-w-full px-10 pt-14 pb-20 bg-[#fff] z-[-1]'>
+      {props.children}
+    </header>
+  )
+}
+
+export const HeaderWhiteCustom = (props: propsBlueCustom) => {
+  return (
+    <HeaderWhite>
+      <div className='flex flex-row items-center justify-between w-full'>
+        <button className='w-[24px] h-[24px]' type='button'>
+          <img src={IconType[props.typeIcon]} alt='icon' />
+        </button>
+        <h2>{props.title}</h2>
+        <span></span>
+      </div>
+    </HeaderWhite>
+  );
+}
+
 export const HeaderBlue = (props: Props) => {
   return (
     <header className='absolute w-full top-0 flex text-white max-w-full px-10 pt-14 pb-20 bg-[#036BB0] z-[-1]'>
