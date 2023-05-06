@@ -7,6 +7,7 @@ import TandaTangan from './layout/pages/TandaTangan';
 const App = () => {
   return (
     <div className="App">
+      <Penembak />
       {/* <Aturan
         title="Ujian Kualifikasi 20 Meter"
         jarak="8"
@@ -14,7 +15,7 @@ const App = () => {
         sasaran="1"
         tembakMaks='5'
       /> */}
-      <TandaTangan />
+      {/* <TandaTangan /> */}
     </div>
   )
 }
