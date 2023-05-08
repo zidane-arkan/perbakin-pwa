@@ -2,7 +2,7 @@ import React from 'react'
 import classes from './Overlay.module.css';
 const Backdrop = () => {
     return (
-        <div className={classes.Backdrop}></div>
+        <div className={classes.backdrop}></div>
     )
 }
 
