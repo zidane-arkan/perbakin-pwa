@@ -9,6 +9,7 @@ import Detail from "./components/overlay/Detail"
 const App = () => {
   return (
     <div className="App">
+      {/* <Detail /> */}
       <Penguji />
       {/* <Penembak /> */}
       {/* <Aturan

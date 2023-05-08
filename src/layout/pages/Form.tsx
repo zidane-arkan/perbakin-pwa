@@ -2,7 +2,7 @@ import React from 'react'
 import { HeaderWhiteCustom } from '../../components/Header'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { CardText } from '../../components/ui/Card';
-
+import { Link } from 'react-router-dom';
 const Form = () => {
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%]'}>
@@ -17,9 +17,9 @@ const Form = () => {
                     <p className='text-[#000]/60'>Isi kolom berikut dengan tanda tangan.</p>
                 </section>
                 <CardText>
-                    <button className='w-full px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>
+                    <Link to={'/kualifikasi_konfirmasi'} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
                         Selanjutnya
-                    </button>
+                    </Link>
                 </CardText>
             </LayoutChild>
         </Layout>
