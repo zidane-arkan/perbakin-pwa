@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import target from '../app-assets/target.png';
 import arrowLeft from '../app-assets/arrowleft.png';
 import close from '../app-assets/close.png';
+
 type Props = {
   children?: string | JSX.Element | React.ReactNode
   className?: string
@@ -24,20 +25,21 @@ export const BgHeader = (props: Props) => {
 
 export const HeaderWhite = (props: Props) => {
   return (
-    <header className='absolute w-full top-0 flex text-white max-w-full px-10 pt-14 pb-20 bg-[#fff] z-[-1]'>
+    <header className='absolute w-full top-0 flex text-white max-w-full px-8 pt-14 pb-20 bg-[#fff] z-[-1]'>
       {props.children}
     </header>
   )
 }
 
 export const HeaderWhiteCustom = (props: propsBlueCustom) => {
+  const navigate = useNavigate();
   return (
     <HeaderWhite>
       <div className='flex flex-row items-center justify-between w-full'>
-        <button className='w-[24px] h-[24px]' type='button'>
+        <button className='w-[24px] h-[24px]' type='button' onClick={() => navigate(-1)}>
           <img src={IconType[props.typeIcon]} alt='icon' />
         </button>
-        <h2>{props.title}</h2>
+        <h2 className='text-black text-lg'>{props.title}</h2>
         <span></span>
       </div>
     </HeaderWhite>
