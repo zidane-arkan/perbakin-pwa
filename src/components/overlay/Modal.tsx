@@ -4,6 +4,7 @@ import { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import Backdrop from './Backdrop';
 type Props = {
+    shownCardHandler? : any,
     children?: string | JSX.Element | React.ReactNode
 }
 const ModalOverlay = (props: Props) => {
@@ -20,7 +21,7 @@ const portalElement = document.getElementById('overlays') as HTMLElement;
 const Modal = (props: Props) => {
     return (
         <Fragment>
-            {ReactDOM.createPortal(<Backdrop />, portalElement)}
+            {ReactDOM.createPortal(<Backdrop shownCardHandler={props.shownCardHandler} />, portalElement)}
             {ReactDOM.createPortal(
                 <ModalOverlay>{props.children}</ModalOverlay>,
                 portalElement

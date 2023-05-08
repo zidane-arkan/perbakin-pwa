@@ -27,10 +27,13 @@ export const CardText = (props: Props) => {
 }
 
 export const CardPenembak = (props: any) => {
-
+    const [isCartShown, setIsCardShown] = useState(false);
+    const shownCardHandler = () => {
+        return setIsCardShown(!isCartShown);
+    }
     return (
         <>
-            <Detail />
+            {isCartShown && <Detail shownCardHandler={shownCardHandler} />}
             <section className="flex max-w-md overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 shadow-custom">
                 <div className="flex items-center w-1/6">
                     <img className='min-w-[65px]' src={user1} />
@@ -38,13 +41,16 @@ export const CardPenembak = (props: any) => {
                 <div className="flex flex-col w-4/6 gap-1 pl-6 md:p-4">
                     <h1 className="text-base font-bold text-gray-800">{props.penembak}</h1>
                     <p className="text-sm text-gray-600 ">{props.klub}</p>
-                    <div className="flex justify-between item-center">
-                        <button className="px-2 py-1 text-xs font-bold text-white uppercase transition-colors duration-300 transform bg-[#62DE5F] rounded">Stage 2</button>
+                    <div className="flex justify-between item-start">
+                        <button
+                            className="px-2 py-1 text-[.65rem] font-bold text-white transition-colors duration-300 transform bg-[#62DE5F] rounded">
+                            {props.stage}
+                        </button>
                     </div>
                 </div>
-                <Link to={'/kualifikasi_ketentuan'} className="flex items-center w-1/6">
-                    <button className="px-2 py-1 text-4xl text-[#036BB0]">{'>'}</button>
-                </Link>
+                <span className="flex items-center w-1/6">
+                    <button onClick={shownCardHandler} className="px-2 py-1 text-4xl text-[#036BB0]">{'>'}</button>
+                </span>
             </section>
         </>
     );

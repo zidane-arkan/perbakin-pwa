@@ -14,12 +14,12 @@ const Penembak = (props: any) => {
                     <span className='inline text-left'>
                         <h3 className='text-lg font-bold'>List Penembak</h3>
                     </span>
-                    <CardPenembak penembak="Testing 1" klub="Asal Klub 1" />
-                    <CardPenembak penembak="Testing 2" klub="Asal Klub 2" />
-                    <CardPenembak penembak="Testing 3" klub="Asal Klub 3" />
-                    <CardPenembak penembak="Testing 4" klub="Asal Klub 4" />
-                    <CardPenembak penembak="Testing 5" klub="Asal Klub 5" />
-                    <CardPenembak penembak="Testing 6" klub="Asal Klub 6" />
+                    <CardPenembak penembak="Testing 1" klub="Asal Klub 1" stage={'Stage #2'} />
+                    <CardPenembak penembak="Testing 2" klub="Asal Klub 2" stage={'Gagal'} />
+                    <CardPenembak penembak="Testing 3" klub="Asal Klub 3" stage={'Ujian Klasifikasi 20 Meter'} />
+                    <CardPenembak penembak="Testing 4" klub="Asal Klub 4" stage={'Stage #4'} />
+                    <CardPenembak penembak="Testing 5" klub="Asal Klub 5" stage={'Stage #5'} />
+                    <CardPenembak penembak="Testing 6" klub="Asal Klub 6" stage={'Stage #6'} />
                 </LayoutChild>
             </Layout>
         </>

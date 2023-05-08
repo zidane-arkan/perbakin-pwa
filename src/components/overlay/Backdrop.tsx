@@ -1,8 +1,8 @@
 import React from 'react'
 import classes from './Overlay.module.css';
-const Backdrop = () => {
+const Backdrop = (props : any) => {
     return (
-        <div className={classes.backdrop}></div>
+        <div onClick={props.shownCardHandler} className={classes.backdrop}></div>
     )
 }
 

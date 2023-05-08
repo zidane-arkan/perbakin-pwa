@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom';
 import { LayoutChild } from '../Layout';
 const Detail = (props: any) => {
     return (
-        <Modal>
+        <Modal shownCardHandler={props.shownCardHandler}>
             <section className='flex flex-col w-full h-auto'>
                 <div className='flex relative w-full h-[198px]'>
                     <img src={imgDetail1} className='w-full h-full rounded-xl z-[-1]' />
-                    <button className='absolute z-10 top-4 right-4'>
+                    <button onClick={props.shownCardHandler} className='absolute z-10 top-4 right-4'>
                         <img src={close} />
                     </button>
                 </div>
@@ -35,7 +35,7 @@ const Detail = (props: any) => {
                             {props.stage}
                         </span>
                         <span>
-                            <Link to={'/kualifikasi_konfirmasi'}>Mulai Ujian</Link>
+                            <Link to={'/kualifikasi_aturan'}>Mulai Ujian</Link>
                         </span>
                     </div>
                 </LayoutChild>
