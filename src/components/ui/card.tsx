@@ -33,7 +33,16 @@ export const CardPenembak = (props: any) => {
     }
     return (
         <>
-            {isCartShown && <Detail shownCardHandler={shownCardHandler} />}
+            {isCartShown &&
+                <Detail
+                    shownCardHandler={shownCardHandler}
+                    penembak={props.penembak}
+                    klub={props.klub}
+                    stage={props.stage}
+                    pengprov={props.pengprov}
+                    penguji={props.penguji}
+                />
+            }
             <section className="flex max-w-md overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 shadow-custom">
                 <div className="flex items-center w-1/6">
                     <img className='min-w-[65px]' src={user1} />
