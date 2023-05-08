@@ -2,6 +2,7 @@ import React from 'react'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { CardPenembak } from '../../components/ui/Card';
 import { BgHeader } from '../../components/Header';
+
 const Penembak = (props: any) => {
     return (
         <>

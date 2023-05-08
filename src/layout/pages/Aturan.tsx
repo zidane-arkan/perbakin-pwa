@@ -5,7 +5,7 @@ import { Card, CardText } from '../../components/ui/Card'
 import arrowLeft from '../../app-assets/arrowleft.png';
 import close from '../../app-assets/close.png';
 import jarak from '../../app-assets/jarak.png';
-
+import { Link } from 'react-router-dom';
 type Props = {
     children?: string | JSX.Element | React.ReactNode
     className?: string,

@@ -4,12 +4,16 @@ import { HeaderBlue } from '../../components/Header'
 import { Card } from '../../components/ui/Card'
 import user1 from '../../app-assets/userbig1.png';
 import arrowleft from '../../app-assets/arrowleft.png';
+import { useNavigate, Link } from 'react-router-dom';
 const KetentuanUmum = (props: any) => {
+    const navigate = useNavigate();
     return (
         <Layout className={'rounded-3xl mt-28 pb-[15%] pt-[10%]'}>
             <HeaderBlue>
-                <div className='flex flex-row justify-between w-full '>
-                    <button type='button'>{'<'}</button>
+                <div className='flex flex-row justify-between items-center w-full '>
+                    <button onClick={() => navigate(-1)} type='button'>
+                        <img src={arrowleft} alt='arrow-left' />
+                    </button>
                     <h2>Memulai Ujian</h2>
                     <span></span>
                 </div>
@@ -48,7 +52,7 @@ const KetentuanUmum = (props: any) => {
                     </ol>
                 </section>
                 <section className='pt-5'>
-                    <button className='w-full px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>Selanjutnya</button>
+                    <Link to='/kualifikasi_form' className='w-full px-4 py-4 text-center text-white bg-[#036BB0] rounded-lg' type='button'>Selanjutnya</Link>
                 </section>
             </LayoutChild>
         </Layout>
