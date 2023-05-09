@@ -32,12 +32,14 @@ const Form = () => {
                 <h6 className='text-black/60'>Nama Penembak</h6>
                 <h4>Abdiansyah CS</h4>
             </LayoutChild>
-            <LayoutChild className='flex-col gap-12'>
-                <section className='flex flex-col gap-2'>
-                    <h2>Peserta:</h2>
-                    <p className='text-[#000]/60'>Isi kolom berikut dengan tanda tangan.</p>
-                </section>
-                <FormTable ujian='kualifikasi' />
+            <LayoutChild className='flex-col gap-4 h-[515px] justify-between'>
+                <div className='flex-col gap-4'>
+                    <section className='flex flex-col gap-2'>
+                        <h2>Peserta:</h2>
+                        <p className='text-[#000]/60'>Isi kolom berikut dengan tanda tangan.</p>
+                    </section>
+                    <FormTable ujian='kualifikasi' />
+                </div>
                 <CardText>
                     <Link to={'/kualifikasi_konfirmasi'} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
                         Selanjutnya
