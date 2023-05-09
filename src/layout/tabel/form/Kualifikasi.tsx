@@ -12,25 +12,44 @@ const Styles = styled.div`
   overflow : scroll;
   table {
     border-spacing: 0;
-    border: 1px solid black;
-    border-radius : 12px
+    border-right: 2px solid #D5E4F0;
+    border-left: 2px solid #D5E4F0;
+    border-bottom: 2px solid #D5E4F0;
+    border-radius : 12px;
     tr {
       :last-child {
+        tr{
+          border-bottom: 0;
+        }
         td {
           border-bottom: 0;
         }
       }
     }
-
-    th,
+    thead{
+      color : white;
+      background-color : #036BB0;
+    }
+    th{
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 2px solid #D5E4F0;
+      border-right: 2px solid #D5E4F0;
+      border-left: 2px solid #D5E4F0;
+      border-radius : 12px;
+      :last-child {
+          border-bottom: 0;
+      }
+    }
     td {
       margin: 0;
       padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
+      border-bottom: 2px solid #D5E4F0;
+      border-right: 2px solid #D5E4F0;
+      border-left: 2px solid #D5E4F0
+      border-radius : 12px;
       :last-child {
-        border-right: 0;
+          border-bottom: 0;
       }
 
       input {
