@@ -26,7 +26,7 @@ const FormTable = (props: PropsForm) => {
 }
 const Form = () => {
     return (
-        <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%]'}>
+        <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%] overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='close' title='Ujian Kualifikasi 20 Meter' />
             <LayoutChild className='flex-col gap-0'>
                 <h6 className='text-black/60'>Nama Penembak</h6>
@@ -37,7 +37,7 @@ const Form = () => {
                     <h2>Peserta:</h2>
                     <p className='text-[#000]/60'>Isi kolom berikut dengan tanda tangan.</p>
                 </section>
-                <FormTable />
+                <FormTable ujian='kualifikasi' />
                 <CardText>
                     <Link to={'/kualifikasi_konfirmasi'} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
                         Selanjutnya
