@@ -66,7 +66,7 @@ const Aturan = (props: Props) => {
                     </ol>
                 </CardText>
                 <CardText>
-                    <Link to={'/kualifikasi_konfirmasi'} className='w-full px-4 py-4 text-center text-white bg-[#036BB0] rounded-lg' type='button'>Mulai Pengujian</Link>
+                    <Link to={'/kualifikasi_form'} className='w-full px-4 py-4 text-center text-white bg-[#036BB0] rounded-lg' type='button'>Mulai Pengujian</Link>
                 </CardText>
             </LayoutChild>
         </Layout>

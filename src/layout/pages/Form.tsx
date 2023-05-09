@@ -3,6 +3,16 @@ import { HeaderWhiteCustom } from '../../components/Header'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { CardText } from '../../components/ui/Card';
 import { Link } from 'react-router-dom';
+
+type PropsForm = {
+    ujian? : string
+};
+const FormTable = (props: PropsForm) => { 
+    return (
+        props.ujian == 'kualifikasi' &&
+        <div></div>
+    );
+}
 const Form = () => {
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%]'}>
