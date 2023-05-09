@@ -4,13 +4,15 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import React, { useMemo, useState } from 'react'
-
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components';
+
 const Styles = styled.div`
   padding: 1rem 0;
   overflow : scroll;
   table {
+    width: 768px;
+    text-align: center;
     border-spacing: 0;
     border-right: 2px solid #D5E4F0;
     border-left: 2px solid #D5E4F0;
@@ -36,21 +38,14 @@ const Styles = styled.div`
       border-bottom: 2px solid #D5E4F0;
       border-right: 2px solid #D5E4F0;
       border-left: 2px solid #D5E4F0;
-      border-radius : 12px;
-      :last-child {
-          border-bottom: 0;
-      }
     }
     td {
       margin: 0;
-      padding: 0.5rem;
+      padding: 0.3rem;
       border-bottom: 2px solid #D5E4F0;
       border-right: 2px solid #D5E4F0;
-      border-left: 2px solid #D5E4F0
-      border-radius : 12px;
-      :last-child {
-          border-bottom: 0;
-      }
+      border-left: 2px solid #D5E4F0;
+      z-index: -1;
 
       input {
         font-size: 1rem;
@@ -116,7 +111,27 @@ const defaultData: kualifikasi20[] = [
   },
 ];
 
+
 const columnHelper = createColumnHelper<kualifikasi20>();
+
+const EditableCell = ({ getValue, row, column, table }) => {
+  const initialValue = getValue();
+  const [value, setValue] = useState(initialValue);
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+  const onBlur = () => {
+    table.options.meta?.updateData(row.index, column.id, value);
+  };
+  return (
+    <input className='w-[30px]'
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      onBlur={onBlur}
+    />
+  );
+}
+
 const columns = [
   columnHelper.group({
     id: 'seri',
@@ -137,6 +152,7 @@ const columns = [
       columnHelper.accessor('0', {
         id: '0',
         header: () => <span>0</span>,
+        cell: EditableCell,
       }),
       columnHelper.accessor('1', {
         id: '1',
@@ -210,6 +226,21 @@ const Kualifikasi = () => {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    meta: {
+      updateData: (rowIndex, columnId, value) => {
+        setData((old) => {
+          old.map((row, index) => {
+            if (index === rowIndex) {
+              return {
+                ...old[rowIndex],
+                [columnId]: value,
+              };
+            }
+            return row;
+          })
+        })
+      }
+    }
   })
   return (
     <Styles>
