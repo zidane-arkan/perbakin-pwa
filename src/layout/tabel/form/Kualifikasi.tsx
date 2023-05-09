@@ -1,10 +1,15 @@
-import { createColumnHelper } from '@tanstack/react-table';
-import React, { useMemo } from 'react'
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import React, { useMemo, useState } from 'react'
 
 import styled from 'styled-components';
 const Styles = styled.div`
-  padding: 1rem;
-
+  padding: 1rem 0;
+  overflow : scroll;
   table {
     border-spacing: 0;
     border: 1px solid black;
@@ -71,19 +76,43 @@ const defaultData: kualifikasi20[] = [
     '8': 1,
     '9': 1,
     '10': 1,
-    total: 10,
+    total: 11,
+    hasil: false,
+  },
+  {
+    seri: '2',
+    '0': 2,
+    '1': 2,
+    '2': 2,
+    '3': 2,
+    '4': 2,
+    '5': 2,
+    '6': 2,
+    '7': 2,
+    '8': 2,
+    '9': 2,
+    '10': 1,
+    total: 12,
     hasil: false,
   },
 ];
 
 const columnHelper = createColumnHelper<kualifikasi20>();
 const columns = [
-  columnHelper.accessor('seri', {
-    header: 'Seri',
+  columnHelper.group({
+    id: 'seri',
+    header: () => <span>Seri</span>,
+    // footer: props => props.column.id,
+    columns: [
+      columnHelper.accessor('seri', {
+        id: 'seri',
+        header: () => <span>No Seri</span>,
+      }),
+    ]
   }),
   columnHelper.group({
-    id: 'hello',
-    header: () => <span>Hello</span>,
+    id: 'nilaiPerkenaan',
+    header: () => <span>Nilai Perkenaan</span>,
     // footer: props => props.column.id,
     columns: [
       columnHelper.accessor('0', {
@@ -96,11 +125,11 @@ const columns = [
       }),
       columnHelper.accessor('2', {
         id: '2',
-        header: () => <span>1</span>,
+        header: () => <span>2</span>,
       }),
       columnHelper.accessor('3', {
         id: '3',
-        header: () => <span>1</span>,
+        header: () => <span>3</span>,
       }),
       columnHelper.accessor('4', {
         id: '4',
@@ -108,42 +137,92 @@ const columns = [
       }),
       columnHelper.accessor('5', {
         id: '5',
-        header: () => <span>1</span>,
+        header: () => <span>5</span>,
       }),
       columnHelper.accessor('6', {
         id: '6',
-        header: () => <span>1</span>,
+        header: () => <span>6</span>,
       }),
       columnHelper.accessor('7', {
         id: '7',
-        header: () => <span>1</span>,
+        header: () => <span>7</span>,
       }),
       columnHelper.accessor('8', {
         id: '8',
-        header: () => <span>1</span>,
+        header: () => <span>8</span>,
       }),
       columnHelper.accessor('9', {
         id: '9',
-        header: () => <span>1</span>,
+        header: () => <span>9</span>,
       }),
       columnHelper.accessor('10', {
         id: '10',
-        header: () => <span>1</span>,
+        header: () => <span>10</span>,
       }),
     ],
   }),
-  columnHelper.accessor('total', {
-    header: 'Total',
+  columnHelper.group({
+    id: 'total',
+    header: () => <span>Total</span>,
+    // footer: props => props.column.id,
+    columns: [
+      columnHelper.accessor('total', {
+        id: 'total',
+        header: () => <span>Jumlah Total</span>,
+      }),
+    ]
   }),
-  columnHelper.accessor('hasil', {
-    header: 'Hasil',
+  columnHelper.group({
+    id: 'hasil',
+    header: () => <span>Hasil</span>,
+    // footer: props => props.column.id,
+    columns: [
+      columnHelper.accessor('hasil', {
+        id: 'hasil',
+        header: () => <span>Hasil (Centang)</span>,
+      }),
+    ]
   }),
 ]
-const Kualifikasi = () => {
 
+const Kualifikasi = () => {
+  const [data, setData] = useState(() => [...defaultData])
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
   return (
     <Styles>
-
+      <table>
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th key={header.id} colSpan={header.colSpan}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.map((row) => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </Styles>
   )
 }
