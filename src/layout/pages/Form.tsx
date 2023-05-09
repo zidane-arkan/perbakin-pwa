@@ -3,14 +3,25 @@ import { HeaderWhiteCustom } from '../../components/Header'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { CardText } from '../../components/ui/Card';
 import { Link } from 'react-router-dom';
+import Kualifikasi from '../tabel/form/Kualifikasi';
 
 type PropsForm = {
-    ujian? : string
+    ujian?: string
 };
-const FormTable = (props: PropsForm) => { 
+export const JenisTabel: string | any = {
+    'kualifikasi': '#FFFFFF',
+    'white': '#000000',
+    'blur': '#000000',
+    'transparent': '#FFFFFF',
+};
+const FormTable = (props: PropsForm) => {
     return (
-        props.ujian == 'kualifikasi' &&
-        <div></div>
+        <>
+            {
+                props.ujian == 'kualifikasi' &&
+                <Kualifikasi />
+            }
+        </>
     );
 }
 const Form = () => {
@@ -26,6 +37,7 @@ const Form = () => {
                     <h2>Peserta:</h2>
                     <p className='text-[#000]/60'>Isi kolom berikut dengan tanda tangan.</p>
                 </section>
+                <FormTable />
                 <CardText>
                     <Link to={'/kualifikasi_konfirmasi'} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
                         Selanjutnya
