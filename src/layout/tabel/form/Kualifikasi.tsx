@@ -11,7 +11,7 @@ const Styles = styled.div`
   padding: 1rem 0;
   overflow : scroll;
   table {
-    width: 768px;
+    width: 100%;
     text-align: center;
     border-spacing: 0;
     border-right: 2px solid #D5E4F0;
@@ -124,7 +124,8 @@ const EditableCell = ({ getValue, row, column, table }) => {
     table.options.meta?.updateData(row.index, column.id, value);
   };
   return (
-    <input className='w-[30px]'
+    <input className='w-[30px] text-center'
+      type={column.columnDef.meta?.type || "text"}
       value={value}
       onChange={(e) => setValue(e.target.value)}
       onBlur={onBlur}
@@ -153,46 +154,89 @@ const columns = [
         id: '0',
         header: () => <span>0</span>,
         cell: EditableCell,
+        meta: {
+          type: 'number',
+        }
       }),
       columnHelper.accessor('1', {
         id: '1',
         header: () => <span>1</span>,
+        cell: EditableCell,
+        meta: {
+          type: 'number',
+        }
       }),
       columnHelper.accessor('2', {
         id: '2',
         header: () => <span>2</span>,
+        cell: EditableCell,
+        meta: {
+          type: 'number',
+        }
       }),
       columnHelper.accessor('3', {
         id: '3',
         header: () => <span>3</span>,
+        cell: EditableCell,
+        meta: {
+          type: 'number',
+        }
       }),
       columnHelper.accessor('4', {
         id: '4',
         header: () => <span>1</span>,
+        cell: EditableCell,
+        meta: {
+          type: 'number',
+        }
       }),
       columnHelper.accessor('5', {
         id: '5',
         header: () => <span>5</span>,
+        cell: EditableCell,
+        meta: {
+          type: 'number',
+        }
       }),
       columnHelper.accessor('6', {
         id: '6',
         header: () => <span>6</span>,
+        cell: EditableCell,
+        meta: {
+          type: 'number',
+        }
       }),
       columnHelper.accessor('7', {
         id: '7',
         header: () => <span>7</span>,
+        cell: EditableCell,
+        meta: {
+          type: 'number',
+        }
       }),
       columnHelper.accessor('8', {
         id: '8',
         header: () => <span>8</span>,
+        cell: EditableCell,
+        meta: {
+          type: 'number',
+        }
       }),
       columnHelper.accessor('9', {
         id: '9',
         header: () => <span>9</span>,
+        cell: EditableCell,
+        meta: {
+          type: 'number',
+        }
       }),
       columnHelper.accessor('10', {
         id: '10',
         header: () => <span>10</span>,
+        cell: EditableCell,
+        meta: {
+          type: 'number',
+        }
       }),
     ],
   }),
@@ -215,6 +259,10 @@ const columns = [
       columnHelper.accessor('hasil', {
         id: 'hasil',
         header: () => <span>Hasil (Centang)</span>,
+        cell: EditableCell,
+        meta: {
+          type: 'checkbox',
+        }
       }),
     ]
   }),
@@ -228,7 +276,7 @@ const Kualifikasi = () => {
     getCoreRowModel: getCoreRowModel(),
     meta: {
       updateData: (rowIndex, columnId, value) => {
-        setData((old) => {
+        setData((old) =>
           old.map((row, index) => {
             if (index === rowIndex) {
               return {
@@ -238,10 +286,11 @@ const Kualifikasi = () => {
             }
             return row;
           })
-        })
-      }
-    }
-  })
+        );
+      },
+    },
+  });
+
   return (
     <Styles>
       <table>
