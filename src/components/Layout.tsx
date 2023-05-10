@@ -12,7 +12,14 @@ export const Layout = (props: Props) => {
         </div>
     )
 }
-
+export const LayoutAdmin = (props: Props) => {
+    const classCustom = `${props.className} container h-screen flex flex-col gap-4 bg-white  `;
+    return (
+        <div className={classCustom}>
+            {props.children}
+        </div>
+    )
+}
 export const LayoutChild = (props: Props) => {
     const customClass = `${props.className} flex max-w-full px-8`;
     return (
