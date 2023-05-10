@@ -4,6 +4,8 @@ import avatar from '../../../app-assets/avatar.png';
 import targetWhite from '../../../app-assets/targetwhite.png'
 import mapPin from '../../../app-assets/map_pin.png'
 import clock from '../../../app-assets/clock.png'
+import peluruBulat from '../../../app-assets/pelurubulat.png';
+import tambahPenguji from '../../../app-assets/tambahpenguji.png'
 import { Link } from 'react-router-dom';
 
 const Admin = (props: any) => {
@@ -35,7 +37,20 @@ const Admin = (props: any) => {
                         <img src={targetWhite} />
                     </span>
                 </section>
-                <section></section>
+                <section className='flex items-center gap-6'>
+                    <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full' to='/'>
+                        <div className='flex gap-2 items-center'>
+                            <img src={peluruBulat} />
+                            <span className='font-xl'>Tambah Penembak</span>
+                        </div>
+                    </Link>
+                    <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full' to='/'>
+                        <div className='flex gap-2 items-center'>
+                            <img src={tambahPenguji} />
+                            <span className='font-xl'>Tambah Penguji</span>
+                        </div>
+                    </Link>
+                </section>
                 <section>
                     <div className='flex w-full justify-between items-center'>
                         <h2 className='font-bold'>Hasil Ujian</h2>
