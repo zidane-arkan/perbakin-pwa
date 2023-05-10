@@ -7,7 +7,7 @@ const Penguji = (props: any) => {
     return (
         <>
             <Layout className={classname}>
-                <LayoutChild className='flex-col pb-[10rem] gap-8'>
+                <LayoutChild className='flex-col pb-[10rem] gap-4'>
                     <span className='inline text-left'>
                         <h3 className='text-lg font-bold'>List Penguji</h3>
                     </span>
