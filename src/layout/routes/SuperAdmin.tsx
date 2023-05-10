@@ -1,14 +1,15 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom';
-import Detail from '../../components/overlay/Detail';
-import Dashboard from '../penguji/Dashboard';
-import Login from '../auth/Login';
 import SuperAdminRegist from '../auth/registrasi/SuperAdmin';
+import UjianBaru from '../auth/registrasi/UjianBaru';
+import AdminRegis from '../auth/registrasi/Admin';
 const SuperAdmin = () => {
     return (
         <>
             <Routes>
                 <Route path='/' element={<SuperAdminRegist />} />
+                <Route path='/ujianbaru' element={<UjianBaru />} />
+                <Route path='/adminregis' element={<AdminRegis />} />
                 {/* Route Kualifikasi */}
                 {/* Route Stage 1 */}
                 {/* Route Stage 2 */}
