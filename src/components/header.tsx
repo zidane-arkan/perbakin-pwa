@@ -4,6 +4,11 @@ import target from '../app-assets/target.png';
 import arrowLeft from '../app-assets/arrowleft.png';
 import close from '../app-assets/close.png';
 
+const IconType: string | any = {
+  'close': close,
+  'return': arrowLeft
+};
+
 type Props = {
   children?: string | JSX.Element | React.ReactNode
   className?: string
@@ -60,10 +65,6 @@ type propsBlueCustom = {
   title: string,
   typeIcon: string
 }
-const IconType: string | any = {
-  'close': close,
-  'return': arrowLeft
-};
 
 export const HeaderBlueCustom = (props: propsBlueCustom) => {
   const navigate = useNavigate();

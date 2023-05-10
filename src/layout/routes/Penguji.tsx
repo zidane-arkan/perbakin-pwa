@@ -2,6 +2,7 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom';
 import Detail from '../../components/overlay/Detail';
 import Dashboard from '../penguji/Dashboard';
+import Login from '../auth/Login';
 // Aturan
 import Kualifikasi from '../penguji/aturan/Kualifikasi';
 // Form
@@ -14,6 +15,7 @@ const Penguji = () => {
     return (
         <>
             <Routes>
+                <Route path='/login' element={<Login />} />
                 <Route path='/' element={<Dashboard />} />
                 <Route path='/detail' element={<Detail />} />
                 {/* Route Kualifikasi */}

@@ -1,14 +1,14 @@
 import React from 'react'
-import { Layout } from '../../components/Layout'
+import { Layout, LayoutChild } from '../../components/Layout'
 const Login = () => {
     return (
-        <>
-            <Layout className={'pt-[20%]'}>
+        <Layout className={'rounded-3xl mt-20 mb-[5%]'}>
+            <LayoutChild className='flex-col'>
                 <div className='max-w-full text-center text-[#036BB0]'>
                     <h1 className='pb-2 text-4xl font-extrabold'>Log In</h1>
                     <h4 className='text-base text-[#6A7682] font-normal'>Silahkan masukkan username dan password yang telah disediakan oleh admin</h4>
                 </div>
-                <form className='flex flex-col justify-between w-full h-screen pt-14'>
+                <form className='flex flex-col w-full h-auto justify-between gap-8 pt-14'>
                     <section>
                         <div className="mb-6">
                             <label htmlFor="email" className="block mb-2 text-sm font-bold text-gray-900">Username</label>
@@ -30,8 +30,8 @@ const Login = () => {
                         <button type="submit" className="text-[#036BB0] border-2 border-[#036BB0] font-bold rounded-lg text-base w-full sm:w-auto px-5 py-2.5 text-center bg-transparent hover:bg-blue-700 focus:ring-blue-800">Ujian Baru</button>
                     </div>
                 </form>
-            </Layout>
-        </>
+           </LayoutChild>
+        </Layout>
     )
 }
 

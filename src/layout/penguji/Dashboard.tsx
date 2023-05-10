@@ -2,6 +2,7 @@ import React from 'react'
 import user1 from '../../app-assets/user1.png';
 import avatar from '../../app-assets/avatar.png';
 import Penembak from '../pages/Penembak'
+
 const Dashboard = () => {
     return (
         <Penembak>
