@@ -18,7 +18,7 @@ const Admin = (props: any) => {
                         <span className='text-[#1B79B8]' >Edit Ujian</span>
                     </Link>
                 </section>
-                <section className='relative overflow-hidden flex bg-[#F3FAFF] flex-col gap-4 items-start rounded-xl px-4 py-4'>
+                <section className='relative shadow-md overflow-hidden flex bg-[#F3FAFF] flex-col gap-4 items-start rounded-xl px-4 py-4'>
                     <div className='flex gap-2 items-start'>
                         <img className='pt-[2px]' src={mapPin} />
                         <div className='flex flex-col items-start'>

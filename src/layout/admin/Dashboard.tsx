@@ -22,8 +22,8 @@ const Dashboard = () => {
                     </div>
                 </BgHeader>
                 <Outlet />
+                <Tabs />
             </LayoutAdmin>
-            <Tabs />
         </>
     )
 }

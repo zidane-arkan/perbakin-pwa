@@ -4,6 +4,7 @@ import close from '../../app-assets/close.png';
 import Modal from './Modal';
 import { Link } from 'react-router-dom';
 import { LayoutChild } from '../Layout';
+
 const Detail = (props: any) => {
     return (
         <Modal shownCardHandler={props.shownCardHandler}>

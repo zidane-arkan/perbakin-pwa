@@ -1,8 +1,8 @@
 import React from 'react'
-
+import PenembakAdmin from '../../pages/Penembak'
 const Penembak = () => {
     return (
-        <div>Penembak</div>
+        <PenembakAdmin />
     )
 }
 
