@@ -19,17 +19,17 @@ const Admin = (props: any) => {
                 <section className='relative overflow-hidden flex bg-[#F3FAFF] flex-col gap-4 items-start rounded-xl px-4 py-4'>
                     <div className='flex gap-2 items-start'>
                         <img className='pt-[2px]' src={mapPin} />
-                        <span className='flex flex-col items-start'>
+                        <div className='flex flex-col items-start'>
                             <h3 className='font-bold'>Lokasi</h3>
                             <p>Sumatera Selatan</p>
-                        </span>
+                        </div>
                     </div>
                     <div className='flex gap-2 items-start'>
                         <img className='pt-[2px]' src={clock} />
-                        <span>
+                        <div>
                             <h3 className='font-bold'>Waktu</h3>
                             <p>24 - 25 Mei 2023</p>
-                        </span>
+                        </div>
                     </div>
                     <span className='absolute top-[-3rem] right-[-4rem]'>
                         <img src={targetWhite} />
@@ -37,7 +37,12 @@ const Admin = (props: any) => {
                 </section>
                 <section></section>
                 <section>
-                    <div></div>
+                    <div className='flex w-full justify-between items-center'>
+                        <h2 className='font-bold'>Hasil Ujian</h2>
+                        <Link to='hasilujian'>
+                            <span className='text-[#1B79B8]' >Lihat Selengkapnya</span>
+                        </Link>
+                    </div>
                     <div></div>
                 </section>
             </LayoutChild>
