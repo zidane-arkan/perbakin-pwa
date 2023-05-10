@@ -14,7 +14,7 @@ const Tabs = () => {
         <Style>
             <section className="box-shadows xl:hidden fixed inset-x-0 bottom-0 z-50 block text-black bg-white shadow-lg border-royal/20 backdrop-blur-lg">
                 <div id="tabs" className="flex justify-between px-0 py-4 ">
-                    <NavLink to="penguji" className="justify-center inline-block w-full pt-2 pb-2 text-center focus:text-royal hover:text-royal hover:bg-white">
+                    <NavLink to="admindashboard" className="justify-center inline-block w-full pt-2 pb-2 text-center focus:text-royal hover:text-royal hover:bg-white">
                         <svg xmlns="http://www.w3.org/2000/svg" className="inline-block mb-1 h-7" fill="none" viewBox="0 0 47 47" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.05 39h6.9V26.15H30.1V39h6.85V19.55L24 9.85l-12.95 9.7ZM7.4 42.65V17.7L24 5.3l16.6 12.4v24.95H26.45V29.8H21.6v12.85ZM24 24.4Z"></path>
                         </svg>

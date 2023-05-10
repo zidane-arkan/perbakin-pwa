@@ -1,11 +1,11 @@
 import React from 'react'
-import { LayoutAdmin, LayoutChild } from '../../../components/Layout'
-import { BgHeader } from '../../../components/Header'
-import Tabs from '../../../components/ui/Tabs'
+import { LayoutAdmin, LayoutChild } from '../../components/Layout'
+import { BgHeader } from '../../components/Header'
+import Tabs from '../../components/ui/Tabs'
 import { Outlet } from 'react-router-dom'
-import avatar from '../../../app-assets/avatar.png';
+import avatar from '../../app-assets/avatar.png';
 
-const Dashboard = (props: any) => {
+const Dashboard = () => {
     return (
         <>
             <LayoutAdmin className={'rounded-3xl mt-36 pt-[10%]'}>
