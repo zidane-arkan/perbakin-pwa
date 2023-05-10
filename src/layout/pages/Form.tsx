@@ -41,7 +41,7 @@ const Form = () => {
                     <FormTable ujian='kualifikasi' />
                 </div>
                 <CardText>
-                    <Link to={'/kualifikasi_konfirmasi'} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
+                    <Link to={'/penguji/kualifikasi_konfirmasi'} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
                         Selanjutnya
                     </Link>
                 </CardText>

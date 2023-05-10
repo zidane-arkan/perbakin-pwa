@@ -1,5 +1,6 @@
 import React from 'react'
 import { Layout, LayoutChild } from '../../components/Layout'
+import { Link } from 'react-router-dom'
 const Login = () => {
     return (
         <Layout className={'rounded-3xl mt-20 mb-[5%]'}>
@@ -26,8 +27,9 @@ const Login = () => {
                         </div>
                     </section>
                     <div className='flex flex-col gap-4'>
-                        <button type="submit" className="text-white rounded-lg text-base font-bold w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Masuk</button>
-                        <button type="submit" className="text-[#036BB0] border-2 border-[#036BB0] font-bold rounded-lg text-base w-full sm:w-auto px-5 py-2.5 text-center bg-transparent hover:bg-blue-700 focus:ring-blue-800">Ujian Baru</button>
+                        <Link to={'/penguji'} type="submit" className="text-white rounded-lg text-base font-bold w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Masuk</Link>
+                        <Link to={'/admin'} type="submit" className="text-white rounded-lg text-base font-bold w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Admin</Link>
+                        <Link to={'/superadmin'} type="submit" className="text-[#036BB0] border-2 border-[#036BB0] font-bold rounded-lg text-base w-full sm:w-auto px-5 py-2.5 text-center bg-transparent hover:bg-blue-700 focus:ring-blue-800">Super Admin</Link>
                     </div>
                 </form>
            </LayoutChild>
