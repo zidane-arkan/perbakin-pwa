@@ -1,35 +1,35 @@
 import React from 'react'
+import { CardPenembak } from '../../components/ui/Card'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { HeaderWhiteCustom } from '../../components/Header'
 import { CardText } from '../../components/ui/Card'
 import { useNavigate } from 'react-router-dom'
-const DetailPenguji = () => {
+
+import user2 from '../../app-assets/user2.png';
+
+const DetailPenguji = (props: any) => {
     const navigate = useNavigate();
     return (
-        <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%] overflow-hidden'}>
+        <Layout className={'rounded-3xl mt-28 pt-[2%] overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='returnblack' title='Detail Penguji' />
-            <LayoutChild className='flex-col gap-4 h-[750px] justify-between'>
-                <form className='flex flex-col w-full h-auto justify-between gap-8'>
-                    <section>
-                        <div className="mb-6">
-                            <label htmlFor="passlama" className="block mb-2 text-sm font-bold text-gray-900">Password Lama</label>
-                            <input type="password" id="passlama" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                        </div>
-                        <div className="mb-6">
-                            <label htmlFor="passbaru" className="block mb-2 text-sm font-bold text-gray-900">Password baru</label>
-                            <input type="password" id="passbaru" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                        </div>
-                        <div className="mb-6">
-                            <label htmlFor="passbaru" className="block mb-2 text-sm font-bold text-gray-900">Konfirmasi Password baru</label>
-                            <input type="password" id="passbaru" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                        </div>
-                    </section>
-                </form>
-                <CardText>
-                    <button onClick={() => navigate(-1)} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
-                        Simpan
-                    </button>
-                </CardText>
+            <LayoutChild>
+                <section className="flex w-full items-center rounded-xl px-3 py-4 gap-4 ">
+                    <div className="flex items-center w-1/6">
+                        <img className='min-w-[65px]' src={user2} />
+                    </div>
+                    <div className="flex flex-col w-4/6 gap-1 pl-6 md:p-4">
+                        <h1 className="text-base font-bold text-gray-800">Nama Lengkap</h1>
+                        <p className="text-sm text-gray-600 ">{props.penguji}</p>
+                    </div>
+                </section>
+            </LayoutChild>
+            <LayoutChild className='flex-col gap-4 h-[750px]'>
+                <span className='inline text-left'>
+                    <h3 className='text-lg font-bold'>Penembak Yang Diuji :</h3>
+                </span>
+                <CardPenembak penembak="Testing 1" klub="Asal Klub 1" stage={'Stage #2'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} />
+                <CardPenembak penembak="Testing 2" klub="Asal Klub 2" stage={'Gagal'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} />
+                <CardPenembak penembak="Testing 3" klub="Asal Klub 3" stage={'Stage #3'} pengprov={'Pengprov 1'} penguji={'Penguji 2'} />
             </LayoutChild>
         </Layout>
     )

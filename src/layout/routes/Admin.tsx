@@ -33,7 +33,7 @@ const Admin = () => {
                 {/* Route Hasil Ujian */}
                 <Route path='admindashboard/hasilujian' element={<HasilUjian />} />
                 {/* Route Detail Penguji */}
-                <Route path='penguji/admindashboard/detailpenguji' element={<DetailPenguji />} />
+                <Route path='penguji/admindashboard/detailpenguji' element={<DetailPenguji penguji={'Penguji 1'} />} />
                 {/* Route Stage 4 */}
                 {/* Route Stage 5 */}
                 {/* Route Stage 6 */}
