@@ -20,7 +20,7 @@ const Admin = () => {
                     <Route path='penguji' element={<Penguji />} />
                 </Route>
                 <Route path='admindashboard/tambahpenembak' element={<TambahPenembak />} />
-                <Route path='admindashboard/tambahpenguji' element={<TambahPenembak />} />
+                <Route path='admindashboard/tambahpenguji' element={<TambahPenguji />} />
                 <Route path='admindashboard/hasilujian' element={<HasilUjian />} />
                 {/* Route Kualifikasi */}
                 {/* Route Stage 1 */}

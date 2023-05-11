@@ -18,6 +18,7 @@ type Props = {
 type propsBlueCustom = {
   children?: string | JSX.Element | React.ReactNode
   className?: string
+  jenis?: string;
   typeIcon?: string | any
   title: string,
 }
@@ -39,7 +40,7 @@ export const BgHeader = (props: Props) => {
 export const BgHeaderProfile = (props: propsBlueCustom) => {
   const navigate = useNavigate();
   return (
-    <header className='absolute w-full top-0 flex text-white max-w-full pt-14 bg-[#036BB0] z-[-1]'>
+    <header className='absolute overflow-hidden w-full top-0 flex text-white max-w-full pt-14 bg-[#036BB0] z-[-1]'>
       <div className='flex flex-col items-center justify-between w-full'>
         <section className='px-10 flex items-center justify-between w-full'>
           <button className='w-[24px] h-[24px]' type='button' onClick={() => navigate(-1)}>
@@ -54,7 +55,7 @@ export const BgHeaderProfile = (props: propsBlueCustom) => {
           </span>
           <div className='flex flex-col gap-4 items-center justify-center z-10'>
               <button className='rounded-full bg-white w-[120px] h-[120px]'></button>
-              <button className='text-sm text-white/60'>Tambah Foto</button>
+            <button className='text-sm text-white/60'>{props.jenis}</button>
           </div>
           <span className='absolute right-[-2rem] top-[2rem] z-0'>
             <img src={targetbgprofile} />
