@@ -73,9 +73,9 @@ export const DetailAdmin = (props: any) => {
                         <span className='max-w-full px-2 py-1 text-xs font-bold text-white uppercase transition-colors duration-300 transform bg-[#62DE5F] rounded'>
                             {props.stage}
                         </span>
-                        <div>
-                        <Link to={'kualifikasi_aturan'} className='w-full items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Hapus Penembak</Link>
-                            <Link to={'kualifikasi_aturan'} className='w-full items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Edit Profile</Link>
+                        <div className='flex w-full items-center gap-4 justify-between'>
+                            <Link to={'kualifikasi_aturan'} className='w-[55%] items-center text-sm text-center font-semibold px-2 py-3 text-[#FC443E] border border-red-500 bg-transparent rounded-lg' >Hapus Penembak</Link>
+                            <Link to={'kualifikasi_aturan'} className='w-[45%] text-sm items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Edit Profile</Link>
                         </div>
                     </div>
                 </LayoutChild>
