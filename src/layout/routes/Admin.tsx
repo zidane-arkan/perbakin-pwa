@@ -13,18 +13,6 @@ import HasilUjian from '../admin/HasilUjian'
 const Admin = () => {
     return (
         <>
-            <BgHeader>
-                <div className='flex items-center justify-between w-full'>
-                    <section className='flex flex-col items-start'>
-                        <h2>Halo, Admin</h2>
-                    </section>
-                    <section>
-                        <button>
-                            <img src={avatar} />
-                        </button>
-                    </section>
-                </div>
-            </BgHeader>
             <Routes>
                 <Route path='/' element={<Dashboard />} >
                     <Route path='admindashboard' element={<DashboardAdmin />} />
@@ -32,7 +20,8 @@ const Admin = () => {
                     <Route path='penguji' element={<Penguji />} />
                 </Route>
                 <Route path='admindashboard/tambahpenembak' element={<TambahPenembak />} />
-                <Route path='hasilujian' element={<HasilUjian />} />
+                <Route path='admindashboard/tambahpenguji' element={<TambahPenembak />} />
+                <Route path='admindashboard/hasilujian' element={<HasilUjian />} />
                 {/* Route Kualifikasi */}
                 {/* Route Stage 1 */}
                 {/* Route Stage 2 */}
