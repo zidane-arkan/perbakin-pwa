@@ -2,13 +2,15 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import target from '../app-assets/target.png';
 import arrowLeft from '../app-assets/arrowleft.png';
+import arrowLeftBlack from '../app-assets/arrowleftblack.png';
 import targetbgprofile from '../app-assets/targetbgprofile.png'
 import pelurubg from '../app-assets/pelurubg.png'
 import close from '../app-assets/close.png';
 
 const IconType: string | any = {
   'close': close,
-  'return': arrowLeft
+  'return': arrowLeft,
+  'returnblack': arrowLeftBlack
 };
 
 type Props = {

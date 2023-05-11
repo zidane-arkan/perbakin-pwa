@@ -4,7 +4,7 @@ import { BgHeader } from '../../components/Header'
 import Tabs from '../../components/ui/Tabs'
 import { Outlet } from 'react-router-dom'
 import avatar from '../../app-assets/avatar.png'
-
+import { Link } from 'react-router-dom'
 const Dashboard = () => {
     return (
         <>
@@ -15,9 +15,9 @@ const Dashboard = () => {
                             <h2>Halo, Admin</h2>
                         </section>
                         <section>
-                            <button>
+                            <Link to={'admindashboard/editprofile'}>
                                 <img src={avatar} />
-                            </button>
+                            </Link>
                         </section>
                     </div>
                 </BgHeader>

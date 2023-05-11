@@ -6,8 +6,12 @@ import Dashboard from '../admin/Dashboard'
 import DashboardAdmin from '../admin/tabs/Admin'
 import Penguji from '../admin/tabs/Penguji'
 import Penembak from '../admin/tabs/Penembak'
+// Tambah
 import TambahPenembak from '../admin/tambah/Penembak'
 import TambahPenguji from '../admin/tambah/Penguji'
+// Edit
+import TentangUjian from '../admin/edit/Ujian';
+import Profile from '../admin/edit/Profile';
 
 import HasilUjian from '../admin/HasilUjian'
 const Admin = () => {
@@ -19,12 +23,14 @@ const Admin = () => {
                     <Route path='penembak' element={<Penembak />} />
                     <Route path='penguji' element={<Penguji />} />
                 </Route>
+                {/* Route Tambah */}
                 <Route path='admindashboard/tambahpenembak' element={<TambahPenembak />} />
                 <Route path='admindashboard/tambahpenguji' element={<TambahPenguji />} />
-                <Route path='admindashboard/hasilujian' element={<HasilUjian />} />
-                {/* Route Kualifikasi */}
-                {/* Route Stage 1 */}
+                {/* Route Edit */}
+                <Route path='admindashboard/editujian' element={<TentangUjian />} />
+                <Route path='admindashboard/editprofile' element={<Profile />} />
                 {/* Route Stage 2 */}
+                <Route path='admindashboard/hasilujian' element={<HasilUjian />} />
                 {/* Route Stage 3 */}
                 {/* Route Stage 4 */}
                 {/* Route Stage 5 */}
