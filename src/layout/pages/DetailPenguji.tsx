@@ -13,9 +13,9 @@ const DetailPenguji = (props: any) => {
         <Layout className={'rounded-3xl mt-28 pt-[2%] overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='returnblack' title='Detail Penguji' />
             <LayoutChild>
-                <section className="flex w-full items-center rounded-xl px-3 py-4 gap-4 ">
-                    <div className="flex items-center w-1/6">
-                        <img className='min-w-[65px]' src={user2} />
+                <section className="flex w-full items-center gap-4 ">
+                    <div className="flex shadow-md rounded-xl items-center w-1/6">
+                        <img className='min-w-[65px] ' src={user2} />
                     </div>
                     <div className="flex flex-col w-4/6 gap-1 pl-6 md:p-4">
                         <h1 className="text-base font-bold text-gray-800">Nama Lengkap</h1>
