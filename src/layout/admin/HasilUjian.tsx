@@ -186,8 +186,8 @@ const HasilUjian = () => {
                         </span>
                         <input type="text" className="w-full py-3 pl-10 pr-4 shadow-md text-gray-700 bg-white border rounded-full focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" placeholder="Cari" />
                     </div>
-                    <button className="flex items-center justify-center w-[15%] h-full rounded-full bg-[#1B79B8]">
-                        <img src={arrowdown} />
+                    <button type='button' className="flex items-center justify-center w-[15%] h-full rounded-full bg-[#1B79B8]">
+                        <img src={arrowdown} alt='arrow-down' />
                     </button>
                 </form>
                 <TabelHasilUjian />
