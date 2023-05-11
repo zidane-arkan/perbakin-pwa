@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import user1 from '../../app-assets/user1.png';
 import { Link } from 'react-router-dom'
-import Detail from '../overlay/Detail';
+import { Detail } from '../overlay/Detail';
 type Props = {
     title?: string
     children?: string | JSX.Element | React.ReactNode
@@ -33,7 +33,7 @@ export const CardPenembak = (props: any) => {
     }
     return (
         <>
-            {isCartShown &&
+            {(isCartShown && true) &&
                 <Detail
                     shownCardHandler={shownCardHandler}
                     penembak={props.penembak}
