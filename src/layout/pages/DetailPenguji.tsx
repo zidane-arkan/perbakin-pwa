@@ -3,12 +3,15 @@ import { CardPenembak } from '../../components/ui/Card'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { HeaderWhiteCustom } from '../../components/Header'
 import { CardText } from '../../components/ui/Card'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 
 import user2 from '../../app-assets/user2.png';
 
 const DetailPenguji = (props: any) => {
+    const data = useLocation();
+    console.log(data)
     const navigate = useNavigate();
+    const { id } = useParams();
     return (
         <Layout className={'rounded-3xl mt-28 pt-[2%] overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='returnblack' title='Detail Penguji' />
@@ -19,7 +22,7 @@ const DetailPenguji = (props: any) => {
                     </div>
                     <div className="flex flex-col w-4/6 gap-1 pl-6 md:p-4">
                         <h1 className="text-base font-bold text-gray-800">Nama Lengkap</h1>
-                        <p className="text-sm text-gray-600 ">{props.penguji}</p>
+                        <p className="text-sm text-gray-600 ">{data.state}</p>
                     </div>
                 </section>
             </LayoutChild>

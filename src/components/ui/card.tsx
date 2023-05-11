@@ -114,7 +114,7 @@ export const CardPenguji = (props: any) => {
                 <div className="inline-block w-4/6 pl-6 md:p-4">
                     <h1 className="text-base font-bold text-gray-800">{props.penguji}</h1>
                 </div>
-                <Link to='admindashboard/detailpenguji' className="flex items-center w-1/6">
+                <Link to={`detailpenguji/${props.id}`} state={props.penguji}  className="flex items-center w-1/6">
                     <button className="px-2 py-1 text-4xl text-[#036BB0]">{'>'}</button>
                 </Link>
             </section>

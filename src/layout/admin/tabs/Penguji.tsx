@@ -1,9 +1,9 @@
 import React from 'react'
 import PengujiAdmin from '../../pages/Penguji'
 
-const Penguji = () => {
+const Penguji = (props : any) => {
     return (
-        <PengujiAdmin />
+        <PengujiAdmin userPenguji={props.userPenguji} />
     )
 }
 
