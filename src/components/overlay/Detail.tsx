@@ -2,7 +2,7 @@ import React from 'react'
 import imgDetail1 from '../../app-assets/userdetail.png';
 import close from '../../app-assets/close.png';
 import Modal from './Modal';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LayoutChild } from '../Layout';
 
 export const Detail = (props: any) => {
@@ -44,6 +44,7 @@ export const Detail = (props: any) => {
 }
 
 export const DetailAdmin = (props: any) => {
+    const navigate = useNavigate();
     return (
         <Modal shownCardHandler={props.shownCardHandler}>
             <section className='flex flex-col w-full h-auto'>
@@ -74,8 +75,8 @@ export const DetailAdmin = (props: any) => {
                             {props.stage}
                         </span>
                         <div className='flex w-full items-center gap-4 justify-between'>
-                            <Link to={'kualifikasi_aturan'} className='w-[55%] items-center text-sm text-center font-semibold px-2 py-3 text-[#FC443E] border border-red-500 bg-transparent rounded-lg' >Hapus Penembak</Link>
-                            <Link to={'kualifikasi_aturan'} className='w-[45%] text-sm items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Edit Profile</Link>
+                            <button onClick={() => navigate(-1)} className='w-[55%] items-center text-sm text-center font-semibold px-2 py-3 text-[#FC443E] border border-red-500 bg-transparent rounded-lg' >Hapus Penembak</button>
+                            <Link to={'editpenembak'} className='w-[45%] text-sm items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Edit Profile</Link>
                         </div>
                     </div>
                 </LayoutChild>

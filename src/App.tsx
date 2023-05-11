@@ -1,7 +1,7 @@
 
 import Auth from "./layout/routes/Auth";
 import Penguji from "./layout/routes/Penguji"
-import Detail from "./components/overlay/Detail"
+import { Detail } from "./components/overlay/Detail"
 import SuperAdmin from "./layout/routes/SuperAdmin"
 import Login from './layout/auth/Login';
 import Penembak from './layout/pages/Penembak';

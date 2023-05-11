@@ -10,6 +10,7 @@ import Penembak from '../admin/tabs/Penembak'
 import TambahPenembak from '../admin/tambah/Penembak'
 import TambahPenguji from '../admin/tambah/Penguji'
 // Edit
+import PenembakEdit from '../admin/edit/Penembak';
 import TentangUjian from '../admin/edit/Ujian';
 import Profile from '../admin/edit/Profile';
 // Detail
@@ -34,11 +35,13 @@ const Admin = () => {
                 <Route path='admindashboard/tambahpenembak' element={<TambahPenembak />} />
                 <Route path='admindashboard/tambahpenguji' element={<TambahPenguji />} />
                 {/* Route Edit */}
-                <Route path='admindashboard/editujian' element={<TentangUjian />} />
                 <Route path='admindashboard/editprofile' element={<Profile />} />
+                <Route path='admindashboard/editpenembak' element={<Profile />} />
                 {/* Route Hasil Ujian */}
                 <Route path='admindashboard/hasilujian' element={<HasilUjian />} />
+                <Route path='admindashboard/editujian' element={<TentangUjian />} />
                 {/* Route Detail Penguji */}
+                <Route path='penembak/editpenembak' element={<PenembakEdit />} />
                 <Route path='penguji/detailpenguji/:id' element={<DetailPenguji />} />
                 {/* Route Stage 4 */}
                 {/* Route Stage 5 */}
