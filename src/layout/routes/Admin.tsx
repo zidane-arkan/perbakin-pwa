@@ -12,7 +12,8 @@ import TambahPenguji from '../admin/tambah/Penguji'
 // Edit
 import TentangUjian from '../admin/edit/Ujian';
 import Profile from '../admin/edit/Profile';
-
+// Detail
+import DetailPenguji from '../pages/DetailPenguji';
 import HasilUjian from '../admin/HasilUjian'
 const Admin = () => {
     return (
@@ -29,9 +30,10 @@ const Admin = () => {
                 {/* Route Edit */}
                 <Route path='admindashboard/editujian' element={<TentangUjian />} />
                 <Route path='admindashboard/editprofile' element={<Profile />} />
-                {/* Route Stage 2 */}
+                {/* Route Hasil Ujian */}
                 <Route path='admindashboard/hasilujian' element={<HasilUjian />} />
-                {/* Route Stage 3 */}
+                {/* Route Detail Penguji */}
+                <Route path='penguji/admindashboard/detailpenguji' element={<DetailPenguji />} />
                 {/* Route Stage 4 */}
                 {/* Route Stage 5 */}
                 {/* Route Stage 6 */}
