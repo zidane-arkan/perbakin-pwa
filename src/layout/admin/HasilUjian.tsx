@@ -85,6 +85,27 @@ const defaultData: HasilUjian[] = [
         klub: 'Klub 2',
         status: 'Gagal',
     },
+    {
+        no: '3',
+        nama: 'miller',
+        pengprov: 'Sumsel',
+        klub: 'Klub 2',
+        status: 'Gagal',
+    },
+    {
+        no: '4',
+        nama: 'miller',
+        pengprov: 'Sumsel',
+        klub: 'Klub 2',
+        status: 'Gagal',
+    },
+    {
+        no: '5',
+        nama: 'miller',
+        pengprov: 'Sumsel',
+        klub: 'Klub 2',
+        status: 'Gagal',
+    },
 ];
 const columnHelper = createColumnHelper<HasilUjian>()
 const columns = [
@@ -155,7 +176,7 @@ const HasilUjian = () => {
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%] overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='returnblack' title='Hasil Ujian' />
-            <LayoutChild className='flex-col gap-0 h-auto'>
+            <LayoutChild className='flex-col gap-4 h-auto'>
                 <form className='flex w-full h-auto items-center justify-between'>
                     <div className="w-[80%] relative">
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 ">
@@ -170,7 +191,28 @@ const HasilUjian = () => {
                     </button>
                 </form>
                 <TabelHasilUjian />
-                <section></section>
+                <section className='flex w-full justify-between items-start'>
+                    <div className='flex flex-col gap-4 items-start'>
+                        <span className='flex gap-2 text-[#62DE5F]'>
+                            <div className='w-[15px] h-[15px] rounded-md bg-[#62DE5F]'></div>
+                            Sedang Aktif
+                        </span>
+                        <span className='flex gap-2 text-[#E9D528]'>
+                            <div className='w-[15px] h-[15px] rounded-md bg-[#E9D528]'></div>
+                            Akan Memulai
+                        </span>
+                    </div>
+                    <div className='flex flex-col gap-4 items-start'>
+                        <span className='flex gap-2 text-[#FC443E]'>
+                            <div className='w-[15px] h-[15px] rounded-md bg-[#FC443E]'></div>
+                            Gagal
+                        </span>
+                        <span className='flex gap-2 text-[#0047FF]'>
+                            <div className='w-[15px] h-[15px] rounded-md bg-[#0047FF]'></div>
+                            Lulus Ujian
+                        </span>
+                    </div>
+                </section>
             </LayoutChild>
         </Layout>
     );
