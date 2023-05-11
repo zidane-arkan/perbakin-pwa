@@ -2,8 +2,9 @@ import React from 'react'
 import { Layout, LayoutChild } from '../../../components/Layout'
 import { HeaderWhiteCustom } from '../../../components/Header'
 import { CardText } from '../../../components/ui/Card'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 const Ujian = () => {
+    const navigate = useNavigate();
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%] overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='returnblack' title='Edit Tentang ujian' />
@@ -32,9 +33,9 @@ const Ujian = () => {
                     </section>
                 </form>
                 <CardText>
-                    <Link to={'/penguji/kualifikasi_konfirmasi'} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
+                    <button onClick={() => navigate(-1)} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
                         Simpan
-                    </Link>
+                    </button>
                 </CardText>
             </LayoutChild>
         </Layout>

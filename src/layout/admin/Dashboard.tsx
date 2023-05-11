@@ -5,6 +5,8 @@ import Tabs from '../../components/ui/Tabs'
 import { Outlet } from 'react-router-dom'
 import avatar from '../../app-assets/avatar.png'
 import { Link } from 'react-router-dom'
+
+
 const Dashboard = () => {
     return (
         <>

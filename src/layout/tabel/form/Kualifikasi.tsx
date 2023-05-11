@@ -111,10 +111,9 @@ const defaultData: kualifikasi20[] = [
   },
 ];
 
-
 const columnHelper = createColumnHelper<kualifikasi20>();
 
-const EditableCell = ({ getValue, row, column, table }) => {
+const EditableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
   const columnMeta = column.columnDef.meta;
   const [value, setValue] = useState(initialValue);
@@ -124,7 +123,7 @@ const EditableCell = ({ getValue, row, column, table }) => {
   const onBlur = () => {
     table.options.meta?.updateData(row.index, column.id, value);
   };
-  return columnMeta?.type ==='number' ? (
+  return columnMeta?.type === 'number' ? (
     <input className='w-[30px] text-center'
       min={0}
       max={10}
@@ -134,12 +133,12 @@ const EditableCell = ({ getValue, row, column, table }) => {
       onBlur={onBlur}
     />
   ) : (
-      <input className='w-[30px] text-center'
-        type={columnMeta?.type || "text"}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={onBlur}
-      />
+    <input className='w-[30px] text-center'
+      type={columnMeta?.type || "text"}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      onBlur={onBlur}
+    />
   );
 }
 
