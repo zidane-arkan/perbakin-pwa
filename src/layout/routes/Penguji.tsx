@@ -3,6 +3,12 @@ import { Routes, Route } from 'react-router-dom';
 import Dashboard from '../penguji/Dashboard';
 // Aturan
 import Kualifikasi from '../penguji/aturan/Kualifikasi';
+import Stage1 from '../penguji/aturan/Stage1';
+import Stage2 from '../penguji/aturan/Stage2';
+import Stage3 from '../penguji/aturan/Stage3';
+import Stage4 from '../penguji/aturan/Stage4';
+import Stage5 from '../penguji/aturan/Stage5';
+import Stage6 from '../penguji/aturan/Stage6';
 // Form
 import KualifikasiForm from '../penguji/form/Kualifikasi';
 // Ketentuan

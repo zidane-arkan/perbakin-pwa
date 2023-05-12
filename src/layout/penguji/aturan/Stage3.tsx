@@ -1,9 +1,9 @@
 import React from 'react'
 import Aturan from '../../pages/Aturan'
-const Stage1 = () => {
+const Stage3 = () => {
     return (
         <Aturan
-            title="Stage #1"
+            title="Stage #3"
             jarak="7"
             waktu="6"
             sasaran="1"
@@ -12,4 +12,4 @@ const Stage1 = () => {
     )
 }
 
-export default Stage1
+export default Stage3

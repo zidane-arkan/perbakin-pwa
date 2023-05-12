@@ -1,10 +1,10 @@
 
 import Auth from "./layout/routes/Auth";
-import Penguji from "./layout/routes/Penguji"
-import { Detail } from "./components/overlay/Detail"
-import SuperAdmin from "./layout/routes/SuperAdmin"
-import Login from './layout/auth/Login';
-import Penembak from './layout/pages/Penembak';
+// import Penguji from "./layout/routes/Penguji"
+// import { Detail } from "./components/overlay/Detail"
+// import SuperAdmin from "./layout/routes/SuperAdmin"
+// import Login from './layout/auth/Login';
+// import Penembak from './layout/pages/Penembak';
 // import KetentuanUmum from './layout/pages/KetentuanUmum';
 // import Aturan from './layout/pages/Aturan';
 // import TandaTangan from './layout/pages/TandaTangan';

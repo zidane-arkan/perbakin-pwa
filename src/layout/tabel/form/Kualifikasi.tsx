@@ -284,7 +284,7 @@ const Kualifikasi = () => {
     columns,
     getCoreRowModel: getCoreRowModel(),
     meta: {
-      updateData: (rowIndex, columnId, value) => {
+      updateData: ({ rowIndex, columnId, value }: any) => {
         setData((old) =>
           old.map((row, index) => {
             if (index === rowIndex) {
