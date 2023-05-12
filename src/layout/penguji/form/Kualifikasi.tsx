@@ -3,7 +3,7 @@ import Form from "../../pages/Form";
 
 const Kualifikasi = () => {
     return (
-        <Form title='Ujian Kualifikasi 20 Meter' link='/penguji/kualifikasi_konfirmasi' />
+        <Form ujian='kualifikasi' title='Ujian Kualifikasi 20 Meter' link='/penguji/kualifikasi_konfirmasi' />
     )
 }
 

@@ -4,7 +4,7 @@ import { Layout, LayoutChild } from '../../components/Layout'
 import { CardText } from '../../components/ui/Card';
 import { Link } from 'react-router-dom';
 import Kualifikasi from '../tabel/form/Kualifikasi';
-
+import Stage1 from '../tabel/form/Stage1';
 type PropsForm = {
     ujian?: string
 };
@@ -21,10 +21,14 @@ const FormTable = (props: PropsForm) => {
                 props.ujian == 'kualifikasi' &&
                 <Kualifikasi />
             }
+            {
+                props.ujian == 'stage1' &&
+                <Stage1 />
+            }
         </>
     );
 }
-const Form = (props : any) => {
+const Form = (props: any) => {
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%] overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='close' title={props.title} />
@@ -38,7 +42,7 @@ const Form = (props : any) => {
                         <h2>Peserta:</h2>
                         <p className='text-[#000]/60'>Isi kolom berikut dengan tanda tangan.</p>
                     </section>
-                    <FormTable ujian='kualifikasi' />
+                    <FormTable ujian={props.ujian} />
                 </div>
                 <CardText>
                     <Link to={`${props.link}`} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
