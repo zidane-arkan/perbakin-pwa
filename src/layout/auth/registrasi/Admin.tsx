@@ -35,7 +35,7 @@ const Admin = () => {
                         </div>
                     </section>
                     <div className='flex flex-col gap-4'>
-                        <Link to={'/superadmin/ujianbaru'} type="submit" className="text-white rounded-lg text-base font-bold w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Selanjutnya</Link>
+                        <Link to={'/superadmin/tabs'} type="submit" className="text-white rounded-lg text-base font-bold w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Selanjutnya</Link>
                     </div>
                 </form>
             </LayoutChild>
