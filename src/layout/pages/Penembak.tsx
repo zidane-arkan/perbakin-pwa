@@ -2,7 +2,11 @@ import React from 'react'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { CardPenembak } from '../../components/ui/Card';
 import { Link } from 'react-router-dom';
-const Penembak = (props: any) => {
+type Props = {
+    classname?: string | any;
+    statusAuth?: boolean;
+}
+const Penembak = (props: Props) => {
     const classname = `${props.classname} rounded-3xl`;
     return (
         <>
@@ -18,9 +22,9 @@ const Penembak = (props: any) => {
                     <CardPenembak penembak="Testing 5" klub="Asal Klub 5" stage={'Stage #5'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} />
                     <CardPenembak penembak="Testing 6" klub="Asal Klub 6" stage={'Stage #6'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} />
                     <CardPenembak penembak="Testing 6" klub="Asal Klub 6" stage={'Stage #6'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} />
-                    <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full' to='/admin/admindashboard/tambahpenembak'>
+                    {props.statusAuth && <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full' to='/admin/admindashboard/tambahpenembak'>
                         <span className='font-xl'>Tambah Penembak</span>
-                </Link>
+                    </Link>}
                 </LayoutChild>
             </Layout>
         </>

@@ -1,8 +1,8 @@
 import React from 'react'
 import PenembakAdmin from '../../pages/Penembak'
-const Penembak = () => {
+const Penembak = (props : any) => {
     return (
-        <PenembakAdmin />
+        <PenembakAdmin statusAuth={props.statusAuth} />
     )
 }
 
