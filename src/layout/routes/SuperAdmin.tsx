@@ -17,6 +17,7 @@ import EditUjian from '../super-admin/edit/Ujian';
 import EditPenembak from '../super-admin/edit/Penembak';
 // Route Hasil Ujian
 import HasilUjian from '../super-admin/HasilUjian';
+import DetailPenguji from '../pages/DetailPenguji';
 const SuperAdmin = () => {
     const userPenguji = [
         { id: '1', penguji: 'Penguji 1' },
@@ -44,7 +45,8 @@ const SuperAdmin = () => {
                 <Route path='tabs/penembak/editpenembak' element={<EditPenembak />} />
                 {/* Route Hasil Ujian */}
                 <Route path='tabs/admindashboard/hasilujian' element={<HasilUjian />} />
-                {/* Route Stage 2 */}
+                {/* Detail Penguji */}
+                <Route path='tabs/penguji/detailpenguji/:id' element={<DetailPenguji />} />
                 {/* Route Stage 3 */}
                 {/* Route Stage 4 */}
                 {/* Route Stage 5 */}
