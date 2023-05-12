@@ -26,6 +26,12 @@ const Penguji = () => {
                 <Route path='/kualifikasi_form' element={<KualifikasiForm />} />
                 <Route path='/kualifikasi_konfirmasi' element={<KualifikasiKonfirmasi />} />
                 {/* Route Stage 1 */}
+                <Route path='/stage1_aturan' element={<Stage1 />} />
+                <Route path='/stage2_aturan' element={<Stage2 />} />
+                <Route path='/stage3_aturan' element={<Stage3 />} />
+                <Route path='/stage4_aturan' element={<Stage4 />} />
+                <Route path='/stage5_aturan' element={<Stage5 />} />
+                <Route path='/stage6_aturan' element={<Stage6 />} />
                 {/* Route Stage 2 */}
                 {/* Route Stage 3 */}
                 {/* Route Stage 4 */}

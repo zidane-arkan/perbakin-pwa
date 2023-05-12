@@ -19,7 +19,7 @@ type Props = {
 const Aturan = (props: Props) => {
     return (
         <Layout className={'rounded-3xl mt-28 mb-[5%] pt-[10%]'}>
-            <HeaderBlueCustom typeIcon='close' title='Ujian Kualifikasi 20 Meter' />
+            <HeaderBlueCustom typeIcon='close' title={props.title} />
             <LayoutChild className='flex-col'>
                 <section className='flex justify-between w-full gap-4'>
                     <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>

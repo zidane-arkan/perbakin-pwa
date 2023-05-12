@@ -24,7 +24,7 @@ const FormTable = (props: PropsForm) => {
         </>
     );
 }
-const Form = () => {
+const Form = (props : any) => {
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%] overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='close' title='Ujian Kualifikasi 20 Meter' />
@@ -41,7 +41,7 @@ const Form = () => {
                     <FormTable ujian='kualifikasi' />
                 </div>
                 <CardText>
-                    <Link to={'/penguji/kualifikasi_konfirmasi'} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
+                    <Link to={`${props.link}`} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
                         Selanjutnya
                     </Link>
                 </CardText>

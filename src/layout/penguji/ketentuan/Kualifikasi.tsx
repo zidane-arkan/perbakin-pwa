@@ -7,6 +7,7 @@ const Kualifikasi = () => {
             penembak="Penembak 1"
             pengprov="Kabutaen 1"
             klub="Klub Serikat 1"
+            link='/kualifikasi_form'
         />
     )
 }

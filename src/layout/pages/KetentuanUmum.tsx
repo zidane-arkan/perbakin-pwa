@@ -52,7 +52,7 @@ const KetentuanUmum = (props: any) => {
                     </ol>
                 </section>
                 <section className='pt-5'>
-                    <Link to='/kualifikasi_form' className='w-full px-4 py-4 text-center text-white bg-[#036BB0] rounded-lg' type='button'>Selanjutnya</Link>
+                    <Link to={`${props.link}`} className='w-full px-4 py-4 text-center text-white bg-[#036BB0] rounded-lg' type='button'>Selanjutnya</Link>
                 </section>
             </LayoutChild>
         </Layout>
