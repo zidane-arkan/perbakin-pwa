@@ -72,7 +72,7 @@ export const CardPenembak = (props: any) => {
     return (
         <>
             {(isCartShown && true) &&
-                <DetailAdmin
+                <Detail
                     shownCardHandler={shownCardHandler}
                     penembak={props.penembak}
                     klub={props.klub}
@@ -111,7 +111,7 @@ export const CardPenembakAdmin = (props: any) => {
     return (
         <>
             {(isCartShown && true) &&
-                <Detail
+                <DetailAdmin
                     shownCardHandler={shownCardHandler}
                     penembak={props.penembak}
                     klub={props.klub}

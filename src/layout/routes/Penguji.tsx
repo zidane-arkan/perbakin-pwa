@@ -1,10 +1,6 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom';
-import Login from '../auth/Login';
-import Detail from '../../components/overlay/Detail';
 import Dashboard from '../penguji/Dashboard';
-
-
 // Aturan
 import Kualifikasi from '../penguji/aturan/Kualifikasi';
 // Form
