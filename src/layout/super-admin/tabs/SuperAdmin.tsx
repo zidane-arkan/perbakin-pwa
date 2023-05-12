@@ -190,17 +190,23 @@ const SuperAdmin = (props: any) => {
                         <img src={targetWhite} />
                     </span>
                 </section>
-                <section className='flex items-center gap-6'>
-                    <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full' to='tambahpenembak'>
-                        <div className='flex gap-2 items-center'>
-                            <img src={peluruBulat} />
+                <section className='flex text-center w-full justify-between items-center gap-6'>
+                    <Link className='flex pl-1 bg-white' to='tambahpenembak'>
+                        <div className='w-[63px] flex flex-col gap-2 items-center'>
+                            <img className='px-2 py-2 rounded-full shadow-md' src={peluruBulat} />
                             <span className='font-xl'>Tambah Penembak</span>
                         </div>
                     </Link>
-                    <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full' to='tambahpenguji'>
-                        <div className='flex gap-2 items-center'>
-                            <img src={tambahPenguji} />
+                    <Link className='flex pl-1 bg-white' to='tambahpenguji'>
+                        <div className='w-[63px] flex flex-col gap-2 items-center'>
+                            <img className='px-2 py-2 rounded-full shadow-md' src={tambahPenguji} />
                             <span className='font-xl'>Tambah Penguji</span>
+                        </div>
+                    </Link>
+                    <Link className='flex pl-1 bg-white' to='kelolaadmin'>
+                        <div className='w-[63px] flex flex-col gap-2 items-center'>
+                            <img className='px-2 py-2 rounded-full shadow-md' src={tambahPenguji} />
+                            <span className='font-xl'>Kelola admin</span>
                         </div>
                     </Link>
                 </section>

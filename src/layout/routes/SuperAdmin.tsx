@@ -8,6 +8,13 @@ import Dashboard from '../super-admin/Dashboard';
 import SuperAdminTab from '../super-admin/tabs/SuperAdmin';
 import Penembak from '../super-admin/tabs/Penembak';
 import Penguji from '../super-admin/tabs/Penguji';
+// Tambah Route
+import TambahPenembak from '../super-admin/tambah/Penembak';
+import TambahPenguji from '../super-admin/tambah/Penguji';
+// Edit Route
+import EditProfile from '../super-admin/edit/Profile';
+import EditUjian from '../super-admin/edit/Ujian';
+import EditPenembak from '../super-admin/edit/Penembak';
 
 const SuperAdmin = () => {
     const userPenguji = [
@@ -27,7 +34,13 @@ const SuperAdmin = () => {
                     <Route path='penembak' element={<Penembak />} />
                     <Route path='penguji' element={<Penguji userPenguji={userPenguji} />} />
                 </Route>
-                {/* Route Kualifikasi */}
+                {/* Route Tambah */}
+                <Route path='tabs/admindashboard/tambahpenembak' element={<TambahPenembak />} />
+                <Route path='tabs/admindashboard/tambahpenguji' element={<TambahPenguji />} />
+                {/* Route Edit */}
+                <Route path='tabs/admindashboard/editprofile' element={<EditProfile />} />
+                <Route path='tabs/admindashboard/editujian' element={<EditUjian />} />
+                <Route path='tabs/penembak/editpenembak' element={<EditPenembak />} />
                 {/* Route Stage 1 */}
                 {/* Route Stage 2 */}
                 {/* Route Stage 3 */}
