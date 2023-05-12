@@ -406,34 +406,11 @@ const Table2 = () => {
   )
 }
 const Stage1 = () => {
-  const [data, setData] = useState(() => [...defaultData])
-  const table = useReactTable({
-    data,
-    columns: columns1,
-    getCoreRowModel: getCoreRowModel(),
-    meta: {
-      updateData: ({ rowIndex, columnId, value }: any) => {
-        setData((old) =>
-          old.map((row, index) => {
-            if (index === rowIndex) {
-              return {
-                ...old[rowIndex],
-                [columnId]: value,
-              };
-            }
-            return row;
-          })
-        );
-      },
-    },
-  });
   return (
-    <>
-      <section>
-        <Table1 />
-        <Table2 />
-      </section>
-    </>
+    <section className='flex flex-col gap-5'>
+      <Table1 />
+      <Table2 />
+    </section>
   )
 }
 
