@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout, LayoutAdmin, LayoutChild } from '../../../components/Layout'
 import { HeaderWhiteCustom } from '../../../components/Header'
-import { CardPenembak } from '../../../components/ui/Card'
+import { CardPenembak, CardAdmin, Card } from '../../../components/ui/Card'
 const SuperAdmin = () => {
     return (
         <Layout className={'rounded-3xl mt-28 pt-[2%] overflow-hidden'}>
@@ -10,9 +10,10 @@ const SuperAdmin = () => {
                 <span className='inline text-left'>
                     <h3 className='text-lg font-bold'>List Admin :</h3>
                 </span>
-                <CardPenembak penembak="Testing 1" klub="Asal Klub 1" stage={'Stage #2'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} />
-                <CardPenembak penembak="Testing 2" klub="Asal Klub 2" stage={'Gagal'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} />
-                <CardPenembak penembak="Testing 3" klub="Asal Klub 3" stage={'Stage #3'} pengprov={'Pengprov 1'} penguji={'Penguji 2'} />
+                <CardAdmin penguji='Admin 1' />
+                <CardAdmin penguji='Admin 2' />
+                <CardAdmin penguji='Admin 3' />
+                <CardAdmin penguji='Admin 4' />
             </LayoutChild>
         </Layout>
     )

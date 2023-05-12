@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import user1 from '../../app-assets/user1.png';
 import { Link } from 'react-router-dom'
-import { Detail,DetailAdmin } from '../overlay/Detail';
+import { Detail, DetailAdmin } from '../overlay/Detail';
 type Props = {
     title?: string
     children?: string | JSX.Element | React.ReactNode
@@ -39,6 +39,26 @@ export const CardPenguji = (props: any) => {
                 <Link to={`detailpenguji/${props.id}`} state={props.penguji} className="flex items-center w-1/6">
                     <button className="px-2 py-1 text-4xl text-[#036BB0]">{'>'}</button>
                 </Link>
+            </section>
+        </>
+    );
+}
+export const CardAdmin = (props: any) => {
+    return (
+        <>
+            <section className="flex items-center max-w-md overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 shadow-custom">
+                <div className="flex items-center w-1/6">
+                    <img className='min-w-[65px]' src={user1} />
+                </div>
+                <div className="inline-block w-4/6 pl-6 md:p-4">
+                    <h1 className="text-base font-bold text-gray-800">{props.penguji}</h1>
+                </div>
+                {/* <Link to={`detailpenguji/${props.id}`} state={props.penguji} className="flex items-center w-1/6">
+                    <button className="px-2 py-1 text-4xl text-[#036BB0]">{'>'}</button>
+                </Link> */}
+                <span className="flex items-center w-1/6">
+                    <button className="px-2 py-1 text-4xl text-[#036BB0]">{'>'}</button>
+                </span>
             </section>
         </>
     );
