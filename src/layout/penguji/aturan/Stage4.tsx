@@ -8,6 +8,7 @@ const Stage4 = () => {
             waktu="6"
             sasaran="1"
             tembakMaks='18'
+            link='stage4_form'
         />
     )
 }
