@@ -14,6 +14,7 @@ import mapPin from '../../../app-assets/map_pin.png'
 import clock from '../../../app-assets/clock.png'
 import peluruBulat from '../../../app-assets/pelurubulat.png';
 import tambahPenguji from '../../../app-assets/tambahpenguji.png'
+import kelolaadmin from '../../../app-assets/kelolaadmin.png'
 // react router dom
 import { Link } from 'react-router-dom';
 
@@ -205,7 +206,7 @@ const SuperAdmin = (props: any) => {
                     </Link>
                     <Link className='flex pl-1 bg-white' to='kelolaadmin'>
                         <div className='w-[63px] flex flex-col gap-2 items-center'>
-                            <img className='px-2 py-2 rounded-full shadow-md' src={tambahPenguji} />
+                            <img className='px-2 py-2 rounded-full shadow-md' src={kelolaadmin} />
                             <span className='font-xl'>Kelola admin</span>
                         </div>
                     </Link>
