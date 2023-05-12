@@ -1,6 +1,7 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom';
 import Dashboard from '../penguji/Dashboard';
+import KetentuanUmum from '../pages/KetentuanUmum';
 // Aturan
 import Kualifikasi from '../penguji/aturan/Kualifikasi';
 import Stage1 from '../penguji/aturan/Stage1';
@@ -11,6 +12,7 @@ import Stage5 from '../penguji/aturan/Stage5';
 import Stage6 from '../penguji/aturan/Stage6';
 // Form
 import KualifikasiForm from '../penguji/form/Kualifikasi';
+import Stage1Form from '../penguji/form/Stage1';
 // Ketentuan
 import KualifikasiKetentuan from '../penguji/ketentuan/Kualifikasi';
 // Konfirmasi
@@ -25,14 +27,15 @@ const Penguji = () => {
                 <Route path='/kualifikasi_ketentuan' element={<KualifikasiKetentuan />} />
                 <Route path='/kualifikasi_form' element={<KualifikasiForm />} />
                 <Route path='/kualifikasi_konfirmasi' element={<KualifikasiKonfirmasi />} />
-                {/* Route Stage 1 */}
+                {/* Route Stages Aturan */}
                 <Route path='/stage1_aturan' element={<Stage1 />} />
                 <Route path='/stage2_aturan' element={<Stage2 />} />
                 <Route path='/stage3_aturan' element={<Stage3 />} />
                 <Route path='/stage4_aturan' element={<Stage4 />} />
                 <Route path='/stage5_aturan' element={<Stage5 />} />
                 <Route path='/stage6_aturan' element={<Stage6 />} />
-                {/* Route Stage 2 */}
+                {/* Route Stages Form */}
+                <Route path='/stage1_form' element={<Stage1Form />} />
                 {/* Route Stage 3 */}
                 {/* Route Stage 4 */}
                 {/* Route Stage 5 */}

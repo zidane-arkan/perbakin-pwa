@@ -21,39 +21,41 @@ const Aturan = (props: Props) => {
     return (
         <Layout className={'rounded-3xl mt-28 mb-[5%] pt-[10%]'}>
             <HeaderBlueCustom typeIcon='close' title={props.title} />
-            <LayoutChild className='flex-col'>
-                <section className='flex justify-between w-full gap-4'>
-                    <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
-                        <img className='mt-1 w-[20px] h-[20px]' src={jarak} alt='s' />
-                        <div>
-                            <h6>Jarak</h6>
-                            <p className='text-[12px]'>{props.jarak} Meter</p>
-                        </div>
-                    </Card>
-                    <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
-                        <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
-                        <div>
-                            <h6>Waktu</h6>
-                            <p className='text-[12px]'>{props.waktu} Detik</p>
-                        </div>
-                    </Card>
-                </section>
-                <section className='flex justify-between w-full gap-4'>
-                    <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
-                        <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
-                        <div>
-                            <h6>Sasaran</h6>
-                            <p className='text-[12px]'>{props.sasaran} Buah Sasaran IPSC</p>
-                        </div>
-                    </Card>
-                    <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
-                        <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
-                        <div>
-                            <h6>Total Tembakan Maksimal</h6>
-                            <p className='text-[12px]'>{props.tembakMaks} Butir</p>
-                        </div>
-                    </Card>
-                </section>
+            <LayoutChild className='flex-col gap-4 justify-between'>
+                <section className='flex flex-col gap-4'>
+                    <section className='flex justify-between w-full gap-4'>
+                        <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
+                            <img className='mt-1 w-[20px] h-[20px]' src={jarak} alt='s' />
+                            <div>
+                                <h6>Jarak</h6>
+                                <p className='text-[12px]'>{props.jarak} Meter</p>
+                            </div>
+                        </Card>
+                        <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
+                            <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
+                            <div>
+                                <h6>Waktu</h6>
+                                <p className='text-[12px]'>{props.waktu} Detik</p>
+                            </div>
+                        </Card>
+                    </section>
+                    <section className='flex justify-between w-full gap-4'>
+                        <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
+                            <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
+                            <div>
+                                <h6>Sasaran</h6>
+                                <p className='text-[12px]'>{props.sasaran} Buah Sasaran IPSC</p>
+                            </div>
+                        </Card>
+                        <Card className='w-[180px] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>
+                            <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
+                            <div>
+                                <h6>Total Tembakan Maksimal</h6>
+                                <p className='text-[12px]'>{props.tembakMaks} Butir</p>
+                            </div>
+                        </Card>
+                    </section>
+               </section>
                 <CardText title='Ketentuan Umum'>
                     <p>Berdiri tegak menghadap sasaran, senjata dan magasin berada dalam holster atau diletakkan diatas meja</p>
                 </CardText>

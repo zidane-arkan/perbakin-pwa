@@ -27,7 +27,7 @@ const FormTable = (props: PropsForm) => {
 const Form = (props : any) => {
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%] overflow-hidden'}>
-            <HeaderWhiteCustom typeIcon='close' title='Ujian Kualifikasi 20 Meter' />
+            <HeaderWhiteCustom typeIcon='close' title={props.title} />
             <LayoutChild className='flex-col gap-0'>
                 <h6 className='text-black/60'>Nama Penembak</h6>
                 <h4>Abdiansyah CS</h4>

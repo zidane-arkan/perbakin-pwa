@@ -8,6 +8,7 @@ const Kualifikasi = () => {
             waktu="3"
             sasaran="1"
             tembakMaks='5'
+            link='kualifikasi_form'
         />
     )
 }
