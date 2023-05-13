@@ -4,9 +4,10 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { useTable, useGroupBy } from 'react-table';
 import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components';
-
+import Percobaan from './Percobaan';
 const Styles = styled.div`
   padding: 1rem 0;
   overflow : scroll;
@@ -293,6 +294,7 @@ const columns2 = [
     ]
   })
 ]
+
 const Table1 = () => {
   const [data, setData] = useState(() => [...defaultData])
   const table = useReactTable({
@@ -350,6 +352,18 @@ const Table1 = () => {
   )
 }
 const Table2 = () => {
+  const columns = [
+    {
+      Header: 'No',
+      accessor: 'no',
+      groupBy: true,
+    },
+    {
+      Header: 'Name',
+      accessor: 'name',
+    },
+    // Kolom-kolom lainnya
+  ];
   const [data, setData] = useState(() => [...defaultData])
   const table = useReactTable({
     data,
@@ -410,6 +424,7 @@ const Stage1 = () => {
     <section className='flex flex-col gap-5'>
       <Table1 />
       <Table2 />
+      {/* <Percobaan /> */}
     </section>
   )
 }
