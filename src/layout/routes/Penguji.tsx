@@ -13,6 +13,11 @@ import Stage6 from '../penguji/aturan/Stage6';
 // Form
 import KualifikasiForm from '../penguji/form/Kualifikasi';
 import Stage1Form from '../penguji/form/Stage1';
+import Stage2Form from '../penguji/form/Stage2';
+import Stage3Form from '../penguji/form/Stage3';
+import Stage4Form from '../penguji/form/Stage4';
+import Stage5Form from '../penguji/form/Stage5';
+import Stage6Form from '../penguji/form/Stage6';
 // Ketentuan
 import KualifikasiKetentuan from '../penguji/ketentuan/Kualifikasi';
 // Konfirmasi
