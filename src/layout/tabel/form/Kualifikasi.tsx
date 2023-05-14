@@ -94,7 +94,71 @@ const defaultData: kualifikasi20[] = [
     hasil: false,
   },
   {
+    seri: '1',
+    '0': 1,
+    '1': 1,
+    '2': 1,
+    '3': 1,
+    '4': 1,
+    '5': 1,
+    '6': 1,
+    '7': 1,
+    '8': 1,
+    '9': 1,
+    '10': 1,
+    total: 11,
+    hasil: false,
+  },
+  {
     seri: '2',
+    '0': 2,
+    '1': 2,
+    '2': 2,
+    '3': 2,
+    '4': 2,
+    '5': 2,
+    '6': 2,
+    '7': 2,
+    '8': 2,
+    '9': 2,
+    '10': 1,
+    total: 12,
+    hasil: false,
+  },
+  {
+    seri: '2',
+    '0': 2,
+    '1': 2,
+    '2': 2,
+    '3': 2,
+    '4': 2,
+    '5': 2,
+    '6': 2,
+    '7': 2,
+    '8': 2,
+    '9': 2,
+    '10': 1,
+    total: 12,
+    hasil: false,
+  },
+  {
+    seri: '3',
+    '0': 2,
+    '1': 2,
+    '2': 2,
+    '3': 2,
+    '4': 2,
+    '5': 2,
+    '6': 2,
+    '7': 2,
+    '8': 2,
+    '9': 2,
+    '10': 1,
+    total: 12,
+    hasil: false,
+  },
+  {
+    seri: '3',
     '0': 2,
     '1': 2,
     '2': 2,
@@ -321,7 +385,12 @@ const Kualifikasi = () => {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
+            
             <tr key={row.id}>
+              {/* {row.getVisibleCells().map((cell) => (
+                console.log(cell.row.original.seri)
+                <p>{cell}</p>
+              ))} */}
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -329,6 +398,16 @@ const Kualifikasi = () => {
               ))}
             </tr>
           ))}
+          {/* {table.getRowModel().rows.map((row) => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id}>
+                  {cell.id}
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))} */}
         </tbody>
       </table>
     </Styles>

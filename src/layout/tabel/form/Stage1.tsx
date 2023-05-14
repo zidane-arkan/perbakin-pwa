@@ -125,9 +125,9 @@ const EditableCell = ({ getValue, row, column, table }: any) => {
       onBlur={onBlur}
     />
   ) : (
-    <input className='w-[100px] text-center'
-      min='00:00'
-      max='00:55'
+    <input className='w-[120px] text-center'
+      min='00:00:00'
+      step={'1'}
       type={columnMeta?.type || "text"}
       value={value}
       onChange={(e) => setValue(e.target.value)}
@@ -419,12 +419,23 @@ const Table2 = () => {
     </Styles>
   )
 }
+interface Data {
+  no: number;
+  nama: string;
+  umur: number;
+}
+const data: Data[] = [
+  { no: 2, nama: 'Jane Doe', umur: 30 },
+  { no: 3, nama: 'Alice Smith', umur: 35 },
+  { no: 4, nama: 'Emily Brown', umur: 45 },
+  { no: 5, nama: 'Michael Davis', umur: 50 },
+];
 const Stage1 = () => {
   return (
     <section className='flex flex-col gap-5'>
       <Table1 />
       <Table2 />
-      {/* <Percobaan /> */}
+      {/* <Percobaan data={data} /> */}
     </section>
   )
 }

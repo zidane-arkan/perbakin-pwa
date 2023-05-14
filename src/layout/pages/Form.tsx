@@ -30,13 +30,13 @@ const FormTable = (props: PropsForm) => {
 }
 const Form = (props: any) => {
     return (
-        <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%] overflow-hidden'}>
+        <Layout className={'rounded-3xl h-auto gap-8 mt-28 pb-10 pt-[2%] overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='close' title={props.title} />
             <LayoutChild className='flex-col gap-0'>
                 <h6 className='text-black/60'>Nama Penembak</h6>
                 <h4>Abdiansyah CS</h4>
             </LayoutChild>
-            <LayoutChild className='flex-col gap-4 h-[515px] justify-between'>
+            <LayoutChild className='flex-col gap-4 justify-between'>
                 <div className='flex-col gap-4'>
                     <section className='flex flex-col gap-2'>
                         <h2>Peserta:</h2>

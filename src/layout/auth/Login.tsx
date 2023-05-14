@@ -9,7 +9,7 @@ const Login = () => {
                     <h1 className='pb-2 text-4xl font-extrabold'>Log In</h1>
                     <h4 className='text-base text-[#6A7682] font-normal'>Silahkan masukkan username dan password yang telah disediakan oleh admin</h4>
                 </div>
-                <form className='flex flex-col w-full h-auto justify-between gap-8 pt-14'>
+                <form className='flex flex-col w-full h-[70vh] justify-between gap-8 pt-14'>
                     <section>
                         <div className="mb-6">
                             <label htmlFor="email" className="block mb-2 text-sm font-bold text-gray-900">Username</label>
