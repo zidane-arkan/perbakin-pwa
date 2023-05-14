@@ -2,6 +2,8 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom';
 import Dashboard from '../penguji/Dashboard';
 import KetentuanUmum from '../pages/KetentuanUmum';
+// Ketentuan
+import KualifikasiKetentuan from '../penguji/ketentuan/Kualifikasi';
 // Aturan
 import Kualifikasi from '../penguji/aturan/Kualifikasi';
 import Stage1 from '../penguji/aturan/Stage1';
@@ -18,16 +20,9 @@ import Stage3Form from '../penguji/form/Stage3';
 import Stage4Form from '../penguji/form/Stage4';
 import Stage5Form from '../penguji/form/Stage5';
 import Stage6Form from '../penguji/form/Stage6';
-// Ketentuan
-import KualifikasiKetentuan from '../penguji/ketentuan/Kualifikasi';
-import Stage1Ketentuan from '../penguji/ketentuan/Stage1';
-import Stage2Ketentuan from '../penguji/ketentuan/Stage2';
-import Stage3Ketentuan from '../penguji/ketentuan/Stage3';
-import Stage4Ketentuan from '../penguji/ketentuan/Stage4';
-import Stage5Ketentuan from '../penguji/ketentuan/Stage5';
-import Stage6Ketentuan from '../penguji/ketentuan/Stage6';
 // Konfirmasi
 import KualifikasiKonfirmasi from '../penguji/konfirmasi/Kualifikasi';
+
 const Penguji = () => {
     return (
         <>
@@ -47,7 +42,12 @@ const Penguji = () => {
                 <Route path='/stage6_aturan' element={<Stage6 />} />
                 {/* Route Stages Form */}
                 <Route path='/stage1_form' element={<Stage1Form />} />
-                {/* Route Stage Ketentuan */}
+                <Route path='/stage2_form' element={<Stage2Form />} />
+                <Route path='/stage3_form' element={<Stage3Form />} />
+                <Route path='/stage4_form' element={<Stage4Form />} />
+                <Route path='/stage5_form' element={<Stage5Form />} />
+                <Route path='/stage6_form' element={<Stage6Form />} />
+                {/* Route Stage Konfirmasi */}
                 {/* Route Stage 4 */}
                 {/* Route Stage 5 */}
                 {/* Route Stage 6 */}
