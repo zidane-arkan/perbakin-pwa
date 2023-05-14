@@ -22,6 +22,12 @@ import Stage5Form from '../penguji/form/Stage5';
 import Stage6Form from '../penguji/form/Stage6';
 // Konfirmasi
 import KualifikasiKonfirmasi from '../penguji/konfirmasi/Kualifikasi';
+import Stage1Konfirmasi from '../penguji/konfirmasi/Stage1';
+import Stage2Konfirmasi from '../penguji/konfirmasi/Stage2';
+import Stage3Konfirmasi from '../penguji/konfirmasi/Stage3';
+import Stage4Konfirmasi from '../penguji/konfirmasi/Stage4';
+import Stage5Konfirmasi from '../penguji/konfirmasi/Stage5';
+import Stage6Konfirmasi from '../penguji/konfirmasi/Stage6';
 
 const Penguji = () => {
     return (
@@ -48,6 +54,8 @@ const Penguji = () => {
                 <Route path='/stage5_form' element={<Stage5Form />} />
                 <Route path='/stage6_form' element={<Stage6Form />} />
                 {/* Route Stage Konfirmasi */}
+                <Route path='/stage1_konfirmasi' element={<Stage1Konfirmasi />} />
+
                 {/* Route Stage 4 */}
                 {/* Route Stage 5 */}
                 {/* Route Stage 6 */}

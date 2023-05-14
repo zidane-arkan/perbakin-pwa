@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const TandaTangan = (props: any) => {
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pt-[10%]'}>
-            <HeaderBlueCustom typeIcon='close' title='Ujian Kualifikasi 20 Meter' />
+            <HeaderBlueCustom typeIcon='close' title={props.title} />
             <LayoutChild className='justify-between gap-6'>
                 <button className='py-2 h-[48px] w-[165px] rounded-xl bg-[#62DE5F]'>Berhasil</button>
                 <button className='button-gagal py-2 rounded-xl h-[48px] w-[165px] bg-[]'>Gagal</button>

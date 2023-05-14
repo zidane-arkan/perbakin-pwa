@@ -112,7 +112,7 @@ export const HeaderBlueCustom = (props: propsBlueCustom) => {
         <button className='w-[24px] h-[24px]' type='button' onClick={() => navigate(-1)}>
           <img src={IconType[props.typeIcon]} alt='icon' />
         </button>
-        <h2>{props.title}</h2>
+        <h2 className='text-xl uppercase'>{props.title}</h2>
         <span></span>
       </div>
     </HeaderBlue>

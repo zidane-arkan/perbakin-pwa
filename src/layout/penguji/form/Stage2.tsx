@@ -1,8 +1,8 @@
 import React from 'react'
-
+import Form from '../../pages/Form'
 const Stage2 = () => {
     return (
-        <div>Stage2</div>
+        <Form ujian='stage1' title='Stage #2' link='/penguji/stage2_konfirmasi' />
     )
 }
 
