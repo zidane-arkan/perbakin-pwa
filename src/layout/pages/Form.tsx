@@ -36,7 +36,7 @@ const Form = (props: any) => {
                 <h6 className='text-black/60'>Nama Penembak</h6>
                 <h4>Abdiansyah CS</h4>
             </LayoutChild>
-            <LayoutChild className='flex-col gap-4 justify-between'>
+            <LayoutChild className='flex-col h-screen gap-4 justify-between'>
                 <div className='flex-col gap-4'>
                     <section className='flex flex-col gap-2'>
                         <h2>Peserta:</h2>
