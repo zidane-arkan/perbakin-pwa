@@ -28,7 +28,8 @@ import Stage3Konfirmasi from '../penguji/konfirmasi/Stage3';
 import Stage4Konfirmasi from '../penguji/konfirmasi/Stage4';
 import Stage5Konfirmasi from '../penguji/konfirmasi/Stage5';
 import Stage6Konfirmasi from '../penguji/konfirmasi/Stage6';
-
+// Selesai Pengujian
+import SelesaiPengujian from '../pages/SelesaiPengujian';
 const Penguji = () => {
     return (
         <>
@@ -60,9 +61,8 @@ const Penguji = () => {
                 <Route path='/stage4_konfirmasi' element={<Stage4Konfirmasi />} />
                 <Route path='/stage5_konfirmasi' element={<Stage5Konfirmasi />} />
                 <Route path='/stage6_konfirmasi' element={<Stage6Konfirmasi />} />
-                {/* Route Stage 4 */}
-                {/* Route Stage 5 */}
-                {/* Route Stage 6 */}
+                {/* Route Selesai */}
+                <Route path='/selesai_pengujian' element={<SelesaiPengujian />} />
             </Routes>
         </>
     )

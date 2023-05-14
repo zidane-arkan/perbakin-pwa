@@ -35,7 +35,7 @@ export const Detail = (props: any) => {
                         <span className='max-w-full px-2 py-1 text-xs font-bold text-white uppercase transition-colors duration-300 transform bg-[#62DE5F] rounded'>
                             {props.stage}
                         </span>
-                        <Link to={'kualifikasi_aturan'} className='w-full items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Mulai Ujian</Link>
+                        <Link to={'kualifikasi_ketentuan'} className='w-full items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Mulai Ujian</Link>
                     </div>
                 </LayoutChild>
             </section>
