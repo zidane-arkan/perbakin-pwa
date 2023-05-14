@@ -1,5 +1,5 @@
 import React from 'react'
-import { CardPenembak } from '../../components/ui/Card'
+import { CardPenembakAdmin } from '../../components/ui/Card'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { HeaderWhiteCustom } from '../../components/Header'
 import { CardText } from '../../components/ui/Card'
@@ -30,9 +30,9 @@ const DetailPenguji = (props: any) => {
                 <span className='inline text-left'>
                     <h3 className='text-lg font-bold'>Penembak Yang Diuji :</h3>
                 </span>
-                <CardPenembak penembak="Testing 1" klub="Asal Klub 1" stage={'Stage #2'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} />
-                <CardPenembak penembak="Testing 2" klub="Asal Klub 2" stage={'Gagal'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} />
-                <CardPenembak penembak="Testing 3" klub="Asal Klub 3" stage={'Stage #3'} pengprov={'Pengprov 1'} penguji={'Penguji 2'} />
+                <CardPenembakAdmin penembak="Testing 1" klub="Asal Klub 1" stage={'Stage #2'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} />
+                <CardPenembakAdmin penembak="Testing 2" klub="Asal Klub 2" stage={'Gagal'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} />
+                <CardPenembakAdmin penembak="Testing 3" klub="Asal Klub 3" stage={'Stage #3'} pengprov={'Pengprov 1'} penguji={'Penguji 2'} />
             </LayoutChild>
         </Layout>
     )
