@@ -20,6 +20,12 @@ import Stage5Form from '../penguji/form/Stage5';
 import Stage6Form from '../penguji/form/Stage6';
 // Ketentuan
 import KualifikasiKetentuan from '../penguji/ketentuan/Kualifikasi';
+import Stage1Ketentuan from '../penguji/ketentuan/Stage1';
+import Stage2Ketentuan from '../penguji/ketentuan/Stage2';
+import Stage3Ketentuan from '../penguji/ketentuan/Stage3';
+import Stage4Ketentuan from '../penguji/ketentuan/Stage4';
+import Stage5Ketentuan from '../penguji/ketentuan/Stage5';
+import Stage6Ketentuan from '../penguji/ketentuan/Stage6';
 // Konfirmasi
 import KualifikasiKonfirmasi from '../penguji/konfirmasi/Kualifikasi';
 const Penguji = () => {
@@ -41,7 +47,7 @@ const Penguji = () => {
                 <Route path='/stage6_aturan' element={<Stage6 />} />
                 {/* Route Stages Form */}
                 <Route path='/stage1_form' element={<Stage1Form />} />
-                {/* Route Stage 3 */}
+                {/* Route Stage Ketentuan */}
                 {/* Route Stage 4 */}
                 {/* Route Stage 5 */}
                 {/* Route Stage 6 */}
