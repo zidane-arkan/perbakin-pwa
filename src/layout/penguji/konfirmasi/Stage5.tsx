@@ -1,8 +1,8 @@
 import React from 'react'
-
+import TandaTangan from '../../pages/TandaTangan'
 const Stage5 = () => {
     return (
-        <div>Stage5</div>
+        <TandaTangan title='Stage 5' link={'/penguji/stage6_aturan'} />
     )
 }
 

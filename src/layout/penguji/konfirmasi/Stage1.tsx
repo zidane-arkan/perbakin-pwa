@@ -1,5 +1,4 @@
 import React from 'react'
-import Form from '../../pages/Form'
 import TandaTangan from '../../pages/TandaTangan'
 const Stage1 = () => {
     return (

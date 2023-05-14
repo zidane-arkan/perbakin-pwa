@@ -34,9 +34,9 @@ const Penguji = () => {
         <>
             <Routes>
                 <Route path='/' element={<Dashboard />} />
+                <Route path='/kualifikasi_ketentuan' element={<KualifikasiKetentuan />} />
                 {/* Route Kualifikasi */}
                 <Route path='/kualifikasi_aturan' element={<Kualifikasi />} />
-                <Route path='/kualifikasi_ketentuan' element={<KualifikasiKetentuan />} />
                 <Route path='/kualifikasi_form' element={<KualifikasiForm />} />
                 <Route path='/kualifikasi_konfirmasi' element={<KualifikasiKonfirmasi />} />
                 {/* Route Stages Aturan */}
@@ -55,7 +55,11 @@ const Penguji = () => {
                 <Route path='/stage6_form' element={<Stage6Form />} />
                 {/* Route Stage Konfirmasi */}
                 <Route path='/stage1_konfirmasi' element={<Stage1Konfirmasi />} />
-
+                <Route path='/stage2_konfirmasi' element={<Stage2Konfirmasi />} />
+                <Route path='/stage3_konfirmasi' element={<Stage3Konfirmasi />} />
+                <Route path='/stage4_konfirmasi' element={<Stage4Konfirmasi />} />
+                <Route path='/stage5_konfirmasi' element={<Stage5Konfirmasi />} />
+                <Route path='/stage6_konfirmasi' element={<Stage6Konfirmasi />} />
                 {/* Route Stage 4 */}
                 {/* Route Stage 5 */}
                 {/* Route Stage 6 */}
