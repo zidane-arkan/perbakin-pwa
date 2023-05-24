@@ -385,13 +385,13 @@ const Kualifikasi = () => {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            
+
             <tr key={row.id}>
               {/* {row.getVisibleCells().map((cell) => (
                 console.log(cell.row.original.seri)
                 <p>{cell}</p>
               ))} */}
-              {row.getVisibleCells().map((cell) => (
+              {row.getVisibleCells().map((cell, row) => (
                 <td key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
