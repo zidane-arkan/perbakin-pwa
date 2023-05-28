@@ -21,9 +21,9 @@ const UjianBaru = () => {
                                 <span>1</span>
                             </div>
                             <div className='flex w-full justify-between items-center gap-2'>
-                                <input type="time" id="time" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="name@gmail.com" required />
+                                <input type="date" id="date-awal" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                                 <span className='w-[12px] border border-black/30 rounded-full'></span>
-                                <input type="date" id="date" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="name@gmail.com" required />
+                                <input type="date" id="date-akhir" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                             </div>
                         </div>
                        

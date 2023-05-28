@@ -61,7 +61,7 @@ const Styles = styled.div`
   }
 `
 type kualifikasi20 = {
-  seri: string;
+  seri?: string;
   '0': number;
   '1': number;
   '2': number;
@@ -143,23 +143,23 @@ const defaultData: kualifikasi20[] = [
   },
   {
     seri: '3',
-    '0': 2,
-    '1': 2,
-    '2': 2,
-    '3': 2,
-    '4': 2,
-    '5': 2,
-    '6': 2,
-    '7': 2,
-    '8': 2,
-    '9': 2,
-    '10': 1,
-    total: 12,
+    '0': 3,
+    '1': 4,
+    '2': 5,
+    '3': 6,
+    '4': 7,
+    '5': 8,
+    '6': 9,
+    '7': 10,
+    '8': 15,
+    '9': 16,
+    '10': 17,
+    total: 40,
     hasil: false,
   },
   {
     seri: '3',
-    '0': 2,
+    '0': 3,
     '1': 2,
     '2': 2,
     '3': 2,
@@ -384,30 +384,22 @@ const Kualifikasi = () => {
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((row) => (
-
+          {table.getRowModel().rows.map((row,indexForRow) => (
+            // <tr key={row.id}>
+            //   {row.getVisibleCells().map((cell, row) => (
+            //     <td key={cell.id}>
+            //       {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            //     </td>
+            //   ))}
+            // </tr>
             <tr key={row.id}>
-              {/* {row.getVisibleCells().map((cell) => (
-                console.log(cell.row.original.seri)
-                <p>{cell}</p>
-              ))} */}
-              {row.getVisibleCells().map((cell, row) => (
-                <td key={cell.id}>
+              {row.getVisibleCells().map((cell, indexForCell) => (
+                <td rowSpan={parseInt(indexForRow % 2 === 0 && indexForCell === 0 ? "2" : "1",10)} key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
             </tr>
           ))}
-          {/* {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {cell.id}
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))} */}
         </tbody>
       </table>
     </Styles>
