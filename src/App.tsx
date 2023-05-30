@@ -1,5 +1,10 @@
-
+import { useContext, useEffect } from "react";
+import { AuthContext } from "./context/AuthContext";
 import Auth from "./layout/routes/Auth";
+
+import { useCookies } from "react-cookie";
+import api from "./api/api";
+
 // import Penguji from "./layout/routes/Penguji"
 // import { Detail } from "./components/overlay/Detail"
 // import SuperAdmin from "./layout/routes/SuperAdmin"
@@ -8,7 +13,29 @@ import Auth from "./layout/routes/Auth";
 // import KetentuanUmum from './layout/pages/KetentuanUmum';
 // import Aturan from './layout/pages/Aturan';
 // import TandaTangan from './layout/pages/TandaTangan';
+//
 const App = () => {
+  // const authCtx = useContext(AuthContext);
+
+  const cookie = useCookies(["auth"]);
+  const authStatus = cookie[0].auth as string;
+
+  useEffect(() => {
+    if (authStatus) {
+      api
+        .get("/" + authStatus)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+          // cookie[1]("auth", "");
+        });
+    } else {
+      console.log("no cookie"); //utk debug
+    }
+  }, []);
+
   return (
     <div className="App">
       {/* <Detail /> */}
@@ -24,7 +51,7 @@ const App = () => {
       /> */}
       {/* <TandaTangan /> */}
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
