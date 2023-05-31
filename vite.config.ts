@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
-import mkcert from "vite-plugin-mkcert";
 
 const manifestForPlugin: Partial<VitePWAOptions> = {
   registerType: "prompt",
@@ -38,5 +37,5 @@ const manifestForPlugin: Partial<VitePWAOptions> = {
 };
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), VitePWA(manifestForPlugin), mkcert()],
+  plugins: [react(), VitePWA(manifestForPlugin)],
 });
