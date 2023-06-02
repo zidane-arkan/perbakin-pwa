@@ -1,6 +1,7 @@
 import React from 'react'
 import { Layout, LayoutChild } from '../../../components/Layout'
 import { Link } from 'react-router-dom'
+import calenderExtraSmall from '../../../app-assets/calender_extrasmall.png';
 const UjianBaru = () => {
     return (
         <Layout className={'rounded-3xl mt-20 mb-[5%]'}>
@@ -15,10 +16,10 @@ const UjianBaru = () => {
                             <label htmlFor="lokasi" className="block mb-2 text-sm font-bold text-gray-900">Lokasi</label>
                             <input type="text" id="lokasi" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  required />
                         </div>
-                        <div className="flex flex-col mb-6">
+                        <div className="flex gap-2 flex-col mb-4">
                             <div className='flex w-full justify-between'>
-                                <label htmlFor="email" className="block mb-2 text-sm font-bold text-gray-900">Waktu</label>
-                                <span>1</span>
+                                <label htmlFor="email" className="block text-sm font-bold text-gray-900">Waktu</label>
+                                <img className='w-[23px] h-[24px]' src={calenderExtraSmall} alt='Calender-Small' />
                             </div>
                             <div className='flex w-full justify-between items-center gap-2'>
                                 <input type="date" id="date-awal" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />

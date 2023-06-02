@@ -29,8 +29,8 @@ const SuperAdmin = () => {
     return (
         <>
             <Routes>
-                <Route path='/' element={<SuperAdminRegist />} />
-                <Route path='/ujianbaru' element={<UjianBaru />} />
+                {/* <Route path='/' element={<SuperAdminRegist />} /> */}
+                <Route path='/' element={<UjianBaru />} />
                 <Route path='/adminregis' element={<AdminRegis />} />
                 <Route path='/tabs' element={<Dashboard />} >
                     <Route path='admindashboard' element={<SuperAdminTab />} />
