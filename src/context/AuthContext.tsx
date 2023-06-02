@@ -88,7 +88,7 @@ function AuthProvider(props: { children: JSX.Element }) {
 
     return { message: response.data.message, error: false };
   };
-
+  
   return (
     <AuthContext.Provider
       value={{

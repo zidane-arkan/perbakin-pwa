@@ -13,12 +13,20 @@ const UjianBaru = () => {
                 <form className='flex flex-col w-full h-auto justify-between gap-8 pt-14'>
                     <section>
                         <div className="mb-6">
+                            <label htmlFor="nama" className="block mb-2 text-sm font-bold text-gray-900">Nama</label>
+                            <input name='nama' type="text" id="nama" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                        </div>
+                        <div className="mb-6">
                             <label htmlFor="lokasi" className="block mb-2 text-sm font-bold text-gray-900">Lokasi</label>
-                            <input type="text" id="lokasi" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  required />
+                            <input name='lokasi' type="text" id="lokasi" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  required />
+                        </div>
+                        <div className="mb-6">
+                            <label htmlFor="organizer" className="block mb-2 text-sm font-bold text-gray-900">Organizer</label>
+                            <input name='organizer' type="text" id="organizer" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                         </div>
                         <div className="flex gap-2 flex-col mb-4">
                             <div className='flex w-full justify-between'>
-                                <label htmlFor="email" className="block text-sm font-bold text-gray-900">Waktu</label>
+                                <label htmlFor="waktu" className="block text-sm font-bold text-gray-900">Waktu</label>
                                 <img className='w-[23px] h-[24px]' src={calenderExtraSmall} alt='Calender-Small' />
                             </div>
                             <div className='flex w-full justify-between items-center gap-2'>
