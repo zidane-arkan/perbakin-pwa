@@ -23,8 +23,9 @@ const App = () => {
   useEffect(() => {
     if (authStatus) {
       api
-        .get("/" + authStatus)
-        .then((res) => {
+      .get("/" + authStatus)
+      .then((res) => {
+          console.log(1)
           console.log(res);
         })
         .catch((err) => {

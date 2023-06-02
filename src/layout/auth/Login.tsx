@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { Layout, LayoutChild } from "../../components/Layout";
-import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { HandlerResponse } from "../../context/response";
 import api from "../../api/api";
@@ -14,7 +13,7 @@ interface LoginFormElements extends HTMLFormControlsCollection {
 
 const Login = () => {
   const authCtx = useContext(AuthContext);
-
+  const navigate = useNavigate();
   const [formState, setFormState] = useState<[boolean, string]>([false, ""]); //buttonDisabled, stateMessage
   const [response, setResponse] = useState<HandlerResponse>({ message: "", error: false }); //responseMessage, isError
 
@@ -37,6 +36,7 @@ const Login = () => {
       ?.then((res) => {
         setResponse(res);
         setFormState([false, ""]);
+        navigate("/superadmin");
       })
       .catch((err) => {
         setResponse(err);
@@ -96,20 +96,6 @@ const Login = () => {
                 <option value="super">Super Admin</option>
               </select>
             </div>
-            {/* <div className="flex items-start mb-6"> */}
-            {/*   <div className="flex items-center h-5"> */}
-            {/*     <input */}
-            {/*       id="remember" */}
-            {/*       type="checkbox" */}
-            {/*       value="" */}
-            {/*       className="w-4 h-4 bg-blue-500 border border-gray-600 rounded focus:ring-3 focus:outline-none focus:bg-blue-500 focus:ring-blue-600" */}
-            {/*       required */}
-            {/*     /> */}
-            {/*   </div> */}
-            {/*   <label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-600"> */}
-            {/*     Ingat Saya */}
-            {/*   </label> */}
-            {/* </div> */}
           </section>
           {response.message && (
             <div
@@ -136,30 +122,10 @@ const Login = () => {
             >
               Masuk
             </button>
-            {/* <button */}
-            {/*   // to={"/penguji"} */}
-            {/*   type="submit" */}
-            {/*   className="text-white rounded-lg text-base font-bold w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" */}
-            {/* > */}
-            {/*   Penguji */}
-            {/* </button> */}
-            {/* <button */}
-            {/*   // to={"/admin/admindashboard"} */}
-            {/*   type="submit" */}
-            {/*   className="text-white rounded-lg text-base font-bold w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" */}
-            {/* > */}
-            {/*   Admin */}
-            {/* </button> */}
-            {/* <button */}
-            {/*   // to={"/superadmin"} */}
-            {/*   type="submit" */}
-            {/*   className="text-[#036BB0] border-2 border-[#036BB0] font-bold rounded-lg text-base w-full sm:w-auto px-5 py-2.5 text-center bg-transparent hover:bg-blue-700 focus:ring-blue-800" */}
-            {/* > */}
-            {/*   Super Admin */}
-            {/* </button> */}
           </div>
         </form>
         <button
+          className="text-white mt-4 rounded-lg text-base font-bold w-full sm:w-auto px-5 py-2.5 text-center bg-red-600 hover:bg-red-700 focus:ring-red-800"
           onClick={() => {
             api
               .post("/logout")
@@ -171,7 +137,7 @@ const Login = () => {
               });
           }}
         >
-          logout
+          Logout
         </button>
       </LayoutChild>
     </Layout>
