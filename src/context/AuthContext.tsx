@@ -11,6 +11,8 @@ import {
   LoginSuperResponse,
   LoginAdminResponse,
   LoginScorerResponse,
+  CreateExamRequest,
+  CreateExamResponse,
   HandlerResponse,
 } from "./response";
 
@@ -23,6 +25,7 @@ type UserData = {
 interface authContextInterface {
   userData: UserData | null;
   login: ({ username, password, role }: LoginRequest) => Promise<HandlerResponse>;
+  createExam: (examData: CreateExamRequest) => Promise<HandlerResponse>;
 }
 
 export const AuthContext = createContext<authContextInterface | null>(null);
@@ -88,12 +91,27 @@ function AuthProvider(props: { children: JSX.Element }) {
 
     return { message: response.data.message, error: false };
   };
-  
+  const createExam = async (examData: CreateExamRequest): Promise<HandlerResponse> => {
+    try {
+      const response = await api.post<ResponseData<CreateExamResponse>>("/super/exams", examData);
+
+      return { message: response.data.message, error: false };
+    }
+    catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+
+      return {
+        message: "error " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  };
   return (
     <AuthContext.Provider
       value={{
         userData,
         login,
+        createExam,
       }}
     >
       {props.children}

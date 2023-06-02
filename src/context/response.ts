@@ -51,3 +51,21 @@ export type LoginScorerResponse = {
     updated_at: string;
   };
 };
+
+// EXAM
+export interface CreateExamResponse {
+  id: string;
+  name: string;
+  location: string;
+  organizer: string;
+  begin: string;
+  finish: string;
+}
+
+export interface CreateExamRequest {
+  name: string;
+  location: string;
+  organizer: string;
+  begin: string;
+  finish: string;
+}
