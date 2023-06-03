@@ -46,7 +46,9 @@ const UjianBaru = () => {
             ?.then((res) => {
                 setResponse(res);
                 setFormState([false, ""]);
-                navigate("/superadmin/adminregis");
+                if (!res.error) {
+                    navigate("/superadmin/adminregis");
+                }
             })
             .catch((err) => {
                 setResponse(err);

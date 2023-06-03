@@ -36,7 +36,9 @@ const Login = () => {
       ?.then((res) => {
         setResponse(res);
         setFormState([false, ""]);
-        navigate("/superadmin");
+        if (!res.error) {
+          navigate("/superadmin");
+        }
       })
       .catch((err) => {
         setResponse(err);
