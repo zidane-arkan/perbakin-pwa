@@ -16,7 +16,7 @@ const App = () => {
       api
       .get("/" + authStatus)
       .then((res) => {
-          console.log(1)
+          // console.log(1)
           console.log(res);
         })
         .catch((err) => {

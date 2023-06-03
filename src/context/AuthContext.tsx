@@ -93,8 +93,8 @@ function AuthProvider(props: { children: JSX.Element }) {
   };
   const createExam = async (examData: CreateExamRequest): Promise<HandlerResponse> => {
     try {
-      const response = await api.post<ResponseData<CreateExamResponse>>("/super/exams", examData);
-
+      const response = await api.post<ResponseData<CreateExamResponse>>("/super/exam", examData);
+      console.log(response)
       return { message: response.data.message, error: false };
     }
     catch (error) {

@@ -98,14 +98,17 @@ const Login = () => {
             </div>
           </section>
           {response.message && (
-            <div
-              className={
-                response.error
-                  ? "bg-red-50 border-2 border-red-300 text-red-700 text-sm rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 block w-full p-2.5"
-                  : "bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              }
-            >
-              {response.message}
+            <div className="fixed inset-0 flex items-center justify-center">
+              <div className="fixed inset-0 bg-gray-900 opacity-75"></div>
+              <div
+                className={
+                  response.error
+                    ? "bg-red-50 border-2 border-red-300 text-red-700 text-sm rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 p-2.5"
+                    : "bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                }
+              >
+                {response.message}
+              </div>
             </div>
           )}
           <div className="flex flex-col gap-4">
