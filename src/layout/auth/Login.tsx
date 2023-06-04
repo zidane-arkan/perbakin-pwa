@@ -101,12 +101,12 @@ const Login = () => {
           </section>
           {response.message && (
             <div className="fixed inset-0 flex items-center justify-center">
-              <div className="fixed inset-0 bg-gray-900 opacity-75"></div>
+              <div className="fixed z-0 inset-0 bg-gray-900 opacity-75"></div>
               <div
                 className={
                   response.error
-                    ? "bg-red-50 border-2 border-red-300 text-red-700 text-sm rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 p-2.5"
-                    : "bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    ? "bg-red-50 z-10 border-2 border-red-300 text-red-700 text-sm rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 p-2.5"
+                    : "bg-gray-50 z-10 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 p-2.5"
                 }
               >
                 {response.message}
