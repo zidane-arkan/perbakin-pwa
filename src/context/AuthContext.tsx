@@ -97,6 +97,21 @@ function AuthProvider(props: { children: JSX.Element }) {
 
     return { message: response.data.message, error: false };
   };
+
+  const getSuperId = async (): Promise<string | null> => {
+    try {
+      const response = await api.get<ResponseData<LoginSuperResponse>>("/super");
+      console.log(response);
+
+      return response.data.data.super.id;
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+      console.error("Error:", err);
+
+      return null;
+    }
+  };
+
   const createExam = async (examData: CreateExamRequest): Promise<HandlerResponse> => {
     try {
       const response = await api.post<ResponseData<CreateExamResponse>>("/super/exam", examData);
@@ -112,12 +127,13 @@ function AuthProvider(props: { children: JSX.Element }) {
       };
     }
   };
+
   const getExamId = async (): Promise<string | null> => {
     try {
       const response = await api.get<ResponseData<CreateExamResponse>>("/super/exam");
       console.log(response);
 
-      return response.data.data.id;
+      return response.data.data.exam.ID;
     } catch (error) {
       const err = error as AxiosError<ResponseData<null>>;
       console.error("Error:", err);

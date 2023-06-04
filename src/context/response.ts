@@ -55,24 +55,32 @@ export type LoginScorerResponse = {
 };
 
 // EXAM
+export type Exam = {
+ 
+};
 export interface CreateExamResponse {
-  id: string;
-  name: string;
-  location: string;
-  organizer: string;
-  begin: string;
-  finish: string;
+  exam: {
+    ID: string;
+    SuperID: string;
+    Name: string;
+    Location: string;
+    Organizer: string;
+    Begin: string;
+    Finish: string;
+  }
 }
 
 export interface CreateExamRequest {
-  name: string;
-  location: string;
-  organizer: string;
-  begin: string;
-  finish: string;
+  SuperID: string | null;
+  Name: string;
+  Location: string;
+  Organizer: string;
+  Begin: string;
+  Finish: string;
 }
 
 // Create Admin
+
 export interface CreateAdminResponse { 
   id: string;
   username: string;

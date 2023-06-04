@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import { HandlerResponse } from "../../../context/response";
 import { Link } from 'react-router-dom'
+import { AxiosError } from 'axios';
+import api from '../../../api/api';
+import { ResponseData, LoginSuperResponse } from '../../../context/response';
 import calenderExtraSmall from '../../../app-assets/calender_extrasmall.png';
 
 interface CreateExamElements extends HTMLFormControlsCollection {
@@ -24,22 +27,36 @@ const UjianBaru = () => {
     const handleClose = () => {
         setShowError(false);
     };
+    const getSuperId = async (): Promise<string | null> => {
+        try {
+            const response = await api.get<ResponseData<LoginSuperResponse>>("/super");
+            console.log(response);
 
-    const createExamHandler = (e: React.FormEvent<HTMLFormElement>) => {
+            return response.data.data.super.id;
+        } catch (error) {
+            const err = error as AxiosError<ResponseData<null>>;
+            console.error("Error:", err);
+
+            return null;
+        }
+    };
+
+    const createExamHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setResponse({ message: "", error: false })
         setFormState([true, "Loading..."])
 
         const elements = e.currentTarget.elements as CreateExamElements;
-
+        const superId = await getSuperId();
         const query =
             examContext &&
             examContext.createExam({
-                name: elements.name.value,
-                location: elements.location.value,
-                organizer: elements.organizer.value,
-                begin: elements.begin.value,
-                finish: elements.finish.value,
+                Name: elements.name.value,
+                SuperID: superId,
+                Location: elements.location.value,
+                Organizer: elements.organizer.value,
+                Begin: elements.begin.value,
+                Finish: elements.finish.value,
             });
 
         query

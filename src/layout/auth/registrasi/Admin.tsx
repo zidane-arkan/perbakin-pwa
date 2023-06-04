@@ -82,21 +82,21 @@ const Admin = () => {
                                 id="confirmpass"
                                 className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                         </div>
-                        <div className="flex items-start mb-6">
+                        <div className="flex flex-col items-start mb-6">
                             <div className="flex items-center h-5">
                                 <input id="remember" type="checkbox" value="" className="w-4 h-4 bg-blue-500 border border-gray-600 rounded focus:ring-3 focus:outline-none focus:bg-blue-500 focus:ring-blue-600" required />
                             </div>
                             <label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-600">Ingat Saya</label>
+                            {!state.passwordMatch && (
+                                <p className="mt-8 text-red-500">Password dan konfirmasi password tidak cocok.</p>
+                            )}
                         </div>
-                        {!state.passwordMatch && (
-                            <p className="mt-8 text-red-500">Password dan konfirmasi password tidak cocok.</p>
-                        )}
                     </section>
                     <div className='flex flex-col gap-4'>
                         <button
                             // to={'/superadmin/tabs/admindashboard'}
                             onClick={handleNext}
-                            disabled={!checkPasswordMatch()}
+                            disabled={!checkPasswordMatch}
                             type="submit" className="text-white rounded-lg text-base font-bold w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Selanjutnya
                         </button>
                     </div>
