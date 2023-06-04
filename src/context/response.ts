@@ -9,6 +9,8 @@ export type HandlerResponse = {
   error: boolean;
 };
 
+// AUTH
+
 export type Role = "super" | "admin" | "scorer";
 
 export type LoginRequest = {
@@ -71,3 +73,9 @@ export interface CreateExamRequest {
 }
 
 // Create Admin
+export interface CreateAdminResponse { 
+  id: string;
+  username: string;
+  password: string;
+  name: string;
+}

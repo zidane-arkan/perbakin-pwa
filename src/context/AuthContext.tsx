@@ -13,6 +13,7 @@ import {
   LoginScorerResponse,
   CreateExamRequest,
   CreateExamResponse,
+  CreateAdminResponse,
   HandlerResponse,
 } from "./response";
 
@@ -26,6 +27,11 @@ interface authContextInterface {
   userData: UserData | null;
   login: ({ username, password, role }: LoginRequest) => Promise<HandlerResponse>;
   createExam: (examData: CreateExamRequest) => Promise<HandlerResponse>;
+  createAdmin: (adminData: {
+    username: string;
+    password: string;
+    name: string;
+  }) => Promise<HandlerResponse>;
 }
 
 export const AuthContext = createContext<authContextInterface | null>(null);
@@ -106,12 +112,61 @@ function AuthProvider(props: { children: JSX.Element }) {
       };
     }
   };
+  const getExamId = async (): Promise<string | null> => {
+    try {
+      const response = await api.get<ResponseData<CreateExamResponse>>("/super/exam");
+      console.log(response);
+
+      return response.data.data.id;
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+      console.error("Error:", err);
+
+      return null;
+    }
+  };
+
+  const createAdmin = async (adminData: {
+    username: string;
+    password: string;
+    name: string;
+  }): Promise<HandlerResponse> => {
+    try {
+      const examId = await getExamId();
+      if (!examId) {
+        return { message: "Failed to get exam ID", error: true };
+      }
+
+      const response = await api.post<ResponseData<CreateAdminResponse>>(`/super/exam/${examId}/admin`, adminData);
+      console.log(response);
+
+      const adminId = response.data.data.id;
+      const adminExamResponse = await api.get<ResponseData<any>>(
+        `/super/exam/${examId}/admin/${adminId}`
+      );
+      console.log(adminExamResponse);
+
+      return {
+        message: response.data.message,
+        error: false,
+      };
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+
+      return {
+        message: "error " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
         userData,
         login,
         createExam,
+        createAdmin
       }}
     >
       {props.children}
