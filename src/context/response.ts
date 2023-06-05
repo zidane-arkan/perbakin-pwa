@@ -7,6 +7,7 @@ export type ResponseData<T> = {
 export type HandlerResponse = {
   message: string;
   error: boolean;
+  response?: string | any;
 };
 
 // AUTH
@@ -70,6 +71,17 @@ export interface CreateExamResponse {
   }
 }
 
+export interface GetExamsResponse {
+  exams: [{
+    id: string;
+    name: string;
+    location: string;
+    organizer: string;
+    begin: string;
+    finish: string;
+  }]
+}
+
 export interface CreateExamRequest {
   SuperID: string | null;
   Name: string;
@@ -83,6 +95,7 @@ export interface CreateExamRequest {
 
 export interface CreateAdminResponse { 
   id: string;
+  examId: string | null;
   username: string;
   password: string;
   name: string;

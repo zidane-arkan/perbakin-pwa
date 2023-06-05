@@ -119,7 +119,7 @@ const UjianBaru = () => {
                                 >
                                     {response.message}
                                     <button
-                                        className="text-red-700 hover:text-red-900"
+                                        className="text-red-700 z-10 hover:text-red-900"
                                         onClick={handleClose}
                                     >
                                         Tutup

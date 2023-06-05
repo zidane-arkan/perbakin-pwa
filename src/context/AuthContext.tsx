@@ -28,6 +28,7 @@ interface authContextInterface {
   login: ({ username, password, role }: LoginRequest) => Promise<HandlerResponse>;
   createExam: (examData: CreateExamRequest) => Promise<HandlerResponse>;
   createAdmin: (adminData: {
+    examId: string | null;
     username: string;
     password: string;
     name: string;
@@ -98,19 +99,19 @@ function AuthProvider(props: { children: JSX.Element }) {
     return { message: response.data.message, error: false };
   };
 
-  const getSuperId = async (): Promise<string | null> => {
-    try {
-      const response = await api.get<ResponseData<LoginSuperResponse>>("/super");
-      console.log(response);
+  // const getSuperId = async (): Promise<string | null> => {
+  //   try {
+  //     const response = await api.get<ResponseData<LoginSuperResponse>>("/super");
+  //     console.log(response);
 
-      return response.data.data.super.id;
-    } catch (error) {
-      const err = error as AxiosError<ResponseData<null>>;
-      console.error("Error:", err);
+  //     return response.data.data.super.id;
+  //   } catch (error) {
+  //     const err = error as AxiosError<ResponseData<null>>;
+  //     console.error("Error:", err);
 
-      return null;
-    }
-  };
+  //     return null;
+  //   }
+  // };
 
   const createExam = async (examData: CreateExamRequest): Promise<HandlerResponse> => {
     try {
@@ -128,39 +129,41 @@ function AuthProvider(props: { children: JSX.Element }) {
     }
   };
 
-  const getExamId = async (): Promise<string | null> => {
-    try {
-      const response = await api.get<ResponseData<CreateExamResponse>>("/super/exam");
-      console.log(response);
+  // const getExamId = async (): Promise<string | null> => {
+  //   try {
+  //     const response = await api.get<ResponseData<CreateExamResponse>>("/super/exam");
+  //     console.log(response);
 
-      return response.data.data.exam.ID;
-    } catch (error) {
-      const err = error as AxiosError<ResponseData<null>>;
-      console.error("Error:", err);
+  //     return response.data.data.exam.ID;
+  //   } catch (error) {
+  //     const err = error as AxiosError<ResponseData<null>>;
+  //     console.error("Error:", err);
 
-      return null;
-    }
-  };
+  //     return null;
+  //   }
+  // };
 
   const createAdmin = async (adminData: {
     username: string;
     password: string;
     name: string;
+    examId: string | null;
   }): Promise<HandlerResponse> => {
     try {
-      const examId = await getExamId();
-      if (!examId) {
-        return { message: "Failed to get exam ID", error: true };
-      }
+      // const examId = await getExamId();
+      // if (!examId) {
+      //   return { message: "Failed to get exam ID", error: true };
+      // }
 
-      const response = await api.post<ResponseData<CreateAdminResponse>>(`/super/exam/${examId}/admin`, adminData);
+      const response = await api.post<ResponseData<CreateAdminResponse>>(`/super/exam/${adminData.examId}/admin`, adminData);
       console.log(response);
+      return { message: response.data.message, error: false };
 
-      const adminId = response.data.data.id;
-      const adminExamResponse = await api.get<ResponseData<any>>(
-        `/super/exam/${examId}/admin/${adminId}`
-      );
-      console.log(adminExamResponse);
+      // const adminId = response.data.data.id;
+      // const adminExamResponse = await api.get<ResponseData<any>>(
+      //   `/super/exam/${adminData.examId}/admin/${adminId}`
+      // );
+      // console.log(adminExamResponse);
 
       return {
         message: response.data.message,
