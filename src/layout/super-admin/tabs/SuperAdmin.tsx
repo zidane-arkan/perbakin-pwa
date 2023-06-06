@@ -1,5 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { LayoutAdmin, LayoutChild } from '../../../components/Layout'
+import { LayoutChild } from '../../../components/Layout'
+import api from '../../../api/api';
+import { AxiosError } from 'axios';
+import { ResponseData } from '../../../context/response';
 import {
     createColumnHelper,
     flexRender,
@@ -17,6 +20,7 @@ import tambahPenguji from '../../../app-assets/tambahpenguji.png'
 import kelolaadmin from '../../../app-assets/kelolaadmin.png'
 // react router dom
 import { Link } from 'react-router-dom';
+
 
 type HasilUjian = {
     no: string
@@ -74,6 +78,7 @@ const Styles = styled.div`
     padding: 0.5rem;
     }
 `
+
 const defaultData: HasilUjian[] = [
     {
         no: '1',
@@ -113,6 +118,7 @@ const columns = [
         header: () => <span>Status</span>,
     }),
 ];
+
 const TabelHasilUjian = () => {
     const [data, setData] = React.useState(() => [...defaultData])
     const table = useReactTable({
@@ -162,7 +168,53 @@ const TabelHasilUjian = () => {
         </section>
     );
 }
+
 const SuperAdmin = (props: any) => {
+    const [location, setLocation] = useState('');
+    const [time, setTime] = useState({
+        begin: '',
+        finish: ''
+    });
+    const getExamId = async (): Promise<string | null> => {
+        try {
+            const response = await api.get("/super/exam");
+            console.log(response);
+            const exams = response.data.data.exams;
+            if (exams.length > 0) {
+                const lastExam = exams[exams.length - 1]; // Mengambil data exam terakhir dari array
+                const lastExamId = lastExam.id;
+
+                return lastExamId;
+            } else {
+                return null; // Mengembalikan null jika tidak ada data exam dalam array
+            }
+        } catch (error) {
+            const err = error as AxiosError<ResponseData<null>>;
+            console.error("Error:", err);
+
+            return null;
+        }
+    };
+    useEffect(() => {
+        const fetchData = async () => {
+            const examId = await getExamId();
+            if (examId) {
+                try {
+                    const response = await api.get(`/super/exam/${examId}`);
+                    const { location, begin, finish } = response.data.data.exam;
+                    setLocation(location);
+                    setTime({
+                        begin: begin,
+                        finish: finish
+                    });
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+        };
+        fetchData();
+    }, []);
+
     return (
         <>
             <LayoutChild className='flex-col gap-8'>
@@ -177,14 +229,14 @@ const SuperAdmin = (props: any) => {
                         <img className='pt-[2px]' src={mapPin} />
                         <div className='flex flex-col items-start'>
                             <h3 className='font-bold'>Lokasi</h3>
-                            <p>Sumatera Selatan</p>
+                            <p>{location}</p>
                         </div>
                     </div>
                     <div className='flex gap-2 items-start'>
                         <img className='pt-[2px]' src={clock} />
                         <div>
                             <h3 className='font-bold'>Waktu</h3>
-                            <p>24 - 25 Mei 2023</p>
+                            <p>{time.begin}-{time.finish}</p>
                         </div>
                     </div>
                     <span className='absolute top-[-3rem] right-[-4rem]'>
