@@ -154,8 +154,11 @@ function AuthProvider(props: { children: JSX.Element }) {
       // if (!examId) {
       //   return { message: "Failed to get exam ID", error: true };
       // }
-
-      const response = await api.post<ResponseData<CreateAdminResponse>>(`/super/exam/${adminData.examId}/admin`, adminData);
+      const response = await api.post<ResponseData<CreateAdminResponse>>(`/super/exam/${adminData.examId}/admin`, {
+        username: adminData.username,
+        name: adminData.name,
+        password: adminData.password
+      });
       console.log(response);
       return { message: response.data.message, error: false };
 
@@ -164,11 +167,10 @@ function AuthProvider(props: { children: JSX.Element }) {
       //   `/super/exam/${adminData.examId}/admin/${adminId}`
       // );
       // console.log(adminExamResponse);
-
-      return {
-        message: response.data.message,
-        error: false,
-      };
+      // return {
+      //   message: response.data.message,
+      //   error: false,
+      // };
     } catch (error) {
       const err = error as AxiosError<ResponseData<null>>;
 
