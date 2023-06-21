@@ -29,12 +29,12 @@ const Admin = () => {
             console.log(response);
             const exams = response.data.data.exams;
             if (exams.length > 0) {
-                const lastExam = exams[exams.length - 1]; // Mengambil data exam terakhir dari array
-                const lastExamId = lastExam.id; // Asumsikan ID exam terdapat di dalam properti 'id' dari objek exam
+                const lastExam = exams[exams.length - 1]; 
+                const lastExamId = lastExam.id; 
 
                 return lastExamId;
             } else {
-                return null; // Mengembalikan null jika tidak ada data exam dalam array
+                return null; 
             }
         } catch (error) {
             const err = error as AxiosError<ResponseData<null>>;

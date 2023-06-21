@@ -20,7 +20,8 @@ import tambahPenguji from '../../../app-assets/tambahpenguji.png'
 import kelolaadmin from '../../../app-assets/kelolaadmin.png'
 // react router dom
 import { Link } from 'react-router-dom';
-
+import dayjs from 'dayjs';
+import 'dayjs/locale/id';
 
 type HasilUjian = {
     no: string
@@ -195,6 +196,10 @@ const SuperAdmin = (props: any) => {
             return null;
         }
     };
+    const currentYear = new Date().getFullYear();
+    const formatDate = (dateRange: string) => {
+        return dayjs(dateRange).locale('id').format('D MMMM');
+    };
     useEffect(() => {
         const fetchData = async () => {
             const examId = await getExamId();
@@ -204,8 +209,8 @@ const SuperAdmin = (props: any) => {
                     const { location, begin, finish } = response.data.data.exam;
                     setLocation(location);
                     setTime({
-                        begin: begin,
-                        finish: finish
+                        begin: formatDate(begin),
+                        finish: formatDate(finish)
                     });
                 } catch (error) {
                     console.error('Error:', error);
@@ -229,14 +234,14 @@ const SuperAdmin = (props: any) => {
                         <img className='pt-[2px]' src={mapPin} />
                         <div className='flex flex-col items-start'>
                             <h3 className='font-bold'>Lokasi</h3>
-                            <p>{location}</p>
+                            <p className='capitalize'>{location}</p>
                         </div>
                     </div>
                     <div className='flex gap-2 items-start'>
                         <img className='pt-[2px]' src={clock} />
                         <div>
                             <h3 className='font-bold'>Waktu</h3>
-                            <p>{time.begin}-{time.finish}</p>
+                            <p>{time.begin}-{time.finish} {currentYear}</p>
                         </div>
                     </div>
                     <span className='absolute top-[-3rem] right-[-4rem]'>

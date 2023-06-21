@@ -21,8 +21,8 @@ const Profile = () => {
                             <input type="password" id="passbaru" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                         </div>
                         <div className="mb-6">
-                            <label htmlFor="passbaru" className="block mb-2 text-sm font-bold text-gray-900">Konfirmasi Password baru</label>
-                            <input type="password" id="passbaru" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                            <label htmlFor="passconfirm" className="block mb-2 text-sm font-bold text-gray-900">Konfirmasi Password baru</label>
+                            <input type="password" id="passconfirm" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                         </div>
                     </section>
                 </form>
