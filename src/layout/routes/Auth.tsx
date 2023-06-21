@@ -14,9 +14,9 @@ const Auth = () => {
         <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/login' element={<Login />} />
-            <Route path='/penguji/*' element={<Penguji />} />
-            <Route path='/admin/*' element={<Admin />} />
             <Route path='/superadmin/*' element={<SuperAdmin />} />
+            <Route path='/admin/*' element={<Admin />} />
+            <Route path='/penguji/*' element={<Penguji />} />
         </Routes>
     )
 }

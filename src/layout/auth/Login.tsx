@@ -34,10 +34,19 @@ const Login = () => {
 
     query
       ?.then((res) => {
+        const role = elements.role.value;
         setResponse(res);
         setFormState([false, ""]);
         if (!res.error) {
-          navigate("/superadmin");
+          if (role === 'super') {
+            navigate("/superadmin");
+          }
+          if (role === 'admin') {
+            navigate("/admin/admindashboard");
+          }
+          if (role === 'penguji') {
+            navigate("/penguji");
+          }
         }
       })
       .catch((err) => {

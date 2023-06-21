@@ -82,7 +82,7 @@ function AuthProvider(props: { children: JSX.Element }) {
           setUserData({
             id: response.data.data.scorer.id,
             name: response.data.data.scorer.name,
-            role: "admin",
+            role: "scorer",
           });
 
           break;
