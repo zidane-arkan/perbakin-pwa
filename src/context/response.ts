@@ -112,9 +112,9 @@ export interface CreateAdminResponse {
 export interface CreateShooterResponse { 
   id?: string;
   examId?: string | null;
-  scorer_id?: string;
+  scorer_id?: string | null;
   name: string;
   province: string;
   club: string;
-  image_path: string;
+  image_path?: string | null;
 }

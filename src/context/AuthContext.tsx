@@ -31,9 +31,9 @@ interface authContextInterface {
   createExam: (examData: CreateExamRequest) => Promise<HandlerResponse>;
   createAdmin: (adminData: {
     examId: string | null;
+    name: string;
     username: string;
     password: string;
-    name: string;
   }) => Promise<HandlerResponse>;
   createScorer: (scorerData: CreateScorerRequest) => Promise<HandlerResponse>;
   createShooter: (shooterData: CreateShooterResponse) => Promise<HandlerResponse>;
@@ -170,9 +170,9 @@ function AuthProvider(props: { children: JSX.Element }) {
   const createScorer = async (scorerData: CreateScorerRequest): Promise<HandlerResponse> => {
     try {
       const response = await api.post<ResponseData<CreateScorerRequest>>(`/super/exam/${scorerData.examId}/scorer`, {
+        name: scorerData.name,
         username: scorerData.username,
         password: scorerData.password,
-        name: scorerData.name,
       });
       console.log(response);
       return { message: response.data.message, error: false, response: response };
@@ -187,13 +187,22 @@ function AuthProvider(props: { children: JSX.Element }) {
   };
 
   const createShooter = async (shooterData: CreateShooterResponse): Promise<HandlerResponse> => {
+    console.log(shooterData);
+    const formData = new FormData();
+    if (shooterData.examId) {
+      formData.append("examId", shooterData.examId);
+    }
+    if (shooterData.scorer_id) {
+      formData.append("examId", shooterData.scorer_id);
+    }
+    formData.append("name", shooterData.name);
+    formData.append("province", shooterData.province);
+    formData.append("club", shooterData.club);
+    if (shooterData.image_path) {
+      formData.append("image", shooterData.image_path);
+    }
     try {
-      const response = await api.post<ResponseData<CreateShooterResponse>>(`/super/exam/${shooterData.examId}/scorer/${shooterData.scorer_id}/shooter`, {
-        name: shooterData.name,
-        province: shooterData.province,
-        club: shooterData.club,
-        image: shooterData.image_path
-      });
+      const response = await api.post<ResponseData<CreateShooterResponse>>(`/super/exam/${shooterData.examId}/scorer/${shooterData.scorer_id}/shooter`, formData);
       console.log(response);
       return { message: response.data.message, error: false, response: response };
     } catch (error) {

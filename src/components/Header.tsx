@@ -50,13 +50,13 @@ export const BgHeaderProfile = (props: propsBlueCustom) => {
           </button>
           <h2>{props.title}</h2>
           <span></span>
-       </section>
+        </section>
         <section className='relative w-full pt-8 flex flex-col'>
           <span className='absolute left-[-1rem] top-[1rem]'>
             <img src={pelurubg} />
           </span>
           <div className='flex flex-col gap-4 items-center justify-center z-10'>
-              <button className='rounded-full bg-white w-[120px] h-[120px]'></button>
+            {props.children}
             <button className='text-sm text-white/60'>{props.jenis}</button>
           </div>
           <span className='absolute right-[-2rem] top-[2rem] z-0'>
@@ -68,6 +68,8 @@ export const BgHeaderProfile = (props: propsBlueCustom) => {
     </header>
   )
 }
+
+
 
 export const HeaderWhite = (props: Props) => {
   return (

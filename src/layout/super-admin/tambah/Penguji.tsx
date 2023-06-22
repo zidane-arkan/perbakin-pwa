@@ -21,6 +21,15 @@ const Penguji = () => {
     const [formState, setFormState] = useState<[boolean, string]>([false, '']);
     const [response, setResponse] = useState<HandlerResponse>({ message: '', error: false });
     const [showError, setShowError] = useState<boolean>(true);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+    const handleImageChange = (e: any) => {
+        const file = e.target.files[0];
+        setSelectedImage(file);
+        setPreviewImage(URL.createObjectURL(file));
+    };
+
     const handleClose = () => {
         setShowError(false);
     };
@@ -78,17 +87,19 @@ const Penguji = () => {
     }
     return (
         <LayoutAdmin className={'rounded-3xl mt-[19rem] pt-[10%]'}>
-            <BgHeaderProfile title='Tambah Penguji' jenis='Tambah Foto'>
-                <div className='flex items-center justify-between w-full'>
-                    <section className='flex flex-col items-start'>
-                        <h2>Halo, Admin</h2>
-                    </section>
-                    <section>
-                        <button>
-                            <img src={avatar} />
-                        </button>
-                    </section>
-                </div>
+            <BgHeaderProfile title='Tambah Penguji'>
+                {previewImage ?
+                    (
+                        <div className="mb-0">
+                            <img src={previewImage} alt="Preview" className="rounded-full w-[150px] h-[150px]" />
+                        </div>
+                    )
+                    :
+                    (
+                        <button className='rounded-full bg-white w-[120px] h-[120px]'></button>
+                    )
+                }
+
             </BgHeaderProfile>
             <LayoutChild className='justify-between'>
                 <form onSubmit={createAdminHandler} className='flex flex-col w-full h-auto justify-between gap-8'>
