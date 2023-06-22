@@ -27,8 +27,8 @@ const Penembak = () => {
                             <input type="text" id="fullname" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Nama Lengkap Anda" required />
                         </div>
                         <div className="mb-6">
-                            <label htmlFor="email" className="block mb-2 text-sm font-bold text-gray-900">Pengirim</label>
-                            <input type="email" id="email" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="name@gmail.com" required />
+                            <label htmlFor="username" className="block mb-2 text-sm font-bold text-gray-900">Pengirim</label>
+                            <input type="email" id="username" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="username" required />
                         </div>
                         <div className="mb-6">
                             <label htmlFor="password" className="block mb-2 text-sm font-bold text-gray-900">Asal Klub</label>

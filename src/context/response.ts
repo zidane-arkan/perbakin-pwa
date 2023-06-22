@@ -91,10 +91,17 @@ export interface CreateExamRequest {
   Finish: string;
 }
 
+// Create Scorer
+export interface CreateScorerRequest { 
+  id?: string;
+  examId: string | null;
+  username: string;
+  password: string;
+  name: string;
+}
 // Create Admin
-
 export interface CreateAdminResponse { 
-  id: string;
+  id?: string;
   examId: string | null;
   username: string;
   password: string;

@@ -15,6 +15,7 @@ import {
   CreateExamResponse,
   CreateAdminResponse,
   HandlerResponse,
+  CreateScorerRequest,
 } from "./response";
 
 type UserData = {
@@ -33,6 +34,7 @@ interface authContextInterface {
     password: string;
     name: string;
   }) => Promise<HandlerResponse>;
+  createScorer: (scorerData: CreateScorerRequest) => Promise<HandlerResponse>;
 }
 
 export const AuthContext = createContext<authContextInterface | null>(null);
@@ -150,10 +152,6 @@ function AuthProvider(props: { children: JSX.Element }) {
     examId: string | null;
   }): Promise<HandlerResponse> => {
     try {
-      // const examId = await getExamId();
-      // if (!examId) {
-      //   return { message: "Failed to get exam ID", error: true };
-      // }
       const response = await api.post<ResponseData<CreateAdminResponse>>(`/super/exam/${adminData.examId}/admin`, {
         username: adminData.username,
         name: adminData.name,
@@ -181,13 +179,33 @@ function AuthProvider(props: { children: JSX.Element }) {
     }
   };
 
+  const createScorer = async (scorerData: CreateScorerRequest): Promise<HandlerResponse> => {
+    try {
+      const response = await api.post<ResponseData<CreateScorerRequest>>(`/super/exam/${scorerData.examId}/scorer`, {
+        username: scorerData.username,
+        password: scorerData.password,
+        name: scorerData.name,
+      });
+      console.log(response);
+      return { message: response.data.message, error: false };
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+
+      return {
+        message: "error " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
         userData,
         login,
         createExam,
-        createAdmin
+        createAdmin,
+        createScorer
       }}
     >
       {props.children}
