@@ -16,6 +16,7 @@ import {
   CreateAdminResponse,
   HandlerResponse,
   CreateScorerRequest,
+  CreateShooterResponse,
 } from "./response";
 
 type UserData = {
@@ -35,6 +36,7 @@ interface authContextInterface {
     name: string;
   }) => Promise<HandlerResponse>;
   createScorer: (scorerData: CreateScorerRequest) => Promise<HandlerResponse>;
+  createShooter: (shooterData: CreateShooterResponse) => Promise<HandlerResponse>;
 }
 
 export const AuthContext = createContext<authContextInterface | null>(null);
@@ -131,20 +133,6 @@ function AuthProvider(props: { children: JSX.Element }) {
     }
   };
 
-  // const getExamId = async (): Promise<string | null> => {
-  //   try {
-  //     const response = await api.get<ResponseData<CreateExamResponse>>("/super/exam");
-  //     console.log(response);
-
-  //     return response.data.data.exam.ID;
-  //   } catch (error) {
-  //     const err = error as AxiosError<ResponseData<null>>;
-  //     console.error("Error:", err);
-
-  //     return null;
-  //   }
-  // };
-
   const createAdmin = async (adminData: {
     username: string;
     password: string;
@@ -187,7 +175,7 @@ function AuthProvider(props: { children: JSX.Element }) {
         name: scorerData.name,
       });
       console.log(response);
-      return { message: response.data.message, error: false };
+      return { message: response.data.message, error: false, response: response };
     } catch (error) {
       const err = error as AxiosError<ResponseData<null>>;
 
@@ -198,6 +186,26 @@ function AuthProvider(props: { children: JSX.Element }) {
     }
   };
 
+  const createShooter = async (shooterData: CreateShooterResponse): Promise<HandlerResponse> => {
+    try {
+      const response = await api.post<ResponseData<CreateShooterResponse>>(`/super/exam/${shooterData.examId}/scorer/${shooterData.scorer_id}/shooter`, {
+        name: shooterData.name,
+        province: shooterData.province,
+        club: shooterData.club,
+        image: shooterData.image_path
+      });
+      console.log(response);
+      return { message: response.data.message, error: false, response: response };
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+
+      return {
+        message: "error " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -205,7 +213,8 @@ function AuthProvider(props: { children: JSX.Element }) {
         login,
         createExam,
         createAdmin,
-        createScorer
+        createScorer,
+        createShooter
       }}
     >
       {props.children}

@@ -91,7 +91,7 @@ const Penguji = () => {
                 </div>
             </BgHeaderProfile>
             <LayoutChild className='justify-between'>
-                <form onSubmit={createAdminHandler} className='flex flex-col w-full h-auto justify-between gap-8 pt-14'>
+                <form onSubmit={createAdminHandler} className='flex flex-col w-full h-auto justify-between gap-8'>
                     <section>
                         <div className="mb-6">
                             <label htmlFor="name" className="block mb-2 text-sm font-bold text-gray-900">Nama Lengkap</label>

@@ -107,3 +107,14 @@ export interface CreateAdminResponse {
   password: string;
   name: string;
 }
+
+// Create Shooter
+export interface CreateShooterResponse { 
+  id?: string;
+  examId?: string | null;
+  scorer_id?: string;
+  name: string;
+  province: string;
+  club: string;
+  image_path: string;
+}
