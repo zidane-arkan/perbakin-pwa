@@ -82,8 +82,18 @@ export interface GetExamsResponse {
   }]
 }
 
+// EXAM
 export interface CreateExamRequest {
   SuperID: string | null;
+  Name: string;
+  Location: string;
+  Organizer: string;
+  Begin: string;
+  Finish: string;
+}
+
+export interface UpdateExamRequest {
+  examId: string | null;
   Name: string;
   Location: string;
   Organizer: string;
@@ -99,6 +109,7 @@ export interface CreateScorerRequest {
   password: string;
   name: string;
 }
+
 // Create Admin
 export interface CreateAdminResponse { 
   id?: string;

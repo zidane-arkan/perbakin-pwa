@@ -11,6 +11,7 @@ import {
   LoginSuperResponse,
   LoginAdminResponse,
   LoginScorerResponse,
+  UpdateExamRequest,
   CreateExamRequest,
   CreateExamResponse,
   CreateAdminResponse,
@@ -29,6 +30,7 @@ interface authContextInterface {
   userData: UserData | null;
   login: ({ username, password, role }: LoginRequest) => Promise<HandlerResponse>;
   createExam: (examData: CreateExamRequest) => Promise<HandlerResponse>;
+  updateExam: (examData: UpdateExamRequest) => Promise<HandlerResponse>;
   createAdmin: (adminData: {
     examId: string | null;
     name: string;
@@ -133,6 +135,28 @@ function AuthProvider(props: { children: JSX.Element }) {
     }
   };
 
+  const updateExam = async (examData: UpdateExamRequest): Promise<HandlerResponse> => {
+    try {
+      const response = await api.put<ResponseData<UpdateExamRequest>>(`/super/exam/${examData.examId}`, {
+        "name": examData.Name,
+        "location": examData.Location,
+        "organizer": examData.Organizer,
+        "begin": examData.Begin,
+        "finish": examData.Finish
+      });
+      console.log(response)
+      return { message: response.data.message, error: false };
+    }
+    catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+
+      return {
+        message: "error " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  };
+
   const createAdmin = async (adminData: {
     username: string;
     password: string;
@@ -221,6 +245,7 @@ function AuthProvider(props: { children: JSX.Element }) {
         userData,
         login,
         createExam,
+        updateExam,
         createAdmin,
         createScorer,
         createShooter
