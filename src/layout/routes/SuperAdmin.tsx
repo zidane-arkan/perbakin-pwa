@@ -21,12 +21,12 @@ import HasilUjian from '../super-admin/HasilUjian';
 import DetailPenguji from '../pages/DetailPenguji';
 import KelolaAdmin from '../super-admin/kelola/Admin';
 const SuperAdmin = () => {
-    const userPenguji = [
-        { id: '1', penguji: 'Penguji 1' },
-        { id: '2', penguji: 'Penguji 2' },
-        { id: '3', penguji: 'Penguji 3' },
-        { id: '4', penguji: 'Penguji 4' },
-    ];
+    // const userPenguji = [
+    //     { id: '1', penguji: 'Penguji 1' },
+    //     { id: '2', penguji: 'Penguji 2' },
+    //     { id: '3', penguji: 'Penguji 3' },
+    //     { id: '4', penguji: 'Penguji 4' },
+    // ];
     return (
         <>
             <Routes>
@@ -36,7 +36,7 @@ const SuperAdmin = () => {
                 <Route path='/tabs' element={<Dashboard />} >
                     <Route path='admindashboard' element={<SuperAdminTab />} />
                     <Route path='penembak' element={<Penembak />} />
-                    <Route path='penguji' element={<Penguji userPenguji={userPenguji} />} />
+                    <Route path='penguji' element={<Penguji />} />
                 </Route>
                 {/* Route Tambah */}
                 <Route path='tabs/admindashboard/tambahpenembak' element={<TambahPenembak />} />
