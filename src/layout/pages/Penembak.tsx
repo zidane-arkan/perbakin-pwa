@@ -6,6 +6,13 @@ type Props = {
     classname?: string | any;
     statusAuth?: boolean;
 }
+
+type Penembak = {
+    name: string;
+    club: string;
+    province: string;
+    scorer: string;
+}
 interface PenembakAdminProps {
     shooters: string[];
 }
@@ -44,7 +51,7 @@ export const PenembakAdmin: React.FC<PenembakAdminProps> = (props : any) => {
                         <h3 className='text-lg font-bold'>List Penembak</h3>
                     </span>
                     {/* <CardPenembakAdmin penembak="Testing 1" klub="Asal Klub 1" stage={'Stage #2'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} /> */}
-                    {props.shooters.map((shooter : any, index) => (
+                    {props.shooters.map((shooter: Penembak, index : string) => (
                         <CardPenembakAdmin
                             key={index}
                             penembak={shooter.name}
