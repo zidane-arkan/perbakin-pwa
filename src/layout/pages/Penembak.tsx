@@ -8,6 +8,7 @@ type Props = {
 }
 
 type Penembak = {
+    id: string;
     name: string;
     club: string;
     province: string;
@@ -53,10 +54,11 @@ export const PenembakAdmin: React.FC<PenembakAdminProps> = (props : any) => {
                     {/* <CardPenembakAdmin penembak="Testing 1" klub="Asal Klub 1" stage={'Stage #2'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} /> */}
                     {props.shooters.map((shooter: Penembak, index : string) => (
                         <CardPenembakAdmin
+                            id={shooter.id}
                             key={index}
                             penembak={shooter.name}
                             klub={shooter.club}
-                            stage={'Stage #2'}
+                            stage={'Stage #1'}
                             pengprov={shooter.province}
                             penguji={shooter.scorer}
                         />

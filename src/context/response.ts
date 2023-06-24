@@ -129,3 +129,15 @@ export interface CreateShooterResponse {
   club: string;
   image_path?: string | null;
 }
+
+
+export interface UpdateShooterRequest { 
+  id?: string;
+  examId?: string | null;
+  scorer_id?: string | null;
+  shooterId?: string | null;
+  name: string;
+  province: string;
+  club: string;
+  image_path?: string | null;
+}

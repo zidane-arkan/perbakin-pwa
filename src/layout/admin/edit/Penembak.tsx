@@ -35,8 +35,8 @@ const Penembak = () => {
                             <input type="password" id="password" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                         </div>
                         <div className="mb-6">
-                            <label htmlFor="confirmpass" className="block mb-2 text-sm font-bold text-gray-900">Penguji</label>
-                            <input type="password" id="confirmpass" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                            <label htmlFor="penguji" className="block mb-2 text-sm font-bold text-gray-900">Penguji</label>
+                            <input type="text" id="penguji" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                         </div>
                     </section>
                     <div className='flex flex-col gap-4'>

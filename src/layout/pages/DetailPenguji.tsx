@@ -9,7 +9,7 @@ import user2 from '../../app-assets/user2.png';
 
 const DetailPenguji = (props: any) => {
     const data = useLocation();
-    console.log(data)
+    // console.log(data)
     const navigate = useNavigate();
     const { id } = useParams();
     return (

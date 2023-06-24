@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import user1 from '../../app-assets/user1.png';
 import { Link } from 'react-router-dom'
-import { Detail, DetailAdmin } from '../overlay/Detail';
+import { Detail, DetailAdmin, DetailSuperAdmin } from '../overlay/Detail';
 type Props = {
     title?: string
     children?: string | JSX.Element | React.ReactNode
@@ -112,7 +112,8 @@ export const CardPenembakAdmin = (props: any) => {
     return (
         <>
             {(isCartShown && true) &&
-                <DetailAdmin
+                <DetailSuperAdmin
+                    id={props.id}
                     shownCardHandler={shownCardHandler}
                     penembak={props.penembak}
                     klub={props.klub}
