@@ -27,6 +27,7 @@ export const CardText = (props: Props) => {
 }
 
 export const CardPenguji = (props: any) => {
+    console.log(props.id)
     return (
         <>
             <section className="flex items-center max-w-md overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 shadow-custom">

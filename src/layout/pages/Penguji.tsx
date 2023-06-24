@@ -29,8 +29,8 @@ const Penguji: React.FC<PengujiAdminProps> = (props: any) => {
                     {props.scorers.map((scorer: Scorer, index: string) => (
                         <CardPenguji
                             key={index}
-                            penguji={scorer.name}
                             id={scorer.id}
+                            penguji={scorer.name}
                         />
                     ))}
                     {/* {props.userPenguji?.map((penguji: any) => {
