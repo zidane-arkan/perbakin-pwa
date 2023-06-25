@@ -44,7 +44,7 @@ const Penguji: React.FC<PengujiAdminProps> = (props: any) => {
     )
 }
 
-const PengujiAdmin: React.FC<PengujiAdminProps> = (props: any) => {
+export const PengujiAdmin: React.FC<PengujiAdminProps> = (props: any) => {
     const classname = `${props.classname} rounded-3xl`;
     return (
         <>

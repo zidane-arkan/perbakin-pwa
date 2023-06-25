@@ -14,7 +14,7 @@ import PenembakEdit from '../admin/edit/Penembak';
 import TentangUjian from '../admin/edit/Ujian';
 import Profile from '../admin/edit/Profile';
 // Detail
-import DetailPenguji from '../pages/DetailPenguji';
+import { DetailPengujiAdmin } from '../pages/DetailPenguji';
 import HasilUjian from '../admin/HasilUjian'
 const Admin = () => {
     const userPenguji = [
@@ -41,7 +41,7 @@ const Admin = () => {
                 {/* Route Hasil Ujian */}
                 <Route path='admindashboard/hasilujian' element={<HasilUjian />} />
                 {/* Route Detail Penguji */}
-                <Route path='penguji/detailpenguji/:id' element={<DetailPenguji />} />
+                <Route path='penguji/detailpenguji/:id' element={<DetailPengujiAdmin />} />
                 {/* Route Stage 4 */}
                 {/* Route Stage 5 */}
                 {/* Route Stage 6 */}

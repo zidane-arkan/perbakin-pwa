@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import PengujiAdmin from '../../pages/Penguji'
+import { PengujiAdmin } from '../../pages/Penguji'
 import api from '../../../api/api'
 import { AxiosError } from 'axios'
 import { ResponseData } from '../../../context/response'
