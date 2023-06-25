@@ -84,7 +84,7 @@ const Penguji = () => {
                 setResponse(err);
                 setFormState([false, ""]);
             });
-    }
+    };
     return (
         <LayoutAdmin className={'rounded-3xl mt-[19rem] pt-[10%]'}>
             <BgHeaderProfile title='Tambah Penguji'>

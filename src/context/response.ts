@@ -104,7 +104,7 @@ export interface UpdateExamRequest {
 // Create Scorer
 export interface CreateScorerRequest { 
   id?: string;
-  examId: string | null;
+  examId?: string | null;
   username: string;
   password: string;
   name: string;
