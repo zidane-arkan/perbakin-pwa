@@ -20,6 +20,8 @@ import Stage3Form from '../penguji/form/Stage3';
 import Stage4Form from '../penguji/form/Stage4';
 import Stage5Form from '../penguji/form/Stage5';
 import Stage6Form from '../penguji/form/Stage6';
+// Edit
+import EditProfilePenguji from '../penguji/edit/Profile'
 // Konfirmasi
 import KualifikasiKonfirmasi from '../penguji/konfirmasi/Kualifikasi';
 import Stage1Konfirmasi from '../penguji/konfirmasi/Stage1';
@@ -35,7 +37,9 @@ const Penguji = () => {
         <>
             <Routes>
                 <Route path='/' element={<Dashboard />} />
-                <Route path='/kualifikasi_ketentuan' element={<KualifikasiKetentuan />} />
+                <Route path='/kualifikasi_ketentuan/:id' element={<KualifikasiKetentuan />} />
+                {/* Edit */}
+                <Route path='/penguji/editprofile' element={<EditProfilePenguji />} />
                 {/* Route Kualifikasi */}
                 <Route path='/kualifikasi_aturan' element={<Kualifikasi />} />
                 <Route path='/kualifikasi_form' element={<KualifikasiForm />} />

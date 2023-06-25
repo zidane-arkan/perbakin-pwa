@@ -27,16 +27,16 @@ export const Detail = (props: any) => {
                             <h6>Asal Klub</h6>
                             <h4>: {props.klub}</h4>
                         </span>
-                        <span className='flex justify-between w-full'>
+                        {/* <span className='flex justify-between w-full'>
                             <h6>Penguji</h6>
                             <h4>: {props.penguji}</h4>
-                        </span>
+                        </span> */}
                     </div>
                     <div className='flex w-full items-start flex-col gap-6'>
                         <span className='max-w-full px-2 py-1 text-xs font-bold text-white uppercase transition-colors duration-300 transform bg-[#62DE5F] rounded'>
                             {props.stage}
                         </span>
-                        <Link to={'kualifikasi_ketentuan'} className='w-full items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Mulai Ujian</Link>
+                        <Link to={`kualifikasi_ketentuan/${props.id}`} className='w-full items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Mulai Ujian</Link>
                     </div>
                 </LayoutChild>
             </section>

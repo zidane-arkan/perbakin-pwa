@@ -167,9 +167,9 @@ const Admin = (props: any) => {
             <LayoutChild className='flex-col gap-8'>
                 <section className='flex items-center w-full justify-between'>
                     <h2 className='font-bold'>Tentang Ujian</h2>
-                    <Link to='editujian'>
+                    {/* <Link to='editujian'>
                         <span className='text-[#1B79B8]' >Edit Ujian</span>
-                    </Link>
+                    </Link> */}
                 </section>
                 <section className='relative shadow-md overflow-hidden flex bg-[#F3FAFF] flex-col gap-4 items-start rounded-xl px-4 py-4'>
                     <div className='flex gap-2 items-start'>

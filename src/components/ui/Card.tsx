@@ -212,6 +212,7 @@ export const CardPenembak = (props: any) => {
         <>
             {(isCartShown && true) &&
                 <Detail
+                    id={props.id}
                     shownCardHandler={shownCardHandler}
                     penembak={props.penembak}
                     klub={props.klub}
