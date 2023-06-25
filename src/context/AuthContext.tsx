@@ -18,8 +18,10 @@ import {
   UpdateAdminResponse,
   HandlerResponse,
   CreateScorerRequest,
+  UpdateScorerResponse,
   CreateShooterResponse,
-  UpdateShooterRequest
+  UpdateShooterRequest,
+  UpdateShooterAdminReq
 } from "./response";
 
 type UserData = {
@@ -40,12 +42,16 @@ interface authContextInterface {
     password: string;
   }) => Promise<HandlerResponse>;
   updateAdmin: (adminData: UpdateAdminResponse) => Promise<HandlerResponse>;
+  // SCORER
   createScorer: (scorerData: CreateScorerRequest) => Promise<HandlerResponse>;
+  updateScorer: (scorerData: UpdateScorerResponse) => Promise<HandlerResponse>;
+  // SHOOTER
   createShooter: (shooterData: CreateShooterResponse) => Promise<HandlerResponse>;
   updateShooter: (shooterData: UpdateShooterRequest) => Promise<HandlerResponse>;
   // ADMIN AUTH
   createScorerAdmin: (scorerData: CreateScorerRequest) => Promise<HandlerResponse>;
   createShooterAdmin: (shooterData: CreateShooterResponse) => Promise<HandlerResponse>;
+  updateShooterAdmin: (shooterData: UpdateShooterAdminReq) => Promise<HandlerResponse>;
 }
 
 export const AuthContext = createContext<authContextInterface | null>(null);
@@ -219,6 +225,7 @@ function AuthProvider(props: { children: JSX.Element }) {
     }
   }
 
+  // SCORER
   const createScorer = async (scorerData: CreateScorerRequest): Promise<HandlerResponse> => {
     try {
       const response = await api.post<ResponseData<CreateScorerRequest>>(`/super/exam/${scorerData.examId}/scorer`, {
@@ -238,6 +245,25 @@ function AuthProvider(props: { children: JSX.Element }) {
     }
   };
 
+  const updateScorer = async (scorerData: UpdateScorerResponse): Promise<HandlerResponse> => {
+    try {
+      const response = await api.put<ResponseData<CreateScorerRequest>>(`/super/exam/${scorerData.examId}/scorer/${scorerData.scorer_id}`, {
+        name: scorerData.name,
+        username: scorerData.username,
+        password: scorerData.password,
+      });
+      console.log(response);
+      return { message: response.data.message, error: false, response: response };
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+
+      return {
+        message: "error " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  };
+  // SHOOTER
   const createShooter = async (shooterData: CreateShooterResponse): Promise<HandlerResponse> => {
     console.log(shooterData);
     const formData = new FormData();
@@ -346,6 +372,37 @@ function AuthProvider(props: { children: JSX.Element }) {
       };
     }
   }
+
+  const updateShooterAdmin = async (shooterData: UpdateShooterAdminReq): Promise<HandlerResponse> => {
+    console.log(shooterData);
+    const formData = {
+      scorer_id: shooterData.scorer_id,
+      name: shooterData.name,
+      province: shooterData.province,
+      club: shooterData.club
+    };
+    // const formData = new FormData;
+    // console.log(formData)
+    // if (shooterData.scorer_id) {
+    //   formData.append("scorer_id", shooterData.scorer_id);
+    // }
+    // formData.append("name", shooterData.name);
+    // formData.append("province", shooterData.province);
+    // formData.append("club", shooterData.club);
+    try {
+      const response = await api.put<ResponseData<UpdateShooterAdminReq>>(`/admin/scorer/${shooterData.oriScorerId}/shooter/${shooterData.shooterId}`, formData);
+      console.log(response);
+      return { message: response.data.message, error: false, response: response };
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+
+      return {
+        message: "error " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -356,10 +413,12 @@ function AuthProvider(props: { children: JSX.Element }) {
         createAdmin,
         updateAdmin,
         createScorer,
+        updateScorer,
         createShooter,
         updateShooter,
         createScorerAdmin,
-        createShooterAdmin
+        createShooterAdmin,
+        updateShooterAdmin
       }}
     >
       {props.children}

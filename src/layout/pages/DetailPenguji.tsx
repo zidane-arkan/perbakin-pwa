@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import api from '../../api/api'
-import { CardPenembakAdmin } from '../../components/ui/Card'
+import { CardPenembakPengujiAdmin } from '../../components/ui/Card'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { HeaderWhiteCustom } from '../../components/Header'
 import { CardText } from '../../components/ui/Card'
@@ -45,7 +45,7 @@ const DetailPenguji = (props: any) => {
     const data = useLocation();
     // console.log(data)
     const { id } = useParams();
-
+    console.log(id)
     useEffect(() => {
         const fetchShooters = async () => {
             try {
@@ -53,13 +53,15 @@ const DetailPenguji = (props: any) => {
                 const response = await api.get(`/super/exam/${examId}/scorer/${id}/shooter`);
                 const responseScorer = await api.get(`/super/exam/${examId}/scorer`);
                 const scorers = responseScorer.data.data.scorers;
+                
                 const shooters = response.data.data.shooters.map((shooter: Penembak) => {
                     const scorer = scorers.find((s: any) => s.id === id);
                     const scorerName = scorer ? scorer.name : '';
-                    console.log(scorerName)
+                    
                     return { ...shooter, scorer: scorerName };
                 });
-                console.log(shooters)
+                console.log(response)
+                
                 setShooters(shooters);
             } catch (error) {
                 const err = error as AxiosError<ResponseData<null>>;
@@ -119,8 +121,9 @@ const DetailPenguji = (props: any) => {
                 }
                 {!loading &&
                     shooters.map((shooter: Penembak, index: number) => (
-                        <CardPenembakAdmin
-                            id={shooter.id}
+                        <CardPenembakPengujiAdmin
+                            id={id}
+                            scorerId={shooter.id}
                             key={index}
                             penembak={shooter.name}
                             klub={shooter.club}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout, LayoutChild } from '../../components/Layout'
-import { CardPenembakAdmin, CardPenembak } from '../../components/ui/Card';
+import { CardPenembakAdmin, CardPenembak, CardPenembakAdminBiasa } from '../../components/ui/Card';
 import { Link } from 'react-router-dom';
 type Props = {
     classname?: string | any;
@@ -42,9 +42,9 @@ export const Penembak = (props: Props) => {
         </>
     )
 }
-export const PenembakAdmin: React.FC<PenembakAdminProps> = (props : any) => {
+export const PenembakAdmin: React.FC<PenembakAdminProps> = (props: any) => {
     const classname = `${props.classname} rounded-3xl`;
-    console.log(props.shooters)
+    console.log(props)
     return (
         <>
             <Layout className={classname}>
@@ -53,13 +53,14 @@ export const PenembakAdmin: React.FC<PenembakAdminProps> = (props : any) => {
                         <h3 className='text-lg font-bold'>List Penembak</h3>
                     </span>
                     {/* <CardPenembakAdmin penembak="Testing 1" klub="Asal Klub 1" stage={'Stage #2'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} /> */}
-                    {props.shooters.map((shooter: Penembak, index : string) => (
-                        <CardPenembakAdmin
+                    {props.shooters.map((shooter: Penembak, index: string) => (
+                        <CardPenembakAdminBiasa
                             id={shooter.id}
                             key={index}
                             penembak={shooter.name}
+                            scorerId={shooter.scorer_id}
                             klub={shooter.club}
-                            stage={'Stage #1'}
+                            stage={'Stage #2'}
                             pengprov={shooter.province}
                             penguji={shooter.scorer}
                         />

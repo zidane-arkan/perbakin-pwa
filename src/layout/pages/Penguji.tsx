@@ -44,4 +44,33 @@ const Penguji: React.FC<PengujiAdminProps> = (props: any) => {
     )
 }
 
+const PengujiAdmin: React.FC<PengujiAdminProps> = (props: any) => {
+    const classname = `${props.classname} rounded-3xl`;
+    return (
+        <>
+            <Layout className={classname}>
+                <LayoutChild className='flex-col pb-[10rem] gap-4'>
+                    <span className='inline text-left'>
+                        <h3 className='text-lg font-bold'>List Penguji</h3>
+                    </span>
+                    {/* <CardPenguji penguji={'Penguji 1'} />
+                    <CardPenguji penguji={'Penguji 2'} /> */}
+                    {props.scorers.map((scorer: Scorer, index: string) => (
+                        <CardPenguji
+                            key={index}
+                            id={scorer.id}
+                            penguji={scorer.name}
+                        />
+                    ))}
+                    {/* {props.userPenguji?.map((penguji: any) => {
+                        return (
+                            <CardPenguji key={penguji.id} id={penguji.id} penguji={penguji.penguji} />
+                        )
+                    })} */}
+                </LayoutChild>
+            </Layout>
+        </>
+    )
+}
+
 export default Penguji

@@ -4,7 +4,7 @@ import api from '../../../api/api'
 import { AxiosError } from 'axios'
 import { ResponseData } from '../../../context/response'
 
-const Penembak = (props: any) => {
+const Penembak = () => {
     const [shooters, setShooters] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const getExamId = async (): Promise<string | null> => {
@@ -30,7 +30,7 @@ const Penembak = (props: any) => {
         const fetchShooters = async () => {
             try {
                 const examId = await getExamId();
-                const response = await api.get(`/admin/exam/${examId}/shooter`);
+                const response = await api.get(`/admin/shooter`);
                 const shooters = response.data.data.shooters;
                 setShooters(shooters);
             } catch (error) {

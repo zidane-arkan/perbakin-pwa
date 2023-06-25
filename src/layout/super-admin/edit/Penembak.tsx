@@ -38,19 +38,33 @@ const Penembak = () => {
         setPreviewImage(URL.createObjectURL(file));
     };
 
-    // console.log(id)
+    
     const [pengujiList, setPengujiList] = useState<any[]>([]);
     const [selectedPengujiId, setSelectedPengujiId] = useState("");
-    // const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-    // const handleImageChange = (e: any) => {
-    //     const file = e.target.files[0];
-    //     setSelectedImage(file);
-    //     setPreviewImage(URL.createObjectURL(file));
-    // };
     const handleClose = () => {
         setShowError(false);
     };
+    // const getPengujiId = async (): Promise<string | null> => {
+    //     try {
+    //         const examId = await getExamId();
+    //         const response = await api.get(`/super/exam/${examId}/scorer`);
+    //         const scorers = response.data.data.scorers;
+    //         if (scorers.length > 0) {
+    //             const latestScorer = scorers[scorers.length - 1];
+    //             const latestScorerId = latestScorer.id;
+                
+    //             return latestScorerId;
+    //         } else {
+    //             return null;
+    //         }
+    //     } catch (error) {
+    //         const err = error as AxiosError<ResponseData<null>>;
+    //         console.error("Error:", err);
+
+    //         return null;
+    //     }
+    // };
     const getExamId = async (): Promise<string | null> => {
         try {
             const response = await api.get("/super/exam");
@@ -60,26 +74,6 @@ const Penembak = () => {
                 const lastExamId = lastExam.id;
 
                 return lastExamId;
-            } else {
-                return null;
-            }
-        } catch (error) {
-            const err = error as AxiosError<ResponseData<null>>;
-            console.error("Error:", err);
-
-            return null;
-        }
-    };
-    const getPengujiId = async (): Promise<string | null> => {
-        try {
-            const examId = await getExamId();
-            const response = await api.get(`/super/exam/${examId}/scorer`);
-            const scorers = response.data.data.scorers;
-            if (scorers.length > 0) {
-                const latestScorer = scorers[scorers.length - 1];
-                const latestScorerId = latestScorer.id;
-                console.log(latestScorerId);
-                return latestScorerId;
             } else {
                 return null;
             }
@@ -133,7 +127,7 @@ const Penembak = () => {
 
         query
             ?.then((res) => {
-                console.log(res);
+                
                 setResponse(res);
                 setFormState([false, ""]);
                 if (!res.error) {

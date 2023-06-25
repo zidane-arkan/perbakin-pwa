@@ -110,6 +110,16 @@ export interface CreateScorerRequest {
   name: string;
 }
 
+
+export interface UpdateScorerResponse {
+  id?: string;
+  scorer_id?: string | null;
+  examId?: string | null;
+  username: string;
+  name: string;
+  password: string;
+}
+
 // Create Admin
 export interface CreateAdminResponse { 
   id?: string;
@@ -141,6 +151,18 @@ export interface CreateShooterResponse {
 export interface UpdateShooterRequest { 
   id?: string;
   examId?: string | null;
+  oriScorerId?: string | null;
+  scorer_id?: string | null;
+  shooterId?: string | null;
+  name: string;
+  province: string;
+  club: string;
+  image_path?: string | null;
+}
+
+// ADMIN SHOOTER
+export interface UpdateShooterAdminReq { 
+  id?: string;
   oriScorerId?: string | null;
   scorer_id?: string | null;
   shooterId?: string | null;

@@ -29,7 +29,7 @@ const Admin = () => {
                 <Route path='/' element={<Dashboard />} >
                     <Route path='admindashboard' element={<DashboardAdmin />} />
                     <Route path='penembak' element={<Penembak />} />
-                    <Route path='penguji' element={<Penguji userPenguji={userPenguji} />} />
+                    <Route path='penguji' element={<Penguji />} />
                 </Route>
                 {/* Route Tambah */}
                 <Route path='admindashboard/tambahpenembak' element={<TambahPenembak />} />
@@ -37,7 +37,7 @@ const Admin = () => {
                 {/* Route Edit */}
                 <Route path='admindashboard/editujian' element={<TentangUjian />} />
                 <Route path='admindashboard/editprofile' element={<Profile />} />
-                <Route path='penembak/editpenembak' element={<PenembakEdit />} />
+                <Route path='penembak/editpenembak/:penembakId/:pengujiId' element={<PenembakEdit />} />
                 {/* Route Hasil Ujian */}
                 <Route path='admindashboard/hasilujian' element={<HasilUjian />} />
                 {/* Route Detail Penguji */}
