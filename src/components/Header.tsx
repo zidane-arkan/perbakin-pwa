@@ -7,6 +7,9 @@ import targetbgprofile from '../app-assets/targetbgprofile.png'
 import pelurubg from '../app-assets/pelurubg.png'
 import close from '../app-assets/close.png';
 import trashred from '../app-assets/trashred.png';
+
+import api from "../api/api";
+
 const IconType: string | any = {
   'close': close,
   'return': arrowLeft,
@@ -88,7 +91,17 @@ export const HeaderWhiteCustom = (props: propsBlueCustom) => {
           <img src={IconType[props.typeIcon]} alt='icon' />
         </button>
         <h2 className='text-black text-lg'>{props.title}</h2>
-        <button className='w-[24px] h-[24px]' type='button' onClick={() => navigate(-1)}>
+        <button className='w-[24px] h-[24px]' type='button' onClick={() => {
+          api
+            .post("/logout")
+            .then((res) => {
+              console.log(res);
+              navigate('/');
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }}>
           <img src={trashred} alt='icon' />
         </button>
       </div>

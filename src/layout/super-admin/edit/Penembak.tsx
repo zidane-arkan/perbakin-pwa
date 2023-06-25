@@ -38,8 +38,8 @@ const Penembak = () => {
     // console.log(id)
 
 
-    // const [pengujiList, setPengujiList] = useState<any[]>([]);
-    // const [selectedPengujiId, setSelectedPengujiId] = useState("");
+    const [pengujiList, setPengujiList] = useState<any[]>([]);
+    const [selectedPengujiId, setSelectedPengujiId] = useState("");
     // const [previewImage, setPreviewImage] = useState<string | null>(null);
 
     // const handleImageChange = (e: any) => {
@@ -90,26 +90,26 @@ const Penembak = () => {
             return null;
         }
     };
-    // const getPengujiList = async () => {
-    //     try {
-    //         const examId = await getExamId();
-    //         const response = await api.get(`/super/exam/${examId}/scorer`);
-    //         const scorers = response.data.data.scorers;
-    //         if (scorers.length > 0) {
-    //             const formattedScorers = scorers.map((scorer : any) => ({
-    //                 id: scorer.id,
-    //                 name: scorer.name,
-    //             }));
-    //             setPengujiList(formattedScorers);
-    //         }
-    //     } catch (error) {
-    //         const err = error as AxiosError<ResponseData<null>>;
-    //         console.error("Error:", err);
-    //     }
-    // };
-    // useEffect(() => {
-    //     getPengujiList();
-    // }, []);
+    const getPengujiList = async () => {
+        try {
+            const examId = await getExamId();
+            const response = await api.get(`/super/exam/${examId}/scorer`);
+            const scorers = response.data.data.scorers;
+            if (scorers.length > 0) {
+                const formattedScorers = scorers.map((scorer : any) => ({
+                    id: scorer.id,
+                    name: scorer.name,
+                }));
+                setPengujiList(formattedScorers);
+            }
+        } catch (error) {
+            const err = error as AxiosError<ResponseData<null>>;
+            console.error("Error:", err);
+        }
+    };
+    useEffect(() => {
+        getPengujiList();
+    }, []);
     const createShooterHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setResponse({ message: "", error: false })
@@ -165,7 +165,7 @@ const Penembak = () => {
                 <form onSubmit={createShooterHandler} className='flex flex-col w-full h-auto justify-between gap-8'>
                    
                     <section>
-                        {/* <div className="mb-6">
+                        <div className="mb-6">
                             <label htmlFor="image" className="block mb-2 text-sm font-bold text-gray-900">Upload Gambar</label>
                             <input
                                 name="image"
@@ -175,7 +175,7 @@ const Penembak = () => {
                                 className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 onChange={handleImageChange}
                             />
-                        </div> */}
+                        </div>
                         <div className="mb-6">
                             <label htmlFor="fullname" className="block mb-2 text-sm font-bold text-gray-900">Nama Lengkap</label>
                             <input name='fullname' type="text" id="fullname" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Nama Lengkap Anda" required />
@@ -194,7 +194,7 @@ const Penembak = () => {
                                 required
                             />
                         </div>
-                        {/* <div className='mb-1'>
+                        <div className='mb-1'>
                             <label htmlFor="penguji" className="block mb-2 text-sm font-bold text-gray-900">Ganti Penguji</label>
                             {pengujiList.map((penguji) => (
                                 <div key={penguji.id}>
@@ -209,7 +209,7 @@ const Penembak = () => {
                                     <label className='pl-4 capitalize' htmlFor={penguji.id}>{penguji.name}</label>
                                 </div>
                             ))}
-                        </div> */}
+                        </div>
                         {/* <div className="flex items-start">
                             <div className="flex items-center h-5">
                                 <input id="remember" type="checkbox" value="" className="w-4 h-4 bg-blue-500 border border-gray-600 rounded focus:ring-3 focus:outline-none focus:bg-blue-500 focus:ring-blue-600" required />

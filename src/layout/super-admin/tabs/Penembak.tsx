@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { PenembakAdmin } from '../../pages/Penembak'
+import { PenembakSuperAdmin } from '../../pages/Penembak'
 import api from '../../../api/api'
 import { AxiosError } from 'axios'
 import { ResponseData } from '../../../context/response'
@@ -59,7 +59,7 @@ const Penembak = () => {
     }
     return (
 
-        <PenembakAdmin shooters={shooters} />
+        <PenembakSuperAdmin shooters={shooters} />
     )
 }
 

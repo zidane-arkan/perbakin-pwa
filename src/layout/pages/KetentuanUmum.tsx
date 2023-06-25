@@ -11,9 +11,9 @@ const KetentuanUmum = (props: any) => {
         <Layout className={'rounded-3xl mt-28 pb-[15%] pt-[10%]'}>
             <HeaderBlue>
                 <div className='flex flex-row justify-between items-center w-full '>
-                    <Link to={'/'} type='button'>
+                    <button onClick={() => navigate(-1)} type='button'>
                         <img src={arrowleft} alt='arrow-left' />
-                    </Link>
+                    </button>
                     <h2>Memulai Ujian</h2>
                     <span></span>
                 </div>

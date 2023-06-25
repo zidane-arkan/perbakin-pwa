@@ -28,7 +28,7 @@ const Admin = () => {
             <Routes>
                 <Route path='/' element={<Dashboard />} >
                     <Route path='admindashboard' element={<DashboardAdmin />} />
-                    <Route path='penembak' element={<Penembak statusAuth={true} />} />
+                    <Route path='penembak' element={<Penembak />} />
                     <Route path='penguji' element={<Penguji userPenguji={userPenguji} />} />
                 </Route>
                 {/* Route Tambah */}

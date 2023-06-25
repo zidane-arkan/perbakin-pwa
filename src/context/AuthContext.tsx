@@ -41,6 +41,9 @@ interface authContextInterface {
   createScorer: (scorerData: CreateScorerRequest) => Promise<HandlerResponse>;
   createShooter: (shooterData: CreateShooterResponse) => Promise<HandlerResponse>;
   updateShooter: (shooterData: UpdateShooterRequest) => Promise<HandlerResponse>;
+  // ADMIN
+  createScorerAdmin: (scorerData: CreateScorerRequest) => Promise<HandlerResponse>;
+  createShooterAdmin: (shooterData: CreateShooterResponse) => Promise<HandlerResponse>;
 }
 
 export const AuthContext = createContext<authContextInterface | null>(null);
@@ -272,6 +275,55 @@ function AuthProvider(props: { children: JSX.Element }) {
     }
   }
 
+  // ADMIN
+
+  const createScorerAdmin = async (scorerData: CreateScorerRequest): Promise<HandlerResponse> => {
+    try {
+      const response = await api.post<ResponseData<CreateScorerRequest>>(`/admin/scorer`, {
+        name: scorerData.name,
+        username: scorerData.username,
+        password: scorerData.password,
+      });
+      console.log(response);
+      return { message: response.data.message, error: false, response: response };
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+
+      return {
+        message: "error " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  };
+
+  const createShooterAdmin = async (shooterData: CreateShooterResponse): Promise<HandlerResponse> => {
+    console.log(shooterData);
+    const formData = new FormData();
+    if (shooterData.examId) {
+      formData.append("examId", shooterData.examId);
+    }
+    if (shooterData.scorer_id) {
+      formData.append("examId", shooterData.scorer_id);
+    }
+    formData.append("name", shooterData.name);
+    formData.append("province", shooterData.province);
+    formData.append("club", shooterData.club);
+    if (shooterData.image_path) {
+      formData.append("image", shooterData.image_path);
+    }
+    try {
+      const response = await api.post<ResponseData<CreateShooterResponse>>(`/admin/scorer/${shooterData.scorer_id}/shooter`, formData);
+      console.log(response);
+      return { message: response.data.message, error: false, response: response };
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+
+      return {
+        message: "error " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  }
   return (
     <AuthContext.Provider
       value={{
@@ -282,7 +334,9 @@ function AuthProvider(props: { children: JSX.Element }) {
         createAdmin,
         createScorer,
         createShooter,
-        updateShooter
+        updateShooter,
+        createScorerAdmin,
+        createShooterAdmin
       }}
     >
       {props.children}
