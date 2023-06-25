@@ -43,6 +43,7 @@ const SuperAdmin: React.FC = () => {
             try {
                 const examId = await getExamId();
                 const response = await api.get(`/super/exam/${examId}/admin`);
+                console.log(response)
                 const admins = response.data.data.admins;
                 console.log(admins)
                 setAdmins(admins);
