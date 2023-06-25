@@ -83,6 +83,7 @@ export const CardPenembakAdmin = (props: any) => {
     const shownCardHandler = () => {
         return setIsCardShown(!isCartShown);
     }
+    console.log(props)
     return (
         <>
             {(isCartShown && true) &&
@@ -129,7 +130,7 @@ export const CardPenembakAdminBiasa = (props: any) => {
             {(isCartShown && true) &&
                 <DetailPenembakAdminBiasa
                     scorer_id={props.scorerId}
-                    id={props.id}                
+                    id={props.id}
                     shownCardHandler={shownCardHandler}
                     penembak={props.penembak}
                     klub={props.klub}

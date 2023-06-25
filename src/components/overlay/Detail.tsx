@@ -132,6 +132,7 @@ export const DetailPenembakAdminBiasa = (props: any) => {
 
 export const DetailPenembakAdmin = (props: any) => {
     const navigate = useNavigate();
+    console.log(props)
     return (
         <Modal shownCardHandler={props.shownCardHandler}>
             <section className='flex flex-col w-full h-auto'>
@@ -163,7 +164,7 @@ export const DetailPenembakAdmin = (props: any) => {
                         </span>
                         <div className='flex w-full items-center gap-4 justify-between'>
                             <button onClick={() => navigate(-1)} className='w-[55%] items-center text-sm text-center font-semibold px-2 py-3 text-[#FC443E] border border-red-500 bg-transparent rounded-lg' >Hapus Penembak</button>
-                            <Link to={`/admin/penembak/editpenembak/${props.id}/${props.scorer_id}`} className='w-[45%] text-sm items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Edit Profile</Link>
+                            <Link to={`/superadmin/tabs/admindashboard/editpenembak/${props.id}/${props.scorer_id}`} className='w-[50%] text-sm items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Edit Penembak</Link>
                             {/* <Link to={'editpenembak'} className='w-[45%] text-sm items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Edit Profile</Link> */}
                         </div>
                     </div>
@@ -211,7 +212,7 @@ export const DetailPengujiAdmin = (props: any) => {
 export const DetailSuperAdmin = (props: any) => {
     const navigate = useNavigate();
     const data = useLocation();
-    console.log(data)
+    
     // const { id } = useParams();
     return (
         <Modal shownCardHandler={props.shownCardHandler}>

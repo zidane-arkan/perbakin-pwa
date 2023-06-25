@@ -47,7 +47,7 @@ const SuperAdmin = () => {
                 {/* Route Edit */}
                 <Route path='tabs/admindashboard/editprofile' element={<EditProfile />} />
                 <Route path='tabs/admindashboard/editujian' element={<EditUjian />} />
-                <Route path='tabs/admindashboard/editpenembak/:penembakId/:pengujiId' element={<EditPenembak />} />
+                <Route path='tabs/admindashboard/editpenembak/:id/:scorer_id' element={<EditPenembak />} />
                 <Route path='tabs/admindashboard/editadmin/:id' element={<EditAdmin />} />
                 <Route path='tabs/admindashboard/editpenguji/:id' element={<EditPenguji />} />
                 {/* Route Hasil Ujian */}

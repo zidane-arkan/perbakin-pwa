@@ -26,13 +26,24 @@ const Penguji: React.FC<PengujiAdminProps> = (props: any) => {
                     </span>
                     {/* <CardPenguji penguji={'Penguji 1'} />
                     <CardPenguji penguji={'Penguji 2'} /> */}
-                    {props.scorers.map((scorer: Scorer, index: string) => (
+                    {/* {props.scorers.map((scorer: Scorer, index: string) => (
                         <CardPenguji
                             key={index}
                             id={scorer.id}
                             penguji={scorer.name}
                         />
-                    ))}
+                    ))} */}
+                    {props.scorers && props.scorers.length > 0 ? (
+                        props.scorers.map((scorer: Scorer, index: string) => (
+                            <CardPenguji
+                                key={index}
+                                id={scorer.id}
+                                penguji={scorer.name}
+                            />
+                        ))
+                    ) : (
+                        <div className="text-center">Anda belum menambahkan Penguji</div>
+                    )}
                     {/* {props.userPenguji?.map((penguji: any) => {
                         return (
                             <CardPenguji key={penguji.id} id={penguji.id} penguji={penguji.penguji} />

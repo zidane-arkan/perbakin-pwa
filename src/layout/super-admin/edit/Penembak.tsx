@@ -28,9 +28,9 @@ const Penembak = () => {
     const [previewImage, setPreviewImage] = useState<string | null>(null);
 
     const data = useLocation();
-    const { penembakId, pengujiId } = useParams();
-    console.log(penembakId)
-    console.log(pengujiId)
+    const { id, scorer_id } = useParams();
+    console.log(id)
+    console.log(scorer_id)
 
     const handleImageChange = (e: any) => {
         const file = e.target.files[0];
@@ -117,8 +117,8 @@ const Penembak = () => {
             penembakCtx &&
             penembakCtx.updateShooter({
                 examId: examId,
-                oriScorerId: pengujiId,
-                shooterId: penembakId,
+                oriScorerId: scorer_id,
+                shooterId: id,
                 scorer_id: selectedPengujiId,
                 name: elements.fullname.value,
                 province: elements.province.value,
