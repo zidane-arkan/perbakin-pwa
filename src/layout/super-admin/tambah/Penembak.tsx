@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { BgHeaderProfile } from '../../../components/Header'
 import { LayoutAdmin, LayoutChild } from '../../../components/Layout'
 import avatar from '../../../app-assets/avatar.png'
@@ -25,6 +25,9 @@ const Penembak = () => {
 
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+    const [pengujiList, setPengujiList] = useState<any[]>([]);
+    const [selectedPengujiId, setSelectedPengujiId] = useState("");
 
     const handleImageChange = (e: any) => {
         const file = e.target.files[0];
@@ -55,26 +58,49 @@ const Penembak = () => {
             return null;
         }
     };
-    const getPengujiId = async (): Promise<string | null> => {
+
+    const getPengujiList = async () => {
         try {
             const examId = await getExamId();
-            const response = await api.get(`/super/exam/${examId}/scorer`);
+            const response = await api.get(`super/exam/${examId}/scorer`);
             const scorers = response.data.data.scorers;
             if (scorers.length > 0) {
-                const latestScorer = scorers[scorers.length - 1];
-                const latestScorerId = latestScorer.id;
-                console.log(latestScorerId);
-                return latestScorerId;
-            } else {
-                return null;
+                const formattedScorers = scorers.map((scorer: any) => ({
+                    id: scorer.id,
+                    name: scorer.name,
+                }));
+                setPengujiList(formattedScorers);
             }
         } catch (error) {
             const err = error as AxiosError<ResponseData<null>>;
             console.error("Error:", err);
-
-            return null;
         }
     };
+
+    useEffect(() => {
+        getPengujiList();
+    }, []);
+
+    // const getPengujiId = async (): Promise<string | null> => {
+    //     try {
+    //         const examId = await getExamId();
+    //         const response = await api.get(`/super/exam/${examId}/scorer`);
+    //         const scorers = response.data.data.scorers;
+    //         if (scorers.length > 0) {
+    //             const latestScorer = scorers[scorers.length - 1];
+    //             const latestScorerId = latestScorer.id;
+    //             console.log(latestScorerId);
+    //             return latestScorerId;
+    //         } else {
+    //             return null;
+    //         }
+    //     } catch (error) {
+    //         const err = error as AxiosError<ResponseData<null>>;
+    //         console.error("Error:", err);
+
+    //         return null;
+    //     }
+    // };
     const createShooterHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setResponse({ message: "", error: false })
@@ -82,13 +108,13 @@ const Penembak = () => {
 
         const elements = e.currentTarget.elements as CreateShooterElements;
         const examId = await getExamId();
-        const pengujiId = await getPengujiId();
-        
+        // const pengujiId = await getPengujiId();
+
         const query =
             penembakCtx &&
             penembakCtx.createShooter({
                 examId: examId,
-                scorer_id: pengujiId,
+                scorer_id: selectedPengujiId,
                 name: elements.fullname.value,
                 province: elements.province.value,
                 club: elements.club.value,
@@ -140,6 +166,25 @@ const Penembak = () => {
                             />
                         </div>
                         <div className="mb-6">
+                            <label htmlFor="penguji" className="block mb-2 text-sm font-bold text-gray-900">Pilih Penguji</label>
+                            <select
+                                id="penguji"
+                                name="penguji"
+                                className='w-full flex p-2 rounded-lg bg-gray-50 border-2 border-gray-300'
+                                value={selectedPengujiId}
+                                onChange={(e) => setSelectedPengujiId(e.target.value)}
+                                required
+                            >
+                                <option disabled={true} value="">Pilih Penguji</option>
+                                {pengujiList.map((penguji) => (
+                                    <option className='capitalize' key={penguji.id} value={penguji.id}>
+                                        {penguji.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="mb-6">
                             <label htmlFor="fullname" className="block mb-2 text-sm font-bold text-gray-900">Nama Lengkap</label>
                             <input name='fullname' type="text" id="fullname" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Nama Lengkap Anda" required />
                         </div>
@@ -147,7 +192,7 @@ const Penembak = () => {
                             <label htmlFor="province" className="block mb-2 text-sm font-bold text-gray-900">Pengprov</label>
                             <input name='province' type="text" id="province" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                         </div>
-                        <div className="mb-6">
+                        <div className="mb-0">
                             <label htmlFor="club" className="block mb-2 text-sm font-bold text-gray-900">Klub</label>
                             <input
                                 name='club'
@@ -156,12 +201,6 @@ const Penembak = () => {
                                 className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 required
                             />
-                        </div>
-                        <div className="flex items-start mb-6">
-                            <div className="flex items-center h-5">
-                                <input id="remember" type="checkbox" value="" className="w-4 h-4 bg-blue-500 border border-gray-600 rounded focus:ring-3 focus:outline-none focus:bg-blue-500 focus:ring-blue-600" required />
-                            </div>
-                            <label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-600">Ingat Saya</label>
                         </div>
                     </section>
                     {showError &&

@@ -39,6 +39,7 @@ const Penembak = () => {
 
     const [pengujiList, setPengujiList] = useState<any[]>([]);
     const [selectedPengujiId, setSelectedPengujiId] = useState("");
+    
     const handleClose = () => {
         setShowError(false);
     };

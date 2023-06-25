@@ -222,7 +222,7 @@ function AuthProvider(props: { children: JSX.Element }) {
       formData.append("examId", shooterData.examId);
     }
     if (shooterData.scorer_id) {
-      formData.append("examId", shooterData.scorer_id);
+      formData.append("scorer_id", shooterData.scorer_id);
     }
     formData.append("name", shooterData.name);
     formData.append("province", shooterData.province);

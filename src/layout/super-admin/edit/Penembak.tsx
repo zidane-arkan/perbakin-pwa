@@ -123,7 +123,7 @@ const Penembak = () => {
             penembakCtx &&
             penembakCtx.updateShooter({
                 examId: examId,
-                scorer_id: pengujiId,
+                scorer_id: selectedPengujiId,
                 shooterId: id,
                 name: elements.fullname.value,
                 province: elements.province.value,

@@ -17,6 +17,12 @@ const Login = () => {
   const [formState, setFormState] = useState<[boolean, string]>([false, ""]); //buttonDisabled, stateMessage
   const [response, setResponse] = useState<HandlerResponse>({ message: "", error: false }); //responseMessage, isError
 
+  const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+  
+  const closeErrorDialog = () => {
+    setIsErrorDialogOpen(false);
+  };
+  
   const loginHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setResponse({ message: "", error: false });
