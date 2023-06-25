@@ -178,6 +178,24 @@ const Penembak = () => {
                             />
                         </div>
                         <div className="mb-6">
+                            <label htmlFor="penguji" className="block mb-2 text-sm font-bold text-gray-900">Pilih Penguji</label>
+                            <select
+                                id="penguji"
+                                name="penguji"
+                                className='w-full flex p-2 rounded-lg bg-gray-50 border-2 border-gray-300'
+                                value={selectedPengujiId}
+                                onChange={(e) => setSelectedPengujiId(e.target.value)}
+                                required
+                            >
+                                <option disabled={true} value="">Pilih Penguji</option>
+                                {pengujiList.map((penguji) => (
+                                    <option className='capitalize' key={penguji.id} value={penguji.id}>
+                                        {penguji.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="mb-6">
                             <label htmlFor="fullname" className="block mb-2 text-sm font-bold text-gray-900">Nama Lengkap</label>
                             <input name='fullname' type="text" id="fullname" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Nama Lengkap Anda" required />
                         </div>
@@ -195,22 +213,7 @@ const Penembak = () => {
                                 required
                             />
                         </div>
-                        <div className='mb-1'>
-                            <label htmlFor="penguji" className="block mb-2 text-sm font-bold text-gray-900">Ganti Penguji</label>
-                            {pengujiList.map((penguji) => (
-                                <div key={penguji.id}>
-                                    <input
-                                        type="radio"
-                                        id={penguji.id}
-                                        name="penguji"
-                                        value={penguji.id}
-                                        onChange={(e) => setSelectedPengujiId(e.target.value)}
-                                        checked={selectedPengujiId === penguji.id}
-                                    />
-                                    <label className='pl-4 capitalize' htmlFor={penguji.id}>{penguji.name}</label>
-                                </div>
-                            ))}
-                        </div>
+
                         {/* <div className="flex items-start">
                             <div className="flex items-center h-5">
                                 <input id="remember" type="checkbox" value="" className="w-4 h-4 bg-blue-500 border border-gray-600 rounded focus:ring-3 focus:outline-none focus:bg-blue-500 focus:ring-blue-600" required />
