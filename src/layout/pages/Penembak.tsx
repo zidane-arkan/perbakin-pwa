@@ -8,6 +8,7 @@ type Props = {
 }
 
 type Penembak = {
+    scorer_id: string;
     id: string;
     name: string;
     club: string;
@@ -87,6 +88,7 @@ export const PenembakSuperAdmin: React.FC<PenembakAdminProps> = (props: any) => 
                         <CardPenembakAdmin
                             id={shooter.id}
                             key={index}
+                            scorerId={shooter.scorer_id}
                             penembak={shooter.name}
                             klub={shooter.club}
                             stage={'Stage #1'}

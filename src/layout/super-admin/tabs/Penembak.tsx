@@ -32,6 +32,7 @@ const Penembak = () => {
                 const examId = await getExamId();
                 const response = await api.get(`/super/exam/${examId}/shooter`);
                 const shooters = response.data.data.shooters;
+                console.log(shooters)
                 setShooters(shooters);
             } catch (error) {
                 const err = error as AxiosError<ResponseData<null>>;

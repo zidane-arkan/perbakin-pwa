@@ -115,10 +115,17 @@ export interface CreateAdminResponse {
   id?: string;
   examId: string | null;
   username: string;
-  password: string;
   name: string;
+  password: string;
 }
-
+export interface UpdateAdminResponse {
+  id?: string;
+  admin_id?: string | null;
+  examId?: string | null;
+  username: string;
+  name: string;
+  password: string;
+}
 // Create Shooter
 export interface CreateShooterResponse { 
   id?: string;
@@ -134,6 +141,7 @@ export interface CreateShooterResponse {
 export interface UpdateShooterRequest { 
   id?: string;
   examId?: string | null;
+  oriScorerId?: string | null;
   scorer_id?: string | null;
   shooterId?: string | null;
   name: string;

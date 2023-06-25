@@ -68,7 +68,7 @@ const Admin = () => {
                 setResponse(res);
                 setFormState([false, ""]);
                 if (!res.error) {
-                    navigate("/superadmin/tabs/admindashboard");
+                    navigate(-1);
                 }
             })
             .catch((err) => {

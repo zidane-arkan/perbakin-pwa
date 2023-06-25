@@ -27,17 +27,18 @@ const Penembak = () => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
 
+    const data = useLocation();
+    const { penembakId, pengujiId } = useParams();
+    console.log(penembakId)
+    console.log(pengujiId)
+
     const handleImageChange = (e: any) => {
         const file = e.target.files[0];
         setSelectedImage(file);
         setPreviewImage(URL.createObjectURL(file));
     };
 
-    const data = useLocation();
-    const { id } = useParams();
     // console.log(id)
-
-
     const [pengujiList, setPengujiList] = useState<any[]>([]);
     const [selectedPengujiId, setSelectedPengujiId] = useState("");
     // const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -47,7 +48,6 @@ const Penembak = () => {
     //     setSelectedImage(file);
     //     setPreviewImage(URL.createObjectURL(file));
     // };
-
     const handleClose = () => {
         setShowError(false);
     };
@@ -96,7 +96,7 @@ const Penembak = () => {
             const response = await api.get(`/super/exam/${examId}/scorer`);
             const scorers = response.data.data.scorers;
             if (scorers.length > 0) {
-                const formattedScorers = scorers.map((scorer : any) => ({
+                const formattedScorers = scorers.map((scorer: any) => ({
                     id: scorer.id,
                     name: scorer.name,
                 }));
@@ -110,21 +110,22 @@ const Penembak = () => {
     useEffect(() => {
         getPengujiList();
     }, []);
-    const createShooterHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    const updateShooterHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setResponse({ message: "", error: false })
         setFormState([true, "Loading..."])
-        
+
         const elements = e.currentTarget.elements as PostShooterElements;
         const examId = await getExamId();
-        const pengujiId = await getPengujiId();
+        // const pengujiId = await getPengujiId();
 
         const query =
             penembakCtx &&
             penembakCtx.updateShooter({
                 examId: examId,
+                oriScorerId: pengujiId,
+                shooterId: penembakId,
                 scorer_id: selectedPengujiId,
-                shooterId: id,
                 name: elements.fullname.value,
                 province: elements.province.value,
                 club: elements.club.value,
@@ -136,7 +137,7 @@ const Penembak = () => {
                 setResponse(res);
                 setFormState([false, ""]);
                 if (!res.error) {
-                    navigate("/superadmin/tabs/admindashboard");
+                    navigate(-1);
                 }
             })
             .catch((err) => {
@@ -144,7 +145,7 @@ const Penembak = () => {
                 setFormState([false, ""]);
             });
     }
-    
+
     return (
         <LayoutAdmin className={'rounded-3xl mt-[19rem] pt-[10%]'}>
             <BgHeaderProfile title='Edit Penembak'>
@@ -162,8 +163,8 @@ const Penembak = () => {
 
             </BgHeaderProfile>
             <LayoutChild className='justify-between'>
-                <form onSubmit={createShooterHandler} className='flex flex-col w-full h-auto justify-between gap-8'>
-                   
+                <form onSubmit={updateShooterHandler} className='flex flex-col w-full h-auto justify-between gap-8'>
+
                     <section>
                         <div className="mb-6">
                             <label htmlFor="image" className="block mb-2 text-sm font-bold text-gray-900">Upload Gambar</label>

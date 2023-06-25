@@ -87,11 +87,8 @@ export const DetailAdmin = (props: any) => {
     )
 }
 
-export const DetailSuperAdmin = (props: any) => {
+export const DetailPenembakAdmin = (props: any) => {
     const navigate = useNavigate();
-    const data = useLocation();
-    console.log(data)
-    const { id } = useParams();
     return (
         <Modal shownCardHandler={props.shownCardHandler}>
             <section className='flex flex-col w-full h-auto'>
@@ -123,7 +120,42 @@ export const DetailSuperAdmin = (props: any) => {
                         </span>
                         <div className='flex w-full items-center gap-4 justify-between'>
                             <button onClick={() => navigate(-1)} className='w-[55%] items-center text-sm text-center font-semibold px-2 py-3 text-[#FC443E] border border-red-500 bg-transparent rounded-lg' >Hapus Penembak</button>
-                            <Link to={`/superadmin/tabs/admindashboard/editpenembak/${props.id}`} className='w-[45%] text-sm items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Edit Profile</Link>
+                            <Link to={`/superadmin/tabs/admindashboard/editpenembak/${props.id}/${props.scorer_id}`} className='w-[45%] text-sm items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Edit Profile</Link>
+                            {/* <Link to={'editpenembak'} className='w-[45%] text-sm items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Edit Profile</Link> */}
+                        </div>
+                    </div>
+                </LayoutChild>
+            </section>
+        </Modal>
+    )
+}
+
+export const DetailSuperAdmin = (props: any) => {
+    const navigate = useNavigate();
+    const data = useLocation();
+    console.log(data)
+    // const { id } = useParams();
+    return (
+        <Modal shownCardHandler={props.shownCardHandler}>
+            <section className='flex flex-col w-full h-auto'>
+                <div className='flex relative w-full h-[198px]'>
+                    <img src={imgDetail1} className='w-full h-full rounded-xl z-[-1]' />
+                    <button onClick={props.shownCardHandler} className='absolute z-10 top-4 right-4'>
+                        <img src={close} />
+                    </button>
+                </div>
+                <LayoutChild className='flex-col w-full gap-6 py-8'>
+                    <h2 className='capitalize'>{props.admin}</h2>
+                    <div className='flex flex-col w-full gap-4'>
+                        <span className='flex justify-between w-full'>
+                            <h6>Username</h6>
+                            <h4 className='capitalize'>: {props.username}</h4>
+                        </span>
+                    </div>
+                    <div className='flex w-full items-start flex-col gap-6'>
+                        <div className='flex w-full items-center gap-4 justify-between'>
+                            <button onClick={() => navigate(-1)} className='w-[55%] items-center text-sm text-center font-semibold px-2 py-3 text-[#FC443E] border border-red-500 bg-transparent rounded-lg' >Hapus Penembak</button>
+                            <Link to={`/superadmin/tabs/admindashboard/editadmin/${props.id}`} className='w-[45%] text-sm items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Edit Admin</Link>
                             {/* <Link to={'editpenembak'} className='w-[45%] text-sm items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Edit Profile</Link> */}
                         </div>
                     </div>

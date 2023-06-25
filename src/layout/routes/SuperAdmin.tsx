@@ -16,6 +16,7 @@ import TambahAdmin from '../super-admin/tambah/Admin';
 import EditProfile from '../super-admin/edit/Profile';
 import EditUjian from '../super-admin/edit/Ujian';
 import EditPenembak from '../super-admin/edit/Penembak';
+import EditAdmin from '../super-admin/edit/Admin';
 // Route Hasil Ujian
 import HasilUjian from '../super-admin/HasilUjian';
 import DetailPenguji from '../pages/DetailPenguji';
@@ -45,7 +46,8 @@ const SuperAdmin = () => {
                 {/* Route Edit */}
                 <Route path='tabs/admindashboard/editprofile' element={<EditProfile />} />
                 <Route path='tabs/admindashboard/editujian' element={<EditUjian />} />
-                <Route path='tabs/admindashboard/editpenembak/:id' element={<EditPenembak />} />
+                <Route path='tabs/admindashboard/editpenembak/:penembakId/:pengujiId' element={<EditPenembak />} />
+                <Route path='tabs/admindashboard/editadmin/:id' element={<EditAdmin />} />
                 {/* Route Hasil Ujian */}
                 <Route path='tabs/admindashboard/hasilujian' element={<HasilUjian />} />
                 {/* Route Kelola */}

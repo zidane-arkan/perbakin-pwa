@@ -15,6 +15,7 @@ import {
   CreateExamRequest,
   CreateExamResponse,
   CreateAdminResponse,
+  UpdateAdminResponse,
   HandlerResponse,
   CreateScorerRequest,
   CreateShooterResponse,
@@ -38,10 +39,11 @@ interface authContextInterface {
     username: string;
     password: string;
   }) => Promise<HandlerResponse>;
+  updateAdmin: (adminData: UpdateAdminResponse) => Promise<HandlerResponse>;
   createScorer: (scorerData: CreateScorerRequest) => Promise<HandlerResponse>;
   createShooter: (shooterData: CreateShooterResponse) => Promise<HandlerResponse>;
   updateShooter: (shooterData: UpdateShooterRequest) => Promise<HandlerResponse>;
-  // ADMIN
+  // ADMIN AUTH
   createScorerAdmin: (scorerData: CreateScorerRequest) => Promise<HandlerResponse>;
   createShooterAdmin: (shooterData: CreateShooterResponse) => Promise<HandlerResponse>;
 }
@@ -195,6 +197,27 @@ function AuthProvider(props: { children: JSX.Element }) {
       };
     }
   };
+  const updateAdmin = async (adminData: UpdateAdminResponse): Promise<HandlerResponse> => {
+    console.log(adminData);
+    const formData = {
+      username: adminData.username,
+      name: adminData.name,
+      password: adminData.password
+    };
+
+    try {
+      const response = await api.put<ResponseData<UpdateAdminResponse>>(`/super/exam/${adminData.examId}/admin/${adminData.admin_id}`, formData);
+      console.log(response);
+      return { message: response.data.message, error: false, response: response };
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+
+      return {
+        message: "error " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  }
 
   const createScorer = async (scorerData: CreateScorerRequest): Promise<HandlerResponse> => {
     try {
@@ -252,17 +275,16 @@ function AuthProvider(props: { children: JSX.Element }) {
       province: shooterData.province,
       club : shooterData.club
     };
+    // const formData = new FormData;
+    // console.log(formData)
     // if (shooterData.scorer_id) {
     //   formData.append("scorer_id", shooterData.scorer_id);
-    // } 
+    // }
     // formData.append("name", shooterData.name);
     // formData.append("province", shooterData.province);
     // formData.append("club", shooterData.club);
-    // if (shooterData.image_path) {
-    //   formData.append("image", shooterData.image_path);
-    // }
     try {
-      const response = await api.put<ResponseData<UpdateShooterRequest>>(`/super/exam/${shooterData.examId}/scorer/${shooterData.scorer_id}/shooter/${shooterData.shooterId}`, formData);
+      const response = await api.put<ResponseData<UpdateShooterRequest>>(`/super/exam/${shooterData.examId}/scorer/${shooterData.oriScorerId}/shooter/${shooterData.shooterId}`, formData);
       console.log(response);
       return { message: response.data.message, error: false, response: response };
     } catch (error) {
@@ -332,6 +354,7 @@ function AuthProvider(props: { children: JSX.Element }) {
         createExam,
         updateExam,
         createAdmin,
+        updateAdmin,
         createScorer,
         createShooter,
         updateShooter,
