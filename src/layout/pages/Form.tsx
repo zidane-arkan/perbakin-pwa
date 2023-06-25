@@ -5,7 +5,6 @@ import { CardText } from '../../components/ui/Card';
 import { Link } from 'react-router-dom';
 import Kualifikasi from '../tabel/form/Kualifikasi';
 import Stage1 from '../tabel/form/Stage1';
-import Testing from '../tabel/form/Testing';
 type PropsForm = {
     ujian?: string
 };
