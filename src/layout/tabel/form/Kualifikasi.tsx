@@ -12,7 +12,7 @@ const Styles = styled.div`
   padding: 1rem 0;
   overflow : scroll;
   table {
-    width: 100%;
+    width: 400px;
     text-align: center;
     border-spacing: 0;
     border-right: 2px solid #D5E4F0;
@@ -65,268 +65,114 @@ const Styles = styled.div`
 const Percobaan1 = () => {
   const [tableData, setTableData] = useState([
     {
-      id: 1,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00"
-      },
-      hasil: false
+      Seri: 1,
+      NilaiPerkenaan: [2, 1, 3, 4, 2, 1, 3, 4, 2, 1, 3],
+      Total: 0,
+      HasilSeri: false
     },
     {
-      id: 2,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00"
-      },
-      hasil: false
-    },
-    {
-      id: 3,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00"
-      },
-      hasil: false
-    },
-    {
-      id: 4,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00"
-      },
-      hasil: false
-    },
-    {
-      id: 5,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00"
-      },
-      hasil: false
-    },
-    {
-      id: 6,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00"
-      },
-      hasil: false
+      Seri: 2,
+      NilaiPerkenaan: [2, 1, 3, 4, 2, 1, 3, 4, 2, 1, 3],
+      Total: 0,
+      HasilSeri: false
     }
   ]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    id: string | number,
-    field: "nilaiPerkenaanA" | "nilaiPerkenaanC" | "nilaiPerkenaanD"
+    seriIndex: number,
+    nilaiIndex: number
   ) => {
-
     const { value } = e.target;
+    const updatedData = [...tableData];
+    updatedData[seriIndex].NilaiPerkenaan[nilaiIndex] = parseInt(value, 10);
 
-    const updatedTableData = tableData.map((data) => {
-      if (data.id === id) {
-        return {
-          ...data,
-          [field]: +value
-        };
-      }
-      return data;
-    });
-
-    const totalAlpha = updatedTableData.reduce(
-      (sum, data) => sum + data.nilaiPerkenaanA,
+    // Hitung hasil penjumlahan dari kolom nilai perkenaan
+    const total = updatedData[seriIndex].NilaiPerkenaan.reduce(
+      (acc, cur) => acc + cur,
       0
     );
-    const totalCharlie = updatedTableData.reduce(
-      (sum, data) => sum + data.nilaiPerkenaanC,
-      0
-    );
-    const totalDelta = updatedTableData.reduce(
-      (sum, data) => sum + data.nilaiPerkenaanD,
-      0
-    );
+    updatedData[seriIndex].Total = total;
 
-    if (totalAlpha <= 12 && totalCharlie <= 12 && totalDelta <= 12) {
-      setTableData(updatedTableData);
-      console.log(updatedTableData); // Cetak data tabel ke konsol
-    }
+    setTableData(updatedData);
   };
 
-  const handleTimeChange = (
+  const handleCheckbox = (
     e: React.ChangeEvent<HTMLInputElement>,
-    id: string | number,
-    field: "minute" | "second" | "millisecond"
+    seriIndex: number
   ) => {
-    const { value } = e.target;
-
-    let updatedValue = value;
-    if (value.length === 1) {
-      updatedValue = "0" + value;
-    }
-
-    const updatedTableData = tableData.map((data) => {
-      if (data.id === id) {
-        return {
-          ...data,
-          waktu: {
-            ...data.waktu,
-            [field]: updatedValue
-          }
-        };
-      }
-      return data;
-    });
-
-    setTableData(updatedTableData);
-    console.log(updatedTableData); // Cetak data tabel ke konsol
-  };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, id: string | number) => {
     const { checked } = e.target;
-
-    const updatedTableData = tableData.map((data) => {
-      if (data.id === id) {
-        return {
-          ...data,
-          hasil: checked
-        };
-      }
-      return data;
-    });
-
-    setTableData(updatedTableData);
-    console.log(updatedTableData); // Cetak data tabel ke konsol
+    const updatedData = [...tableData];
+    updatedData[seriIndex].HasilSeri = checked;
+    setTableData(updatedData);
+    console.log(tableData);
   };
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th colSpan={6}>Percobaan 1</th>
-        </tr>
-        <tr>
-          <th rowSpan={2}>No</th>
-          <th colSpan={3}>Nilai Perkenaan</th>
-          <th rowSpan={2}>Waktu</th>
-          <th rowSpan={2}>Hasil</th>
-        </tr>
-        <tr>
-          <th>A</th>
-          <th>C</th>
-          <th>D</th>
-        </tr>
-      </thead>
-      {tableData.map((data) => (
-        <tbody key={data.id}>
+    <div className="App">
+      <table>
+        <thead>
           <tr>
-            <td rowSpan={2}>{data.id}</td>
-            <td>
-              <input
-                type="number"
-                min={0}
-                max={2 - data.nilaiPerkenaanC - data.nilaiPerkenaanD}
-                value={data.nilaiPerkenaanA}
-                onChange={(e) =>
-                  handleInputChange(e, data.id, "nilaiPerkenaanA")
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="number"
-                min={0}
-                max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanD}
-                value={data.nilaiPerkenaanC}
-                onChange={(e) =>
-                  handleInputChange(e, data.id, "nilaiPerkenaanC")
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="number"
-                min={0}
-                max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanC}
-                value={data.nilaiPerkenaanD}
-                onChange={(e) =>
-                  handleInputChange(e, data.id, "nilaiPerkenaanD")
-                }
-              />
-            </td>
-            <td rowSpan={2}>
-              <div className="stopwatch">
-                <input
-                  id={`minutes-${data.id}`}
-                  type="number"
-                  name="minute"
-                  max="59"
-                  min="00"
-                  placeholder="mm"
-                  value={data.waktu.minute}
-                  onChange={(e) => handleTimeChange(e, data.id, "minute")}
-                />
-                :
-                <input
-                  id={`seconds-${data.id}`}
-                  type="number"
-                  name="second"
-                  max="59"
-                  min="00"
-                  placeholder="ss"
-                  value={data.waktu.second}
-                  onChange={(e) => handleTimeChange(e, data.id, "second")}
-                />
-                .
-                <input
-                  id={`milliseconds-${data.id}`}
-                  type="number"
-                  name="millisecond"
-                  max="99"
-                  min="00"
-                  placeholder="SS"
-                  value={data.waktu.millisecond}
-                  onChange={(e) => handleTimeChange(e, data.id, "millisecond")}
-                />
-              </div>
-            </td>
-            <td rowSpan={2}>
-              <input
-                type="checkbox"
-                id={`seri-${data.id}`}
-                name="seri"
-                value="benar"
-                checked={data.hasil}
-                onChange={(e) => handleCheckboxChange(e, data.id)}
-              />
-            </td>
+            <th colSpan={1}>Seri</th>
+            <th colSpan={11}>Nilai Perkenaan</th>
+            <th colSpan={1}>Total</th>
+            <th colSpan={1}>Hasil Seri</th>
           </tr>
-          <tr></tr>
+          <tr>
+            <th>No Seri</th>
+            <th>0</th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+            <th>6</th>
+            <th>7</th>
+            <th>8</th>
+            <th>9</th>
+            <th>10</th>
+            <th>Jumlah</th>
+            <th>Hasil</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData.map((row, index) => (
+            <React.Fragment key={index}>
+              <tr>
+                <td rowSpan={2}>{row.Seri}</td>
+                {row.NilaiPerkenaan.map((nilai, nilaiIndex) => (
+                  <td key={nilaiIndex}>
+                    <input
+                      type="number"
+                      min={0}
+                      max={10}
+                      value={nilai}
+                      onChange={(e) => handleInputChange(e, index, nilaiIndex)}
+                    />
+                  </td>
+                ))}
+                <td rowSpan={2}>{row.Total}</td>
+                <td rowSpan={2}>
+                  <input
+                    type="checkbox"
+                    id={`seri-${index}`}
+                    name={`seri-${index}`}
+                    value="benar"
+                    checked={row.HasilSeri}
+                    onChange={(e) => handleCheckbox(e, index)}
+                  />
+                </td>
+              </tr>
+              <tr>
+                {row.NilaiPerkenaan.map((nilai, nilaiIndex) => (
+                  <td key={nilaiIndex}>{nilai}</td>
+                ))}
+              </tr>
+            </React.Fragment>
+          ))}
         </tbody>
-      ))}
-    </table>
+      </table>
+    </div>
   );
 };
 
