@@ -9,7 +9,7 @@ import Stage2 from '../tabel/form/Stage2';
 import Stage3 from '../tabel/form/Stage3';
 import Stage4 from '../tabel/form/Stage4';
 import Stage5 from '../tabel/form/Stage5';
-// import Stage6 from '../tabel/form/Stage6';
+import Stage6 from '../tabel/form/Stage6';
 
 type PropsForm = {
     ujian?: string
@@ -47,10 +47,10 @@ const FormTable = (props: PropsForm) => {
                 props.ujian == 'stage5' &&
                 <Stage5 />
             }
-            {/* {
-                props.ujian == 'stage2' &&
+            {
+                props.ujian == 'stage6' &&
                 <Stage6 />
-            } */}
+            }
         </>
     );
 }
