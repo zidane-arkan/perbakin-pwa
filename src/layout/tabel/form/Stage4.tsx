@@ -63,6 +63,21 @@ input[type='number']{
     padding: 0.5rem;
   }
 `
+
+
+interface DataItem {
+    no: string;
+    nilaiPerkenaanA: number;
+    nilaiPerkenaanC: number;
+    nilaiPerkenaanD: number;
+    waktu: {
+        minutes: string;
+        seconds: string;
+        milliseconds: string;
+    };
+    hasil: boolean;
+}
+
 const Percobaan1 = () => {
     const [data, setData] = useState([
         {
@@ -139,7 +154,7 @@ const Percobaan1 = () => {
         }
     ]);
 
-    const handleInputChange = (e, id, field) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, id: string, field: string) => {
         const { value } = e.target;
 
         const updatedData = data.map((item) => {
@@ -171,7 +186,7 @@ const Percobaan1 = () => {
         }
     };
 
-    const handleWaktuChange = (e, index, field) => {
+    const handleWaktuChange = (e: React.ChangeEvent<HTMLInputElement>, index: number, field: keyof DataItem["waktu"]) => {
         const { value } = e.target;
         let updatedValue = value;
 
@@ -192,7 +207,7 @@ const Percobaan1 = () => {
         setData(updatedData);
     };
 
-    const handleCheckboxChange = (e, index) => {
+    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const { checked } = e.target;
         const updatedData = [...data];
         updatedData[index].hasil = checked;

@@ -44,7 +44,7 @@ const FormTable = (props: PropsForm) => {
                 <Stage4 />
             }
             {
-                props.ujian == 'stage2' &&
+                props.ujian == 'stage5' &&
                 <Stage5 />
             }
             {/* {
