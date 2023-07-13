@@ -152,42 +152,6 @@ const Percobaan1 = () => {
             },
             hasil: false
         },
-        {
-            no: "3A",
-            nilaiPerkenaanA: 0,
-            nilaiPerkenaanC: 0,
-            nilaiPerkenaanD: 0,
-            waktu: {
-                minutes: "00",
-                seconds: "00",
-                milliseconds: "00"
-            },
-            hasil: false
-        },
-        {
-            no: "3B",
-            nilaiPerkenaanA: 0,
-            nilaiPerkenaanC: 0,
-            nilaiPerkenaanD: 0,
-            waktu: {
-                minutes: "00",
-                seconds: "00",
-                milliseconds: "00"
-            },
-            hasil: false
-        },
-        {
-            no: "3C",
-            nilaiPerkenaanA: 0,
-            nilaiPerkenaanC: 0,
-            nilaiPerkenaanD: 0,
-            waktu: {
-                minutes: "00",
-                seconds: "00",
-                milliseconds: "00"
-            },
-            hasil: false
-        }
     ]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, id: string, field: string) => {
@@ -359,18 +323,264 @@ const Percobaan1 = () => {
                                             id={`hasil-${index}`}
                                             name="hasil"
                                             checked={item.hasil}
-                                            onChange={(e) => {
-                                                const checked = e.target.checked;
-                                                const updatedData = [...data];
-                                                updatedData[index].hasil = checked;
-                                                // Set hasil yang sama untuk pasangan nomor seri
-                                                if (index % 2 === 0) {
-                                                    updatedData[index + 1].hasil = checked;
-                                                } else {
-                                                    updatedData[index - 1].hasil = checked;
+                                            onChange={(e) => handleCheckboxChange(e, index)}
+                                        />
+                                    </td>
+                                </>
+                            )}
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
+};
+
+const Percobaan2 = () => {
+    const [data, setData] = useState([
+        {
+            no: "1A",
+            nilaiPerkenaanA: 0,
+            nilaiPerkenaanC: 0,
+            nilaiPerkenaanD: 0,
+            waktu: {
+                minutes: "00",
+                seconds: "00",
+                milliseconds: "00"
+            },
+            hasil: false
+        },
+        {
+            no: "1B",
+            nilaiPerkenaanA: 0,
+            nilaiPerkenaanC: 0,
+            nilaiPerkenaanD: 0,
+            waktu: {
+                minutes: "00",
+                seconds: "00",
+                milliseconds: "00"
+            },
+            hasil: false
+        },
+        {
+            no: "1C",
+            nilaiPerkenaanA: 0,
+            nilaiPerkenaanC: 0,
+            nilaiPerkenaanD: 0,
+            waktu: {
+                minutes: "00",
+                seconds: "00",
+                milliseconds: "00"
+            },
+            hasil: false
+        },
+        {
+            no: "2A",
+            nilaiPerkenaanA: 0,
+            nilaiPerkenaanC: 0,
+            nilaiPerkenaanD: 0,
+            waktu: {
+                minutes: "00",
+                seconds: "00",
+                milliseconds: "00"
+            },
+            hasil: false
+        },
+        {
+            no: "2B",
+            nilaiPerkenaanA: 0,
+            nilaiPerkenaanC: 0,
+            nilaiPerkenaanD: 0,
+            waktu: {
+                minutes: "00",
+                seconds: "00",
+                milliseconds: "00"
+            },
+            hasil: false
+        },
+        {
+            no: "2C",
+            nilaiPerkenaanA: 0,
+            nilaiPerkenaanC: 0,
+            nilaiPerkenaanD: 0,
+            waktu: {
+                minutes: "00",
+                seconds: "00",
+                milliseconds: "00"
+            },
+            hasil: false
+        },
+    ]);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, id: string, field: string) => {
+        const { value } = e.target;
+
+        const updatedData = data.map((item) => {
+            if (item.no === id) {
+                return {
+                    ...item,
+                    [field]: +value
+                };
+            }
+            return item;
+        });
+
+        const totalAlpha = updatedData.reduce(
+            (sum, item) => sum + item.nilaiPerkenaanA,
+            0
+        );
+        const totalCharlie = updatedData.reduce(
+            (sum, item) => sum + item.nilaiPerkenaanC,
+            0
+        );
+        const totalDelta = updatedData.reduce(
+            (sum, item) => sum + item.nilaiPerkenaanD,
+            0
+        );
+
+        if (totalAlpha <= 12 && totalCharlie <= 12 && totalDelta <= 12) {
+            setData(updatedData);
+            console.log(updatedData); // Cetak data tabel ke konsol
+        }
+    };
+
+    const handleWaktuChange = (e: React.ChangeEvent<HTMLInputElement>, index: number, field: keyof DataItem["waktu"]) => {
+        const { value } = e.target;
+        let updatedValue = value;
+
+        if (value.length === 1) {
+            updatedValue = "0" + value;
+        }
+
+        const updatedData = [...data];
+        updatedData[index].waktu[field] = updatedValue;
+        // Set waktu dan hasil yang sama untuk pasangan nomor seri
+        if (index % 2 === 0) {
+            updatedData[index + 1].waktu[field] = value;
+            updatedData[index + 1].hasil = updatedData[index].hasil;
+        } else {
+            updatedData[index - 1].waktu[field] = value;
+            updatedData[index - 1].hasil = updatedData[index].hasil;
+        }
+        setData(updatedData);
+    };
+
+    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        const { checked } = e.target;
+        const updatedData = [...data];
+        updatedData[index].hasil = checked;
+        // Set nilai checkbox yang sama untuk pasangan nomor seri
+        if (index % 2 === 0) {
+            updatedData[index + 1].hasil = checked;
+        } else {
+            updatedData[index - 1].hasil = checked;
+        }
+        setData(updatedData);
+    };
+
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <th colSpan={6}>SESI PERCOBAAN 2</th>
+                </tr>
+                <tr>
+                    <th rowSpan={2}>No</th>
+                    <th colSpan={3}>Nilai Perkenaan</th>
+                    <th rowSpan={2}>Waktu</th>
+                    <th rowSpan={2}>Hasil</th>
+                </tr>
+                <tr>
+                    <th>A</th>
+                    <th>C</th>
+                    <th>D</th>
+                </tr>
+            </thead>
+            <tbody>
+                {data.map((item, index) => (
+                    <tr key={index}>
+                        <td rowSpan={1}>{item.no}</td>
+                        <td>
+                            <input
+                                type="number"
+                                min={0}
+                                max={2 - item.nilaiPerkenaanC - item.nilaiPerkenaanD}
+                                value={item.nilaiPerkenaanA}
+                                onChange={(e) =>
+                                    handleInputChange(e, item.no, "nilaiPerkenaanA")
+                                }
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                min={0}
+                                max={2 - item.nilaiPerkenaanA - item.nilaiPerkenaanD}
+                                value={item.nilaiPerkenaanC}
+                                onChange={(e) =>
+                                    handleInputChange(e, item.no, "nilaiPerkenaanC")
+                                }
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                min={0}
+                                max={2 - item.nilaiPerkenaanA - item.nilaiPerkenaanC}
+                                value={item.nilaiPerkenaanD}
+                                onChange={(e) =>
+                                    handleInputChange(e, item.no, "nilaiPerkenaanD")
+                                }
+                            />
+                        </td>
+                        {item.no !== "1B" &&
+                            item.no !== "2B" &&
+                            item.no !== "3B" &&
+                            item.no !== "1C" &&
+                            item.no !== "2C" &&
+                            item.no !== "3C" && (
+                                <>
+                                    <td rowSpan={3}>
+                                        <div className="stopwatch">
+                                            <input
+                                                type="number"
+                                                name="minute"
+                                                max="59"
+                                                min="0"
+                                                placeholder="mm"
+                                                value={item.waktu.minutes}
+                                                onChange={(e) => handleWaktuChange(e, index, "minutes")}
+                                            />
+                                            :
+                                            <input
+                                                type="number"
+                                                name="second"
+                                                max="59"
+                                                min="0"
+                                                placeholder="ss"
+                                                value={item.waktu.seconds}
+                                                onChange={(e) => handleWaktuChange(e, index, "seconds")}
+                                            />
+                                            :
+                                            <input
+                                                type="number"
+                                                name="millisecond"
+                                                max="99"
+                                                min="0"
+                                                placeholder="SS"
+                                                value={item.waktu.milliseconds}
+                                                onChange={(e) =>
+                                                    handleWaktuChange(e, index, "milliseconds")
                                                 }
-                                                setData(updatedData);
-                                            }}
+                                            />
+                                        </div>
+                                    </td>
+                                    <td rowSpan={3}>
+                                        <input
+                                            type="checkbox"
+                                            id={`hasil-${index}`}
+                                            name="hasil"
+                                            checked={item.hasil}
+                                            onChange={(e) => handleCheckboxChange(e, index)}
                                         />
                                     </td>
                                 </>
@@ -386,6 +596,7 @@ const Stage5 = () => {
     return (
         <Styles>
             <Percobaan1 />
+            <Percobaan2 />
         </Styles>
     )
 }
