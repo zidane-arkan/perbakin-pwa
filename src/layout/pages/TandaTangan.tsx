@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { useState,useRef, useEffect } from 'react'
 import { HeaderBlueCustom } from '../../components/Header'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { CardText } from '../../components/ui/Card';
-import SignatureCanvas from 'react-signature-canvas';
+import SignaturePad from 'react-signature-canvas';
 import { Link } from 'react-router-dom';
 
+
+
 const TandaTangan = (props: any) => {
+    const sigCanvas = useRef({});
+    const [imageURL, setImageURL] = useState(null);
+    const save = () =>
+        setImageURL(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pb-8 pt-[10%]'}>
             <HeaderBlueCustom typeIcon='close' title={props.title} />
@@ -18,13 +24,17 @@ const TandaTangan = (props: any) => {
                 <section className='flex flex-col gap-2'>
                     <h2>Penguji:</h2>
                     <p className='text-[#000]/60'>Isi kolom berikut dengan tanda tangan.</p>
-                    <SignatureCanvas penColor='green'
-                        canvasProps={{ width: 800, height: 400, className: 'border-gray-300 rounded-xl border-2' }} />
+                    <SignaturePad
+                        penColor='green'
+                        ref={sigCanvas}
+                        canvasProps={{
+                            className: "signatureCanvas"
+                        }} />
                 </section>
                 <section className='flex flex-col gap-2'>
                     <h2>Peserta:</h2>
                     <p className='text-[#000]/60'>Isi kolom berikut dengan tanda tangan.</p>
-                    <SignatureCanvas penColor='green'
+                    <SignaturePad penColor='green'
                         canvasProps={{ width: 800, height: 400, className: 'border-gray-300 rounded-xl border-2' }} />
                 </section>
                 <CardText>

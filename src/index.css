@@ -62,3 +62,7 @@ p {
   font-size: 14px;
   line-height: 150%;
 }
+
+.signatureCanvas {
+  @apply w-[336px] h-[170px] border-gray-300 rounded-xl border-2;
+}
