@@ -9,6 +9,15 @@ import styled from 'styled-components';
 
 
 const Styles = styled.div`
+  input[type=number]::-webkit-inner-spin-button, 
+  input[type=number]::-webkit-outer-spin-button {  
+    -webkit-appearance: "Always Show Up/Down Arrows";
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    opacity: 1;
+  }
+
   padding: 1rem 0;
   overflow : scroll;
   table {
@@ -66,13 +75,31 @@ const Percobaan1 = () => {
   const [tableData, setTableData] = useState([
     {
       Seri: 1,
-      NilaiPerkenaan: [2, 1, 3, 4, 2, 1, 3, 4, 2, 1, 3],
+      NilaiPerkenaan: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       Total: 0,
       HasilSeri: false
     },
     {
       Seri: 2,
-      NilaiPerkenaan: [2, 1, 3, 4, 2, 1, 3, 4, 2, 1, 3],
+      NilaiPerkenaan: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      Total: 0,
+      HasilSeri: false
+    },
+    {
+      Seri: 3,
+      NilaiPerkenaan: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      Total: 0,
+      HasilSeri: false
+    },
+    {
+      Seri: 4,
+      NilaiPerkenaan: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      Total: 0,
+      HasilSeri: false
+    },
+    {
+      Seri: 5,
+      NilaiPerkenaan: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       Total: 0,
       HasilSeri: false
     }
@@ -143,6 +170,7 @@ const Percobaan1 = () => {
                 {row.NilaiPerkenaan.map((nilai, nilaiIndex) => (
                   <td key={nilaiIndex}>
                     <input
+                      className='w-12 h-8 text-black text-center opacity-100'
                       type="number"
                       min={0}
                       max={10}
