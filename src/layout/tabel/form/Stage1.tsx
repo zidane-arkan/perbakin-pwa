@@ -16,7 +16,7 @@ const Styles = styled.div`
   padding: 1rem 0;
   overflow : scroll;
   table {
-    width: 100%;
+    width: 500px;
     text-align: center;
     border-spacing: 0;
     border-right: 2px solid #D5E4F0;
@@ -303,7 +303,7 @@ const Percobaan1 = () => {
                   value={data.waktu.second}
                   onChange={(e) => handleTimeChange(e, data.id, "second")}
                 />
-                .
+                :
                 <input
                   id={`milliseconds-${data.id}`}
                   type="number"

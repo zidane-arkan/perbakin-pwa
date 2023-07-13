@@ -5,6 +5,12 @@ import { CardText } from '../../components/ui/Card';
 import { Link } from 'react-router-dom';
 import Kualifikasi from '../tabel/form/Kualifikasi';
 import Stage1 from '../tabel/form/Stage1';
+import Stage2 from '../tabel/form/Stage2';
+import Stage3 from '../tabel/form/Stage3';
+// import Stage4 from '../tabel/form/Stage4';
+// import Stage5 from '../tabel/form/Stage5';
+// import Stage6 from '../tabel/form/Stage6';
+
 type PropsForm = {
     ujian?: string
 };
@@ -25,6 +31,26 @@ const FormTable = (props: PropsForm) => {
                 props.ujian == 'stage1' &&
                 <Stage1 />
             }
+            {
+                props.ujian == 'stage2' &&
+                <Stage2 />
+            }
+            {
+                props.ujian == 'stage3' &&
+                <Stage3 />
+            }
+            {/* {
+                props.ujian == 'stage2' &&
+                <Stage4 />
+            }
+            {
+                props.ujian == 'stage2' &&
+                <Stage5 />
+            }
+            {
+                props.ujian == 'stage2' &&
+                <Stage6 />
+            } */}
         </>
     );
 }
@@ -36,7 +62,7 @@ const Form = (props: any) => {
                 <h6 className='text-black/60'>Nama Penembak</h6>
                 <h4>Abdiansyah CS</h4>
             </LayoutChild>
-            <LayoutChild className='flex-col h-screen gap-4 justify-between'>
+            <LayoutChild className='flex-col h-full gap-4 justify-between'>
                 <div className='flex-col gap-4'>
                     <section className='flex flex-col gap-2'>
                         <h2>Peserta:</h2>
