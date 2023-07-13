@@ -68,7 +68,8 @@ const Penguji = () => {
                 examId: examId,
                 name: elements.name.value,
                 username: elements.username.value,
-                password: elements.password.value
+                password: elements.password.value,
+                image_path: selectedImage
             });
 
         query
@@ -104,6 +105,17 @@ const Penguji = () => {
             <LayoutChild className='justify-between'>
                 <form onSubmit={createAdminHandler} className='flex flex-col w-full h-auto justify-between gap-8'>
                     <section>
+                        <div className="mb-6">
+                            <label htmlFor="image" className="block mb-2 text-sm font-bold text-gray-900">Upload Gambar</label>
+                            <input
+                                name="image"
+                                type="file"
+                                id="image"
+                                accept="image/*"
+                                className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                onChange={handleImageChange}
+                            />
+                        </div>
                         <div className="mb-6">
                             <label htmlFor="name" className="block mb-2 text-sm font-bold text-gray-900">Nama Lengkap</label>
                             <input name='name' type="text" id="name" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Nama Lengkap Anda" required />

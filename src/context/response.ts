@@ -108,6 +108,7 @@ export interface CreateScorerRequest {
   username: string;
   password: string;
   name: string;
+  image_path?: string | null;
 }
 
 

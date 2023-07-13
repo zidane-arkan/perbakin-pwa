@@ -227,12 +227,19 @@ function AuthProvider(props: { children: JSX.Element }) {
 
   // SCORER
   const createScorer = async (scorerData: CreateScorerRequest): Promise<HandlerResponse> => {
+    console.log(scorerData);
+    const formData = new FormData();
+    // if (scorerData.examId) {
+    //   formData.append("examId", scorerData.examId);
+    // }
+    formData.append("name", scorerData.name);
+    formData.append("username", scorerData.username);
+    formData.append("password", scorerData.password);
+    if (scorerData.image_path) {
+      formData.append("image", scorerData.image_path);
+    }
     try {
-      const response = await api.post<ResponseData<CreateScorerRequest>>(`/super/exam/${scorerData.examId}/scorer`, {
-        name: scorerData.name,
-        username: scorerData.username,
-        password: scorerData.password,
-      });
+      const response = await api.post<ResponseData<CreateScorerRequest>>(`/super/exam/${scorerData.examId}/scorer`, formData);
       console.log(response);
       return { message: response.data.message, error: false, response: response };
     } catch (error) {
@@ -299,7 +306,7 @@ function AuthProvider(props: { children: JSX.Element }) {
       scorer_id: shooterData.scorer_id,
       name: shooterData.name,
       province: shooterData.province,
-      club : shooterData.club
+      club: shooterData.club
     };
     // const formData = new FormData;
     // console.log(formData)
