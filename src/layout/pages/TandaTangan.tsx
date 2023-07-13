@@ -4,6 +4,7 @@ import { Layout, LayoutChild } from '../../components/Layout'
 import { CardText } from '../../components/ui/Card';
 import SignatureCanvas from 'react-signature-canvas';
 import { Link } from 'react-router-dom';
+
 const TandaTangan = (props: any) => {
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pb-8 pt-[10%]'}>

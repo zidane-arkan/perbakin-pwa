@@ -212,7 +212,7 @@ export const DetailPengujiAdmin = (props: any) => {
 export const DetailSuperAdmin = (props: any) => {
     const navigate = useNavigate();
     const data = useLocation();
-    
+
     // const { id } = useParams();
     return (
         <Modal shownCardHandler={props.shownCardHandler}>
