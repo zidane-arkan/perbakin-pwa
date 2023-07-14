@@ -4,10 +4,13 @@ const Stage5 = () => {
     return (
         <Aturan
             title="Stage #5"
-            jarak="7"
-            waktu="6"
-            sasaran="1"
-            tembakMaks='18'
+            jarak="10"
+            waktu="15"
+            waktu2='20 Detik'
+            senjataSatu='(Pistol)'
+            senjataDua='(Revolver)'
+            sasaran="3"
+            tembakMaks='12'
             link='stage5_form'
             posisiAwal='Berdiri membelakangi sasaran, kedua pergelangan tangan diangkat diatas bahu.'
         >

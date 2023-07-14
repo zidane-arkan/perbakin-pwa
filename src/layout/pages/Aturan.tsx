@@ -13,6 +13,9 @@ type Props = {
     title: string;
     jarak: string;
     waktu: string;
+    waktu2?: string;
+    senjataSatu?: string;
+    senjataDua?: string;
     sasaran: string;
     tembakMaks: string;
     link: string;
@@ -36,7 +39,8 @@ const Aturan = (props: Props) => {
                             <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
                             <div>
                                 <h6>Waktu</h6>
-                                <p className='text-[12px]'>{props.waktu} Detik</p>
+                                <p className='text-[12px]'>{props.waktu} Detik {props.senjataSatu}</p>
+                                <p className='text-[12px]'>{props.waktu2} {props.senjataDua}</p>
                             </div>
                         </Card>
                     </section>
