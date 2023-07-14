@@ -7,13 +7,14 @@ import close from '../../app-assets/close.png';
 import jarak from '../../app-assets/jarak.png';
 import { Link } from 'react-router-dom';
 type Props = {
-    children?: string | JSX.Element | React.ReactNode
-    className?: string,
-    title: string,
-    jarak: string,
-    waktu: string,
-    sasaran: string,
-    tembakMaks: string,
+    children?: string | JSX.Element | React.ReactNode;
+    posisiAwal?: string | JSX.Element | React.ReactNode;
+    className?: string;
+    title: string;
+    jarak: string;
+    waktu: string;
+    sasaran: string;
+    tembakMaks: string;
     link: string;
 }
 
@@ -55,17 +56,14 @@ const Aturan = (props: Props) => {
                             </div>
                         </Card>
                     </section>
-               </section>
+                </section>
                 <CardText title='Ketentuan Umum'>
-                    <p>Berdiri tegak menghadap sasaran, senjata dan magasin berada dalam holster atau diletakkan diatas meja</p>
+                    {/* <p>Berdiri tegak menghadap sasaran, senjata dan magasin berada dalam holster atau diletakkan diatas meja</p> */}
+                    <p>{props.posisiAwal}</p>
                 </CardText>
                 <CardText title='Prosedur'>
                     <ol className='flex flex-col gap-2 pl-4 text-black list-decimal'>
-                        <li>Penguji berhak untuk menghentikan peserta dari ujian apabila menganggap perlengkapan peserta tidak memenuhi prosedur keamanan.</li>
-                        <li>Minimal 50% tembakan pada setiap sasaran (target) mengenai bidang “A” dan tidak ada tembakan yang tidak mengenai sasaran (miss).</li>
-                        <li>Peserta boleh menembak lebih pada sasaran penilaian apabila jumlah tembakan pada bidang “A” kurang dari yang ditentukan diatas dan selama waktu yang diberikan masih mencukupi. </li>
-                        <li>Peserta boleh menembak lebih pada sasaran penilaian apabila jumlah tembakan pada bidang “A” kurang dari yang ditentukan diatas dan selama waktu yang diberikan masih mencukupi. </li>
-                        <li>Jari harus berada di luar pengaman picu pada saat melakukan pergerakkan (perpindahan posisi)/mengganti magasin atau memperbaiki senjata dan arah laras senjata harus selalu mengarah ke downrange. </li>
+                        {props.children}
                     </ol>
                 </CardText>
                 <CardText>
