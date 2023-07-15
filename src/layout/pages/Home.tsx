@@ -8,7 +8,7 @@ const Home = () => {
             <img className='absolute bottom-0' src={targetbig} alt='Target' />
             <LayoutChild className='h-screen items-end pb-8'>
                 <Link
-                    className='z-10 text-white h-[45px] rounded-lg text-base font-bold w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800'
+                    className='z-10 text-white h-[45px] sm:w-full rounded-lg text-base font-bold w-full px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800'
                     to='/login' >Masuk {'->'}</Link>
             </LayoutChild>
         </section>
