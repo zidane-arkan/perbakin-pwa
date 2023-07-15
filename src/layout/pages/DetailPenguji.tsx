@@ -249,12 +249,12 @@ export const DetailPengujiAdmin2 = (props: any) => {
             <HeaderWhiteCustom typeIcon='returnblack' title='Detail Penguji' />
             <LayoutChild>
                 <section className="flex w-full items-center gap-4 ">
-                    <div className="flex shadow-md rounded-xl items-center w-1/6">
-                        <img className='min-w-[65px] ' src={user2} />
+                    <div className="flex shadow-md rounded-xl sm:shadow-sm items-center w-1/6">
+                        <img className='min-w-[65px] sm:min-w-[80px]' src={user2} />
                     </div>
                     <div className="flex flex-col w-4/6 gap-1 pl-6 md:p-4">
-                        <h1 className="text-base font-bold text-gray-800">Nama Lengkap</h1>
-                        <p className="text-sm text-gray-600 ">{data.state}</p>
+                        <h1 className="text-base sm:text-lg font-bold text-gray-800">Nama Lengkap</h1>
+                        <p className="text-sm sm:text-base text-gray-600 ">{data.state}</p>
                     </div>
                 </section>
             </LayoutChild>
