@@ -78,12 +78,12 @@ export const CardAdmin = (props: any) => {
                     username={props.admin}
                 />
             }
-            <section className="flex items-center max-w-md overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 shadow-custom">
+            <section className="flex items-center max-w-md sm:max-w-full sm:w-full overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 shadow-custom">
                 <div className="flex items-center w-1/6">
-                    <img className='min-w-[65px]' src={user1} />
+                    <img className='min-w-[65px] sm:min-w-[80px]' src={user1} />
                 </div>
                 <div className="inline-block w-4/6 pl-6 md:p-4">
-                    <h1 className="text-base font-bold text-gray-800">{props.admin}</h1>
+                    <h1 className="text-base sm:text-lg font-bold text-gray-800">{props.admin}</h1>
                 </div>
                 <span className="flex items-center w-1/6">
                     <button onClick={shownCardHandler} className="px-2 py-1 text-4xl text-[#036BB0]">{'>'}</button>
