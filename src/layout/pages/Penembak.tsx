@@ -76,7 +76,7 @@ export const Penembak = (props: any) => {
             <Layout className={classname}>
                 <LayoutChild className='flex-col pb-[10rem] gap-4 '>
                     <span className='inline text-left'>
-                        <h3 className='text-lg font-bold'>List Penembak</h3>
+                        <h3 className='text-lg sm:text-xl font-bold'>List Penembak</h3>
                     </span>
                     {shooters.map((shooter: Penembak, index: number) => (
                         <CardPenembak
