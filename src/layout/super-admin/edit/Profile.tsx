@@ -9,7 +9,7 @@ const Profile = () => {
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%] overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='returnblack' title='Edit Profile' />
-            <LayoutChild className='flex-col gap-4 h-[750px] justify-between'>
+            <LayoutChild className='flex-col gap-4 h-[750px] sm:h-[700px] justify-between'>
                 <form className='flex flex-col w-full h-auto justify-between gap-8'>
                     <section>
                         <div className="mb-6">
