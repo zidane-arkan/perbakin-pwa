@@ -20,6 +20,11 @@ input[type='number']{
   gap: 2rem;
   padding: 1rem 0;
   overflow : scroll;
+@media (min-width : 600px) {
+    table {
+      width: 800px !important;
+    }
+  }
   table {
     width: 500px;
     text-align: center;
