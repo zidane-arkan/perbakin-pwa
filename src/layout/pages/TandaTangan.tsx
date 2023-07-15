@@ -28,12 +28,12 @@ const TandaTangan = (props: any) => {
         }
     }
     return (
-        <Layout className={'rounded-3xl gap-8 mt-28 pb-8 pt-[10%]'}>
+        <Layout className={'rounded-3xl gap-8 mt-28 pb-8 sm:pb-4 pt-[10%] sm:pt-[7%]'}>
             <HeaderBlueCustom typeIcon='close' title={props.title} />
             {props.children}
             <LayoutChild className='justify-between gap-6'>
-                <button className='py-2 h-[48px] w-[165px] rounded-xl bg-[#62DE5F]'>Berhasil</button>
-                <button className='button-gagal py-2 rounded-xl h-[48px] w-[165px] bg-[]'>Gagal</button>
+                <button className='py-2 h-[48px] w-[165px] sm:w-1/2 sm:h-[50px] sm:rounded-2xl rounded-xl bg-[#62DE5F]'>Berhasil</button>
+                <button className='button-gagal py-2 rounded-xl h-[48px] w-[165px] sm:rounded-2xl sm:w-1/2 sm:h-[50px]'>Gagal</button>
             </LayoutChild>
             <LayoutChild className='flex-col gap-12'>
                 <section className='flex flex-col gap-2'>

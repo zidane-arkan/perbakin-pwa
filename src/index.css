@@ -64,5 +64,11 @@ p {
 }
 
 .signatureCanvas {
-  @apply w-[336px] h-[170px] border-gray-300 rounded-xl border-2;
+  @apply w-[336px] h-[270px] border-gray-300 rounded-xl border-2;
+}
+
+@media screen and (min-width: 600px) {
+  .signatureCanvas {
+    @apply w-full h-[230px] border-gray-300 rounded-xl border-2;
+  }
 }
