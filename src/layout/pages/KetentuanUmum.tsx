@@ -35,12 +35,12 @@ const KetentuanUmum = (props: any) => {
                         </span>
                     </div>
                     <div>
-                        <img className='w-full h-auto' src={user1} alt='user profile' />
+                        <img className='w-full h-auto sm:w-[150px]' src={user1} alt='user profile' />
                     </div>
                 </section>
-                <section className='flex flex-col gap-4 w-[345px] items-start'>
+                <section className='flex flex-col pt-4 gap-4 w-[345px] sm:w-[700px] items-start'>
                     <h4>Ketentuan Umum</h4>
-                    <ol className='flex flex-col gap-2 pl-4 text-black list-decimal'>
+                    <ol className='flex flex-col gap-2 pl-4 text-black text-base sm:text-lg list-decimal'>
                         <li>Penguji berhak untuk menghentikan peserta dari ujian apabila menganggap perlengkapan peserta tidak memenuhi prosedur keamanan.</li>
                         <li>Minimal 50% tembakan pada setiap sasaran (target) mengenai bidang “A” dan tidak ada tembakan yang tidak mengenai sasaran (miss).</li>
                         <li>Peserta boleh menembak lebih pada sasaran penilaian apabila jumlah tembakan pada bidang “A” kurang dari yang ditentukan diatas dan selama waktu yang diberikan masih mencukupi. </li>
