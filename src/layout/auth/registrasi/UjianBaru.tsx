@@ -90,7 +90,7 @@ const UjianBaru = () => {
                             <input name='location' type="text" id="location" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                         </div>
                         <div className="mb-6">
-                            <label htmlFor="organizer" className="block mb-2 text-sm font-bold text-gray-900">Organizer</label>
+                            <label htmlFor="organizer" className="block mb-2 text-sm font-bold text-gray-900">Pengprov Penyelenggara</label>
                             <input name='organizer' type="text" id="organizer" className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                         </div>
                         <div className="flex gap-2 flex-col mb-4">
