@@ -17,7 +17,7 @@ export const Card = (props: Props) => {
 }
 
 export const CardText = (props: Props) => {
-    const customClass = `${props.className} flex flex-col gap-2 w-[345px] items-start`;
+    const customClass = `${props.className} flex flex-col gap-2 w-[345px] sm:w-[700px] items-start`;
     return (
         <section className={customClass}>
             <h4>{props.title}</h4>
