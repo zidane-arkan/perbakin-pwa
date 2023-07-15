@@ -9,7 +9,7 @@ import { LayoutChild } from '../Layout';
 export const Detail = (props: any) => {
     return (
         <Modal shownCardHandler={props.shownCardHandler}>
-            <section className='flex flex-col w-full h-auto'>
+            <section className='flex flex-col w-full sm:max-w-md h-auto'>
                 <div className='flex relative w-full h-[198px]'>
                     <img src={imgDetail1} className='w-full h-full rounded-xl z-[-1]' />
                     <button onClick={props.shownCardHandler} className='absolute z-10 top-4 right-4'>
