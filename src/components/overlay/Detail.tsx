@@ -48,7 +48,7 @@ export const DetailAdmin = (props: any) => {
     const navigate = useNavigate();
     return (
         <Modal shownCardHandler={props.shownCardHandler}>
-            <section className='flex flex-col w-full h-auto'>
+            <section className='flex flex-col w-full sm:max-w-md h-auto'>
                 <div className='flex relative w-full h-[198px]'>
                     <img src={imgDetail1} className='w-full h-full rounded-xl z-[-1]' />
                     <button onClick={props.shownCardHandler} className='absolute z-10 top-4 right-4'>
@@ -91,7 +91,7 @@ export const DetailPenembakAdminBiasa = (props: any) => {
     const navigate = useNavigate();
     return (
         <Modal shownCardHandler={props.shownCardHandler}>
-            <section className='flex flex-col w-full h-auto'>
+            <section className='flex flex-col w-full sm:max-w-md h-auto'>
                 <div className='flex relative w-full h-[198px]'>
                     <img src={imgDetail1} className='w-full h-full rounded-xl z-[-1]' />
                     <button onClick={props.shownCardHandler} className='absolute z-10 top-4 right-4'>
@@ -135,7 +135,7 @@ export const DetailPenembakAdmin = (props: any) => {
     console.log(props)
     return (
         <Modal shownCardHandler={props.shownCardHandler}>
-            <section className='flex flex-col w-full h-auto'>
+            <section className='flex flex-col w-full sm:max-w-md h-auto'>
                 <div className='flex relative w-full h-[198px]'>
                     <img src={imgDetail1} className='w-full h-full rounded-xl z-[-1]' />
                     <button onClick={props.shownCardHandler} className='absolute z-10 top-4 right-4'>
@@ -178,7 +178,7 @@ export const DetailPengujiAdmin = (props: any) => {
     const navigate = useNavigate();
     return (
         <Modal shownCardHandler={props.shownCardHandler}>
-            <section className='flex flex-col w-full h-auto'>
+            <section className='flex flex-col w-full sm:max-w-md h-auto'>
                 <div className='flex relative w-full h-[198px]'>
                     <img src={imgDetail1} className='w-full h-full rounded-xl z-[-1]' />
                     <button onClick={props.shownCardHandler} className='absolute z-10 top-4 right-4'>
@@ -216,7 +216,7 @@ export const DetailSuperAdmin = (props: any) => {
     // const { id } = useParams();
     return (
         <Modal shownCardHandler={props.shownCardHandler}>
-            <section className='flex flex-col w-full h-auto'>
+            <section className='flex flex-col w-full sm:max-w-md h-auto'>
                 <div className='flex relative w-full h-[198px]'>
                     <img src={imgDetail1} className='w-full h-full rounded-xl z-[-1]' />
                     <button onClick={props.shownCardHandler} className='absolute z-10 top-4 right-4'>

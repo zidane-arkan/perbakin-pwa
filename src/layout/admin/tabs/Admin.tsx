@@ -191,13 +191,13 @@ const Admin = (props: any) => {
                     </span>
                 </section>
                 <section className='flex items-center gap-6'>
-                    <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full' to='tambahpenembak'>
+                    <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full sm:w-1/2' to='tambahpenembak'>
                         <div className='flex gap-2 items-center'>
                             <img src={peluruBulat} />
                             <span className='font-xl'>Tambah Penembak</span>
                         </div>
                     </Link>
-                    <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full' to='tambahpenguji'>
+                    <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full sm:w-1/2' to='tambahpenguji'>
                         <div className='flex gap-2 items-center'>
                             <img src={tambahPenguji} />
                             <span className='font-xl'>Tambah Penguji</span>
