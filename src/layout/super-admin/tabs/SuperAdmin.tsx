@@ -1,6 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useContext } from 'react'
 import { LayoutChild } from '../../../components/Layout'
 import api from '../../../api/api';
+import { HandlerResponse } from '../../../context/response';
+import { AuthContext } from '../../../context/AuthContext';
 import { AxiosError } from 'axios';
 import { ResponseData } from '../../../context/response';
 import {
@@ -171,23 +173,54 @@ const TabelHasilUjian = () => {
 }
 
 const SuperAdmin = (props: any) => {
+    const superAdminCtx = useContext(AuthContext);
     const [location, setLocation] = useState('');
     const [time, setTime] = useState({
         begin: '',
         finish: ''
     });
+
+    const [responseExamId, setResponse] = useState<HandlerResponse>({ message: '', error: false });
+
+    // const getExamId = async (): Promise<string | null> => {
+    //     const query =
+    //         superAdminCtx &&
+    //         superAdminCtx.getExamId(null);
+    //     query
+    //         ?.then((res) => {
+    //             const response: HandlerResponse = {
+    //                 message: res !== null ? res : "Exam ID is null",
+    //                 error: false,
+    //             };
+    //             console.log(response.message)
+    //             setResponse(response);
+    //             if (!response.error) {
+    //                 return response.message;
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             const errorResponse: HandlerResponse = {
+    //                 message: err.message || "An error occurred",
+    //                 error: true,
+    //             };
+    //             setResponse(errorResponse);
+    //         });
+    // };
     const getExamId = async (): Promise<string | null> => {
         try {
+            let latestExamId: string | null = null;
             const response = await api.get("/super/exam");
-            console.log(response);
             const exams = response.data.data.exams;
             if (exams.length > 0) {
-                const lastExam = exams[exams.length - 1]; // Mengambil data exam terakhir dari array
-                const lastExamId = lastExam.id;
+                const lastExam = exams[exams.length - 1];
+                latestExamId = lastExam.id;
+            }
 
-                return lastExamId;
+            if (superAdminCtx?.getExamId) {
+                const examId = await superAdminCtx.getExamId(null);
+                return examId ?? latestExamId;
             } else {
-                return null; // Mengembalikan null jika tidak ada data exam dalam array
+                return latestExamId;
             }
         } catch (error) {
             const err = error as AxiosError<ResponseData<null>>;
@@ -196,29 +229,51 @@ const SuperAdmin = (props: any) => {
             return null;
         }
     };
+
+
     const currentYear = new Date().getFullYear();
     const formatDate = (dateRange: string) => {
         return dayjs(dateRange).locale('id').format('D MMMM');
     };
     useEffect(() => {
         const fetchData = async () => {
-            const examId = await getExamId();
-            if (examId) {
-                try {
+            try {
+                const examId = await getExamId(); // Memanggil fungsi getExamId untuk mendapatkan examId
+                console.log(examId);
+                if (examId) {
                     const response = await api.get(`/super/exam/${examId}`);
                     const { location, begin, finish } = response.data.data.exam;
                     setLocation(location);
                     setTime({
                         begin: formatDate(begin),
-                        finish: formatDate(finish)
+                        finish: formatDate(finish),
                     });
-                } catch (error) {
-                    console.error('Error:', error);
                 }
+            } catch (error) {
+                console.error('Error:', error);
             }
         };
         fetchData();
     }, []);
+
+    // try {
+    //     const response = await api.get("/super/exam");
+    //     console.log(response);
+    //     const exams = response.data.data.exams;
+    //     if (exams.length > 0) {
+    //         const lastExam = exams[exams.length - 1]; // Mengambil data exam terakhir dari array
+    //         const lastExamId = lastExam.id;
+
+    //         return lastExamId;
+    //     } else {
+    //         return null; // Mengembalikan null jika tidak ada data exam dalam array
+    //     }
+    // } catch (error) {
+    //     const err = error as AxiosError<ResponseData<null>>;
+    //     console.error("Error:", err);
+
+    //     return null;
+    // }
 
     return (
         <>
