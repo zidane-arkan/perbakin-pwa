@@ -35,15 +35,19 @@ const Ujian = () => {
 
     const getExamId = async (): Promise<string | null> => {
         try {
+            let latestExamId: string | null = null;
             const response = await api.get("/super/exam");
             const exams = response.data.data.exams;
             if (exams.length > 0) {
                 const lastExam = exams[exams.length - 1];
-                const lastExamId = lastExam.id;
+                latestExamId = lastExam.id;
+            }
 
-                return lastExamId;
+            if (examContext?.getExamId) {
+                const examId = await examContext.getExamId(null);
+                return examId ?? latestExamId;
             } else {
-                return null;
+                return latestExamId;
             }
         } catch (error) {
             const err = error as AxiosError<ResponseData<null>>;

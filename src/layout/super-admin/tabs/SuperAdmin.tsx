@@ -180,8 +180,6 @@ const SuperAdmin = (props: any) => {
         finish: ''
     });
 
-    const [responseExamId, setResponse] = useState<HandlerResponse>({ message: '', error: false });
-
     // const getExamId = async (): Promise<string | null> => {
     //     const query =
     //         superAdminCtx &&
