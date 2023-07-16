@@ -225,7 +225,6 @@ const TabelHasilUjian = () => {
                 </tbody>
             </table>
         </section>
-
     );
 }
 const HasilUjian = () => {

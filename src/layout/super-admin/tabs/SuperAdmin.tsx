@@ -32,103 +32,97 @@ type HasilUjian = {
     klub: string
     status: string
 }
-const Styles = styled.div`
-    padding: 1rem 0;
-    overflow : scroll;
-    table {
-        width: 100%;
-        text-align: center;
-        border-spacing: 0;
-        border-right: 2px solid #D5E4F0;
-        border-left: 2px solid #D5E4F0;
-        border-bottom: 2px solid #D5E4F0;
-        border-radius : 12px;
-    tr {
-        :last-child {
-            tr{
-                border-bottom: 0;
-            }
-            td {
-                border-bottom: 0;
-            }
-        }
-    }
-    thead{
-        font-size: 1rem;
-        color : white;
-        background-color : #036BB0;
-    }
-    th{
-        font-size: 1rem;
-        margin: 0;
-        padding: 0.5rem;
-        border-bottom: 2px solid #D5E4F0;
-        border-right: 2px solid #D5E4F0;
-        border-left: 2px solid #D5E4F0;
-    }
-    td {
-        font-size: .9rem;
-        margin: 0;
-        padding: 0.3rem;
-        border-bottom: 2px solid #D5E4F0;
-        border-right: 2px solid #D5E4F0;
-        border-left: 2px solid #D5E4F0;
-        z-index: -1;
-    }
-    }
+// const Styles = styled.div`
+//     padding: 1rem 0;
+//     overflow : scroll;
+//     table {
+//         width: 100%;
+//         text-align: center;
+//         border-spacing: 0;
+//         border-right: 2px solid #D5E4F0;
+//         border-left: 2px solid #D5E4F0;
+//         border-bottom: 2px solid #D5E4F0;
+//         border-radius : 12px;
+//     tr {
+//         :last-child {
+//             tr{
+//                 border-bottom: 0;
+//             }
+//             td {
+//                 border-bottom: 0;
+//             }
+//         }
+//     }
+//     thead{
+//         font-size: 1rem;
+//         color : white;
+//         background-color : #036BB0;
+//     }
+//     th{
+//         font-size: 1rem;
+//         margin: 0;
+//         padding: 0.5rem;
+//         border-bottom: 2px solid #D5E4F0;
+//         border-right: 2px solid #D5E4F0;
+//         border-left: 2px solid #D5E4F0;
+//     }
+//     td {
+//         font-size: .9rem;
+//         margin: 0;
+//         padding: 0.3rem;
+//         border-bottom: 2px solid #D5E4F0;
+//         border-right: 2px solid #D5E4F0;
+//         border-left: 2px solid #D5E4F0;
+//         z-index: -1;
+//     }
+//     }
 
-    .pagination {
-    padding: 0.5rem;
-    }
-`
+//     .pagination {
+//     padding: 0.5rem;
+//     }
+// `
 
-const defaultData: HasilUjian[] = [
-    {
-        no: '1',
-        nama: 'linsley',
-        pengprov: 'Sumsel',
-        klub: 'Klub 1',
-        status: 'Stage 2',
-    },
-    {
-        no: '2',
-        nama: 'miller',
-        pengprov: 'Sumsel',
-        klub: 'Klub 2',
-        status: 'Gagal',
-    },
-];
-const columnHelper = createColumnHelper<HasilUjian>()
-const columns = [
-    columnHelper.accessor('no', {
-        cell: info => info.getValue(),
-        header: () => <span>No</span>,
-    }),
-    columnHelper.accessor('nama', {
-        cell: info => info.getValue(),
-        header: () => <span>Nama</span>,
-    }),
-    columnHelper.accessor('pengprov', {
-        cell: info => info.getValue(),
-        header: () => <span>Pengprov</span>,
-    }),
-    columnHelper.accessor('klub', {
-        cell: info => info.getValue(),
-        header: () => <span>Klub</span>,
-    }),
-    columnHelper.accessor('status', {
-        cell: info => info.getValue(),
-        header: () => <span>Status</span>,
-    }),
-];
+// const defaultData: HasilUjian[] = [
+//     {
+//         no: '1',
+//         nama: 'linsley',
+//         pengprov: 'Sumsel',
+//         klub: 'Klub 1',
+//         status: 'Stage 2',
+//     },
+//     {
+//         no: '2',
+//         nama: 'miller',
+//         pengprov: 'Sumsel',
+//         klub: 'Klub 2',
+//         status: 'Gagal',
+//     },
+// ];
+// const columnHelper = createColumnHelper<HasilUjian>()
+// const columns = [
+//     columnHelper.accessor('no', {
+//         cell: info => info.getValue(),
+//         header: () => <span>No</span>,
+//     }),
+//     columnHelper.accessor('nama', {
+//         cell: info => info.getValue(),
+//         header: () => <span>Nama</span>,
+//     }),
+//     columnHelper.accessor('pengprov', {
+//         cell: info => info.getValue(),
+//         header: () => <span>Pengprov</span>,
+//     }),
+//     columnHelper.accessor('klub', {
+//         cell: info => info.getValue(),
+//         header: () => <span>Klub</span>,
+//     }),
+//     columnHelper.accessor('status', {
+//         cell: info => info.getValue(),
+//         header: () => <span>Status</span>,
+//     }),
+// ];
 
 const TabelHasilUjian = () => {
-    const [data, setData] = React.useState(() => [...defaultData])
-    const table = useReactTable({
-        data,
-        columns,
-        getCoreRowModel: getCoreRowModel(),
-    })
     return (
         <section>
             <div className='flex w-full justify-between items-center'>
@@ -137,37 +131,65 @@ const TabelHasilUjian = () => {
                     <span className='text-[#1B79B8]' >Lihat Selengkapnya</span>
                 </Link>
             </div>
-            <Styles>
-                <table>
-                    <thead>
-                        {table.getHeaderGroups().map(headerGroup => (
-                            <tr key={headerGroup.id}>
-                                {headerGroup.headers.map(header => (
-                                    <th key={header.id}>
-                                        {header.isPlaceholder
-                                            ? null
-                                            : flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            )}
-                                    </th>
-                                ))}
-                            </tr>
-                        ))}
+            <section className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 sm:pt-8">
+                <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100 ">
+                    <thead className="text-xs text-black uppercase bg-white">
+                        <tr>
+                            <th scope="col" className=" px-6 py-3">
+                                Nama Peserta
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Nama Penguji
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Tempat Pengujian
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Hasil Ujian
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Aksi
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                        {table.getRowModel().rows.map(row => (
-                            <tr key={row.id}>
-                                {row.getVisibleCells().map(cell => (
-                                    <td key={cell.id}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
+                        <tr className="bg-white text-black border-blue-400">
+                            <th scope="row" className="px-6 py-4 font-medium text-black whitespace-nowrap">
+                                Siti
+                            </th>
+                            <td className="px-6 py-4">
+                                Dani
+                            </td>
+                            <td className="px-6 py-4">
+                                Lapangan Tembak Palembang
+                            </td>
+                            <td className="px-6 py-4">
+                                Lulus
+                            </td>
+                            <td className="px-6 py-4">
+                                <a href="#" className="font-medium text-green-400 hover:underline">Edit</a>
+                            </td>
+                        </tr>
+                        <tr className="bg-[#F3FAFF] text-black">
+                            <th scope="row" className="px-6 py-4 font-medium text-black whitespace-nowrap">
+                                Joyo
+                            </th>
+                            <td className="px-6 py-4">
+                                Dani
+                            </td>
+                            <td className="px-6 py-4">
+                                Lapangan Tembak Satu Nusa
+                            </td>
+                            <td className="px-6 py-4">
+                                Gagal
+                            </td>
+                            <td className="px-6 py-4">
+                                <a href="#" className="font-medium text-green-400 hover:underline">Edit</a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-            </Styles>
+            </section>
         </section>
     );
 }
