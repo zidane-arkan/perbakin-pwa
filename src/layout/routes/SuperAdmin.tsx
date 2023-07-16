@@ -22,6 +22,9 @@ import EditPenguji from '../super-admin/edit/Penguji'
 import HasilUjian from '../super-admin/HasilUjian';
 import DetailPenguji from '../pages/DetailPenguji';
 import KelolaAdmin from '../super-admin/kelola/Admin';
+// Route Pilih Ujia
+import PilihUjian from '../super-admin/PilihUjian';
+
 const SuperAdmin = () => {
     // const userPenguji = [
     //     { id: '1', penguji: 'Penguji 1' },
@@ -34,6 +37,7 @@ const SuperAdmin = () => {
             <Routes>
                 {/* <Route path='/' element={<SuperAdminRegist />} /> */}
                 <Route path='/' element={<UjianBaru />} />
+                <Route path='/pilihujian' element={<PilihUjian />} />
                 <Route path='/adminregis' element={<AdminRegis />} />
                 <Route path='/tabs' element={<Dashboard />} >
                     <Route path='admindashboard' element={<SuperAdminTab />} />

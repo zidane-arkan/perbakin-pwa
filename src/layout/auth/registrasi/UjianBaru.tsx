@@ -41,6 +41,25 @@ const UjianBaru = () => {
         }
     };
 
+    const getExamId = async (): Promise<string | null> => {
+        try {
+            const response = await api.get("/super/exam");
+            const exams = response.data.data.exams;
+            if (exams.length > 0) {
+                const lastExam = exams[exams.length - 1];
+                const lastExamId = lastExam.id;
+
+                return lastExamId;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            const err = error as AxiosError<ResponseData<null>>;
+            console.error("Error:", err);
+
+            return null;
+        }
+    };
     const createExamHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setResponse({ message: "", error: false })
@@ -136,7 +155,11 @@ const UjianBaru = () => {
                         )}
                         <button type="submit" className="text-white rounded-lg text-base font-bold w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Selanjutnya</button>
                     </div>
+
                 </form>
+                <section className='flex w-full h-auto justify-between gap-8 pt-4 sm:pt-4'>
+                    <button onClick={() => navigate("/superadmin/pilihujian")} type="button" className="text-black rounded-lg text-base font-bold w-full sm:w-full px-5 py-2.5 text-center bg-white border border-solid border-blue-700 hover:bg-blue-700 focus:ring-blue-800">Pilih Ujian Lama</button>
+                </section>
             </LayoutChild>
         </Layout>
     )
