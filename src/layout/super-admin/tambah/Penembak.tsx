@@ -41,15 +41,19 @@ const Penembak = () => {
 
     const getExamId = async (): Promise<string | null> => {
         try {
+            let latestExamId: string | null = null;
             const response = await api.get("/super/exam");
             const exams = response.data.data.exams;
             if (exams.length > 0) {
                 const lastExam = exams[exams.length - 1];
-                const lastExamId = lastExam.id;
+                latestExamId = lastExam.id;
+            }
 
-                return lastExamId;
+            if (penembakCtx?.getExamId) {
+                const examId = await penembakCtx.getExamId(null);
+                return examId ?? latestExamId;
             } else {
-                return null;
+                return latestExamId;
             }
         } catch (error) {
             const err = error as AxiosError<ResponseData<null>>;
@@ -141,12 +145,12 @@ const Penembak = () => {
                 {previewImage ?
                     (
                         <div className="mb-0">
-                            <img src={previewImage} alt="Preview" className="rounded-full w-[150px] h-[150px]" />
+                            <img src={previewImage} alt="Preview" className="rounded-full w-[150px] h-[150px] sm:w-[170px] sm:h-[170px]" />
                         </div>
                     )
                     :
                     (
-                        <button className='rounded-full bg-white w-[120px] h-[120px]'></button>
+                        <button className='rounded-full bg-white w-[120px] h-[120px] sm:h-[170px] sm:w-[170px]'></button>
                     )
                 }
 
