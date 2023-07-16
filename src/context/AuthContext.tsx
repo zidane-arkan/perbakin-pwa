@@ -33,6 +33,7 @@ type UserData = {
 interface authContextInterface {
   userData: UserData | null;
   login: ({ username, password, role }: LoginRequest) => Promise<HandlerResponse>;
+  getExamId: (examId?: string | null) => Promise<string | null>;
   createExam: (examData: CreateExamRequest) => Promise<HandlerResponse>;
   updateExam: (examData: UpdateExamRequest) => Promise<HandlerResponse>;
   createAdmin: (adminData: {
@@ -58,6 +59,8 @@ export const AuthContext = createContext<authContextInterface | null>(null);
 
 function AuthProvider(props: { children: JSX.Element }) {
   const [userData, setUserData] = useState<UserData | null>(null);
+
+
 
   const login = async ({ username, password, role }: LoginRequest): Promise<HandlerResponse> => {
     let response;
@@ -147,6 +150,31 @@ function AuthProvider(props: { children: JSX.Element }) {
       };
     }
   };
+
+  const getExamId = async (examId: string | null = null): Promise<string | null> => {
+    try {
+      let latestExamId: string | null = null;
+      const response = await api.get("/super/exam");
+      const exams = response.data.data.exams;
+      if (exams.length > 0) {
+        const lastExam = exams[exams.length - 1];
+        latestExamId = lastExam.id;
+      }
+
+      if (examId) {
+        console.log(examId)
+        return examId;
+      } else {
+        return latestExamId;
+      }
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+      console.error("Error:", err);
+
+      return null;
+    }
+  };
+
 
   const updateExam = async (examData: UpdateExamRequest): Promise<HandlerResponse> => {
     try {
@@ -415,6 +443,7 @@ function AuthProvider(props: { children: JSX.Element }) {
       value={{
         userData,
         login,
+        getExamId,
         createExam,
         updateExam,
         createAdmin,

@@ -13,7 +13,7 @@ import { AxiosError } from 'axios'
 //     name: HTMLInputElement;
 // }
 const PilihUjian = () => {
-    const penembakCtx = useContext(AuthContext);
+    const superAdminCtx = useContext(AuthContext);
     const navigate = useNavigate();
     const [formState, setFormState] = useState<[boolean, string]>([false, '']);
     const [response, setResponse] = useState<HandlerResponse>({ message: '', error: false });
@@ -27,26 +27,6 @@ const PilihUjian = () => {
     const handleClose = () => {
         setShowError(false);
     };
-
-    // const getExamId = async (): Promise<string | null> => {
-    //     try {
-    //         const response = await api.get("/super/exam");
-    //         const exams = response.data.data.exams;
-    //         if (exams.length > 0) {
-    //             const lastExam = exams[exams.length - 1];
-    //             const lastExamId = lastExam.id;
-
-    //             return lastExamId;
-    //         } else {
-    //             return null;
-    //         }
-    //     } catch (error) {
-    //         const err = error as AxiosError<ResponseData<null>>;
-    //         console.error("Error:", err);
-
-    //         return null;
-    //     }
-    // };
 
     const getExamList = async () => {
         try {
@@ -71,40 +51,43 @@ const PilihUjian = () => {
         getExamList();
     }, []);
 
-    const getIdExam =  (e: React.FormEvent<HTMLFormElement>) => {
+    const getIdExam = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setResponse({ message: "", error: false })
         setFormState([true, "Loading..."])
 
-        const elements = e.currentTarget.elements;
+        // const elements = e.currentTarget.elements;
         // const examId = await getExamList();
-        console.log(selectedExamId)
+        console.log(typeof selectedExamId)
         setFormState([false, ""])
-        // const query =
-        //     adminCtx &&
-        //     adminCtx.createAdmin({
-        //         examId: examId,
-        //         name: elements.name.value,
-        //         username: elements.username.value,
-        //         password: elements.password.value
-        //     });
+        const query =
+            superAdminCtx &&
+            superAdminCtx.getExamId(selectedExamId);
+        query
+            ?.then((res) => {
+                const response: HandlerResponse = {
+                    message: res !== null ? res : "Exam ID is null",
+                    error: false,
+                };
+                setResponse(response);
+                setFormState([false, ""]);
+                if (!response.error) {
+                    navigate("/superadmin/tabs/admindashboard");
+                }
+            })
+            .catch((err) => {
+                const errorResponse: HandlerResponse = {
+                    message: err.message || "An error occurred",
+                    error: true,
+                };
+                setResponse(errorResponse);
+                setFormState([false, ""]);
+            });
 
-        // query
-        //     ?.then((res) => {
-        //         setResponse(res);
-        //         setFormState([false, ""]);
-        //         if (!res.error) {
-        //             navigate("/superadmin/tabs/admindashboard");
-        //         }
-        //     })
-        //     .catch((err) => {
-        //         setResponse(err);
-        //         setFormState([false, ""]);
-        //     });
     }
 
     return (
-        <Layout  className={'rounded-3xl mt-20 mb-[5%]'}>
+        <Layout className={'rounded-3xl mt-20 mb-[5%]'}>
             <LayoutChild className='flex-col'>
                 <div className='max-w-full w-full text-center text-[#036BB0]'>
                     <h1 className='pb-2 text-4xl font-extrabold'>Pilih Ujian</h1>
