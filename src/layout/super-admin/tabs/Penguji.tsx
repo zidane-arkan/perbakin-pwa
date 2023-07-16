@@ -6,7 +6,7 @@ import { AxiosError } from 'axios'
 import { ResponseData } from '../../../context/response'
 
 const Penguji = () => {
-    const superAdminCtx = useContext(AuthContext);
+    
     const [scorers, setScorers] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     // const getExamId = async (): Promise<string | null> => {
@@ -28,6 +28,7 @@ const Penguji = () => {
     //         return null;
     //     }
     // };
+    const superAdminCtx = useContext(AuthContext);
     const getExamId = async (): Promise<string | null> => {
         try {
             let latestExamId: string | null = null;

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { AuthContext } from '../../../context/AuthContext'
 import { PenembakSuperAdmin } from '../../pages/Penembak'
 import api from '../../../api/api'
 import { AxiosError } from 'axios'
@@ -7,17 +8,22 @@ import { ResponseData } from '../../../context/response'
 const Penembak = () => {
     const [shooters, setShooters] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
+    const superAdminCtx = useContext(AuthContext);
     const getExamId = async (): Promise<string | null> => {
         try {
+            let latestExamId: string | null = null;
             const response = await api.get("/super/exam");
             const exams = response.data.data.exams;
             if (exams.length > 0) {
                 const lastExam = exams[exams.length - 1];
-                const lastExamId = lastExam.id;
+                latestExamId = lastExam.id;
+            }
 
-                return lastExamId;
+            if (superAdminCtx?.getExamId) {
+                const examId = await superAdminCtx.getExamId(null);
+                return examId ?? latestExamId;
             } else {
-                return null;
+                return latestExamId;
             }
         } catch (error) {
             const err = error as AxiosError<ResponseData<null>>;
