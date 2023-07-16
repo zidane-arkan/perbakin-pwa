@@ -11,6 +11,17 @@ const TandaTangan = (props: any) => {
     const sigCanvasPenguji = useRef<SignaturePad>(null);
     const sigCanvasPeserta = useRef<SignaturePad>(null);
     const [imageURL, setImageURL] = useState<String | null>(null);
+    const [imageURLPeserta, setImageURLPeserta] = useState<String | null>(null);
+    const resetSigPenguji = () => {
+        if (sigCanvasPenguji.current !== null) {
+            return sigCanvasPenguji.current.clear();
+        }
+    }
+    const resetSigPeserta = () => {
+        if (sigCanvasPeserta.current !== null) {
+            return sigCanvasPeserta.current.clear();
+        }
+    }
     const savePenguji = () => {
         if (sigCanvasPenguji.current) {
             const trimmedCanvas = sigCanvasPenguji.current.getTrimmedCanvas();
@@ -23,7 +34,7 @@ const TandaTangan = (props: any) => {
         if (sigCanvasPeserta.current) {
             const trimmedCanvas = sigCanvasPeserta.current.getTrimmedCanvas();
             if (trimmedCanvas) {
-                setImageURL(trimmedCanvas.toDataURL('image/png'));
+                setImageURLPeserta(trimmedCanvas.toDataURL('image/png'));
             }
         }
     }
@@ -39,28 +50,54 @@ const TandaTangan = (props: any) => {
                 <section className='flex flex-col gap-2'>
                     <h2>Penguji:</h2>
                     <p className='text-[#000]/60'>Isi kolom berikut dengan tanda tangan.</p>
-                    <SignaturePad
-                        penColor='green'
-                        ref={sigCanvasPenguji}
-                        canvasProps={{
-                            className: "signatureCanvas"
-                        }} />
+                    <div className='flex flex-col gap-2 w-full'>
+                        <SignaturePad
+                            penColor='green'
+                            ref={sigCanvasPenguji}
+                            canvasProps={{
+                                className: "signatureCanvas"
+                            }} />
+                        <div className='flex w-full gap-4 sm:gap-8'>
+                            <button onClick={savePenguji} className='text-white py-2 h-[48px] w-[165px] sm:w-1/2 sm:h-[50px] sm:rounded-2xl rounded-xl bg-[#62DE5F]'>Simpan</button>
+                            <button onClick={resetSigPenguji} className='button-gagal py-2 rounded-xl h-[48px] w-[165px] sm:rounded-2xl sm:w-1/2 sm:h-[50px]'>Reset</button>
+                        </div>
+                    </div>
                 </section>
                 <section className='flex flex-col gap-2'>
                     <h2>Peserta:</h2>
                     <p className='text-[#000]/60'>Isi kolom berikut dengan tanda tangan.</p>
                     {/* <SignaturePad penColor='green'
                         canvasProps={{ width: 800, height: 400, className: 'border-gray-300 rounded-xl border-2' }} /> */}
-                    <SignaturePad
-                        penColor='green'
-                        ref={sigCanvasPeserta}
-                        canvasProps={{
-                            className: "signatureCanvas"
-                        }} />
+                    <div className='flex flex-col gap-2 w-full'>
+                        <SignaturePad
+                            penColor='green'
+                            ref={sigCanvasPeserta}
+                            canvasProps={{
+                                className: "signatureCanvas"
+                            }} />
+                        <div className='flex w-full gap-4 sm:gap-8'>
+                            <button onClick={savePeserta} className='text-white py-2 h-[48px] w-[165px] sm:w-1/2 sm:h-[50px] sm:rounded-2xl rounded-xl bg-[#62DE5F]'>Simpan</button>
+                            <button onClick={resetSigPeserta} className='button-gagal py-2 rounded-xl h-[48px] w-[165px] sm:rounded-2xl sm:w-1/2 sm:h-[50px]'>Reset</button>
+                        </div>
+                    </div>
                 </section>
                 <CardText>
                     <Link to={`${props.link}`} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>Selesai Pengujian</Link>
                 </CardText>
+                {/* {
+                    imageURL && (
+                        <>
+                            <img src={imageURL} alt="signature" className="signature" />
+                        </>
+                    )
+                }
+                {
+                    imageURLPeserta && (
+                        <>
+                            <img src={imageURLPeserta} alt="signature" className="signature" />
+                        </>
+                    )
+                } */}
             </LayoutChild>
         </Layout>
     )
