@@ -27,16 +27,19 @@ const Admin = () => {
 
     const getExamId = async (): Promise<string | null> => {
         try {
+            let latestExamId: string | null = null;
             const response = await api.get("/super/exam");
-            console.log(response);
             const exams = response.data.data.exams;
             if (exams.length > 0) {
                 const lastExam = exams[exams.length - 1];
-                const lastExamId = lastExam.id;
+                latestExamId = lastExam.id;
+            }
 
-                return lastExamId;
+            if (adminCtx?.getExamId) {
+                const examId = await adminCtx.getExamId(null);
+                return examId ?? latestExamId;
             } else {
-                return null;
+                return latestExamId;
             }
         } catch (error) {
             const err = error as AxiosError<ResponseData<null>>;
@@ -45,6 +48,7 @@ const Admin = () => {
             return null;
         }
     };
+
 
     const createAdminHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
