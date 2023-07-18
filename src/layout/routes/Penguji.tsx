@@ -41,7 +41,7 @@ const Penguji = () => {
                 {/* Edit */}
                 <Route path='/penguji/editprofile' element={<EditProfilePenguji />} />
                 {/* Route Kualifikasi */}
-                <Route path='/kualifikasi_aturan' element={<Kualifikasi />} />
+                <Route path='/kualifikasi_aturan/:id' element={<Kualifikasi />} />
                 <Route path='/kualifikasi_form' element={<KualifikasiForm />} />
                 <Route path='/kualifikasi_konfirmasi' element={<KualifikasiKonfirmasi />} />
                 {/* Route Stages Aturan */}

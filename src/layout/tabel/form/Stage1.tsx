@@ -612,7 +612,7 @@ const Stage1 = () => {
   return (
     <Styles>
       <Percobaan1 />
-      <Percobaan2 />
+      {/* <Percobaan2 /> */}
     </Styles>
   );
 }
