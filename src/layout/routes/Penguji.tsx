@@ -37,29 +37,29 @@ const Penguji = () => {
         <>
             <Routes>
                 <Route path='/' element={<Dashboard />} />
-                <Route path='/kualifikasi_ketentuan/:id' element={<KualifikasiKetentuan />} />
+                <Route path='/kualifikasi_ketentuan/:shooterid' element={<KualifikasiKetentuan />} />
                 {/* Edit */}
                 <Route path='/penguji/editprofile' element={<EditProfilePenguji />} />
                 {/* Route Kualifikasi */}
-                <Route path='/kualifikasi_aturan/:id' element={<Kualifikasi />} />
-                <Route path='/kualifikasi_form' element={<KualifikasiForm />} />
-                <Route path='/kualifikasi_konfirmasi' element={<KualifikasiKonfirmasi />} />
+                <Route path='/kualifikasi_aturan/:shooterid' element={<Kualifikasi />} />
+                <Route path='/kualifikasi_form/:shooterid' element={<KualifikasiForm />} />
+                <Route path='/kualifikasi_konfirmasi/:shooterid' element={<KualifikasiKonfirmasi />} />
                 {/* Route Stages Aturan */}
-                <Route path='/stage1_aturan' element={<Stage1 />} />
+                <Route path='/stage1_aturan/:shooterid' element={<Stage1 />} />
                 <Route path='/stage2_aturan' element={<Stage2 />} />
                 <Route path='/stage3_aturan' element={<Stage3 />} />
                 <Route path='/stage4_aturan' element={<Stage4 />} />
                 <Route path='/stage5_aturan' element={<Stage5 />} />
                 <Route path='/stage6_aturan' element={<Stage6 />} />
                 {/* Route Stages Form */}
-                <Route path='/stage1_form' element={<Stage1Form />} />
+                <Route path='/stage1_form/:shooterid' element={<Stage1Form />} />
                 <Route path='/stage2_form' element={<Stage2Form />} />
                 <Route path='/stage3_form' element={<Stage3Form />} />
                 <Route path='/stage4_form' element={<Stage4Form />} />
                 <Route path='/stage5_form' element={<Stage5Form />} />
                 <Route path='/stage6_form' element={<Stage6Form />} />
                 {/* Route Stage Konfirmasi */}
-                <Route path='/stage1_konfirmasi' element={<Stage1Konfirmasi />} />
+                <Route path='/stage1_konfirmasi/:shooterid' element={<Stage1Konfirmasi />} />
                 <Route path='/stage2_konfirmasi' element={<Stage2Konfirmasi />} />
                 <Route path='/stage3_konfirmasi' element={<Stage3Konfirmasi />} />
                 <Route path='/stage4_konfirmasi' element={<Stage4Konfirmasi />} />

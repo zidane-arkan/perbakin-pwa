@@ -1,6 +1,6 @@
 import React from 'react'
 import KetentuanUmum from "../../pages/KetentuanUmum";
-import { useLocation,useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 const Kualifikasi = () => {
     // const location = useLocation();
@@ -13,16 +13,15 @@ const Kualifikasi = () => {
     // };
 
     // const id = getIdFromLink();
-    const { id } = useParams();
+    const { shooterid } = useParams();
 
-    console.log(id); // Output: nilai ID dari URL
-    console.log(id)
+    console.log(shooterid); // Output: nilai ID dari URL
     return (
         <KetentuanUmum
             penembak="Penembak 1"
             pengprov="Kabutaen 1"
             klub="Klub Serikat 1"
-            link={`/penguji/kualifikasi_aturan/${id}`}
+            link={`/penguji/kualifikasi_aturan/${shooterid}`}
         />
     )
 }

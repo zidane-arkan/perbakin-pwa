@@ -1,6 +1,11 @@
 import React from 'react'
 import Aturan from '../../pages/Aturan'
+import { useParams } from 'react-router-dom';
+
 const Kualifikasi = () => {
+    const { shooterid } = useParams();
+
+    console.log(shooterid); // Output: nilai ID dari URL
     return (
         <Aturan
             title="Ujian Kualifikasi 20 Meter"
@@ -8,7 +13,7 @@ const Kualifikasi = () => {
             waktu="3"
             sasaran="1"
             tembakMaks='5'
-            link='kualifikasi_form'
+            link={`kualifikasi_form/${shooterid}`}
             posisiAwal='Berdiri tegak menghadap sasaran, senjata dan magasin berada dalam holster atau diletakkan diatas meja'
         >
             <li>Penguji berhak untuk menghentikan peserta dari ujian apabila menganggap perlengkapan peserta tidak memenuhi prosedur keamanan.</li>
