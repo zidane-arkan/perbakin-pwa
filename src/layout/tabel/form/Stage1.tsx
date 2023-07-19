@@ -6,8 +6,10 @@
 // } from '@tanstack/react-table';
 // import { useTable, useGroupBy } from 'react-table';
 import React, { useEffect, useMemo, useState } from 'react'
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-
+import { AxiosError } from 'axios';
+import api from '../../../api/api';
 
 const Styles = styled.div`
   display: flex;
@@ -72,19 +74,44 @@ const Styles = styled.div`
   }
 `
 
-const Percobaan1 = () => {
-  const [tableData, setTableData] = useState([
+interface Percobaan1Props {
+  try1Data: {
+    [key: string]: {
+      scores: number[];
+      duration: number[];
+    } & {
+      checkmarks: boolean[];
+    }
+  },
+  shooterid: string | undefined;
+}
+
+interface TableDataItem {
+  id: number;
+  nilaiPerkenaanA: number;
+  nilaiPerkenaanC: number;
+  nilaiPerkenaanD: number;
+  waktu: {
+    minute: string;
+    second: string;
+    millisecond: string;
+  };
+  hasil: boolean;
+}
+
+const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid }) => {
+  const [tableData, setTableData] = useState<TableDataItem[]>([
     {
       id: 1,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
+      nilaiPerkenaanA: 1,
+      nilaiPerkenaanC: 1,
       nilaiPerkenaanD: 0,
       waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00"
+        minute: "02",
+        second: "03",
+        millisecond: "00",
       },
-      hasil: false
+      hasil: false,
     },
     {
       id: 2,
@@ -94,9 +121,9 @@ const Percobaan1 = () => {
       waktu: {
         minute: "00",
         second: "00",
-        millisecond: "00"
+        millisecond: "00",
       },
-      hasil: false
+      hasil: false,
     },
     {
       id: 3,
@@ -106,9 +133,9 @@ const Percobaan1 = () => {
       waktu: {
         minute: "00",
         second: "00",
-        millisecond: "00"
+        millisecond: "00",
       },
-      hasil: false
+      hasil: false,
     },
     {
       id: 4,
@@ -118,9 +145,9 @@ const Percobaan1 = () => {
       waktu: {
         minute: "00",
         second: "00",
-        millisecond: "00"
+        millisecond: "00",
       },
-      hasil: false
+      hasil: false,
     },
     {
       id: 5,
@@ -130,9 +157,9 @@ const Percobaan1 = () => {
       waktu: {
         minute: "00",
         second: "00",
-        millisecond: "00"
+        millisecond: "00",
       },
-      hasil: false
+      hasil: false,
     },
     {
       id: 6,
@@ -142,56 +169,184 @@ const Percobaan1 = () => {
       waktu: {
         minute: "00",
         second: "00",
-        millisecond: "00"
+        millisecond: "00",
       },
-      hasil: false
-    }
+      hasil: false,
+    },
   ]);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: string | number,
-    field: "nilaiPerkenaanA" | "nilaiPerkenaanC" | "nilaiPerkenaanD"
-  ) => {
 
-    const { value } = e.target;
+  useEffect(() => {
+    console.log(try1Data);
 
-    const updatedTableData = tableData.map((data) => {
-      if (data.id === id) {
-        return {
-          ...data,
-          [field]: +value
-        };
-      }
-      return data;
-    });
+    if (try1Data && Object.keys(try1Data).length > 0) {
+      const updatedTableData = Object.keys(try1Data).map((key) => {
+        if (key.startsWith("no_")) {
+          const rowData = try1Data[key];
+          const { scores, duration } = rowData;
+          const id = parseInt(key.split("_")[1]);
 
-    const totalAlpha = updatedTableData.reduce(
-      (sum, data) => sum + data.nilaiPerkenaanA,
-      0
-    );
-    const totalCharlie = updatedTableData.reduce(
-      (sum, data) => sum + data.nilaiPerkenaanC,
-      0
-    );
-    const totalDelta = updatedTableData.reduce(
-      (sum, data) => sum + data.nilaiPerkenaanD,
-      0
-    );
+          if (scores && duration) {
+            const updatedScores = scores || [0, 0, 0];
+            const updatedDuration = duration || [0, 0, 0];
 
-    if (totalAlpha <= 12 && totalCharlie <= 12 && totalDelta <= 12) {
+            return {
+              id,
+              nilaiPerkenaanA: updatedScores[0] || 0,
+              nilaiPerkenaanC: updatedScores[1] || 0,
+              nilaiPerkenaanD: updatedScores[2] || 0,
+              waktu: {
+                minute: updatedDuration[0]?.toString().padStart(2, "0") || "00",
+                second: updatedDuration[1]?.toString().padStart(2, "0") || "00",
+                millisecond: updatedDuration[2]?.toString().padStart(2, "0") || "00",
+              },
+              hasil: try1Data.checkmarks[id - 1] || false, // Get the corresponding checkmark value
+            };
+          }
+        }
+        return null; // Skip other keys like "checkmarks"
+      }).filter(Boolean);
+
       setTableData(updatedTableData);
-      console.log(updatedTableData); // Cetak data tabel ke konsol
+    }
+  }, [try1Data]);
+
+  const updateNilaiPerkeneaanBE = async (updatedData: TableDataItem, noBaris: number) => {
+    console.log(updatedData);
+    try {
+      const response = await api.put(
+        `/scorer/shooter/${shooterid}/result/stage1/1/no/${noBaris}`,
+        {
+          scores: [
+            updatedData.nilaiPerkenaanA,
+            updatedData.nilaiPerkenaanC,
+            updatedData.nilaiPerkenaanD
+          ],
+          duration: [
+            parseInt(updatedData.waktu.minute),
+            parseInt(updatedData.waktu.second),
+            parseInt(updatedData.waktu.millisecond)
+          ]
+        }
+      );
+      console.log(response.data);
+      return {
+        message: response.data.message,
+        error: false,
+        response: response
+      };
+    } catch (error) {
+      const err = error as AxiosError<any>;
+      console.error(err);
+      return {
+        message:
+          "Error: " + err.response?.status + ": " + err.response?.data.message,
+        error: true
+      };
     }
   };
 
-  const handleTimeChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: string | number,
-    field: "minute" | "second" | "millisecond"
-  ) => {
+  // CHECKMARS
+  const updateHasilBE = (updatedCheckmarks: boolean[]) => {
+    console.log(updatedCheckmarks);
+    const endpoint = "https://example.com/checkmarks-endpoint"; // Ganti dengan URL endpoint yang sesuai
+    const requestBody = {
+      checkmarks: updatedCheckmarks,
+    };
+
+    fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleNextNo = (currentNo: number) => {
+    const nextNo = currentNo + 1;
+    console.log(nextNo);
+    const endpoint = `{{URL}}/{{API_VERSION}}/scorer/shooter/{{SHOOTER_ID}}/result/stage1/1/next`;
+
+    api
+      .patch(endpoint)
+      .then((response) => {
+        console.log(response.data);
+
+        const newTableData: TableDataItem = {
+          id: nextNo,
+          nilaiPerkenaanA: 0,
+          nilaiPerkenaanC: 0,
+          nilaiPerkenaanD: 0,
+          waktu: {
+            minute: "00",
+            second: "00",
+            millisecond: "00",
+          },
+          hasil: false,
+        };
+
+        const rowIndex = tableData.findIndex((data) => data.id === currentNo);
+        if (rowIndex !== -1) {
+          const updatedTableData = [...tableData];
+          updatedTableData.splice(rowIndex + 1, 0, newTableData);
+          // setTableData(updatedTableData);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    return {
+      message: `Berhasil melanjutkan no stage 1 percobaan 1 ke no ${nextNo}`,
+      status: 200,
+      data: null,
+    };
+  };
+
+  const handleInputChange = <K extends keyof TableDataItem>(e: React.ChangeEvent<HTMLInputElement>, id: number, field: K) => {
     const { value } = e.target;
 
+    const updatedTableData = [...tableData];
+    const updatedRow = updatedTableData.find((data) => data.id === id);
+
+    if (updatedRow) {
+      updatedRow[field] = +value as TableDataItem[K];
+
+      const updatedDuration = updatedTableData.map((data) => [
+        parseInt(data.waktu.minute, 10),
+        parseInt(data.waktu.second, 10),
+        parseInt(data.waktu.millisecond, 10)
+      ]);
+
+      setTableData(updatedTableData);
+      updateNilaiPerkeneaanBE(
+        {
+          ...updatedRow,
+          waktu: {
+            ...updatedRow.waktu,
+            [field]: +value,
+          },
+        },
+        id
+      );
+    }
+  };
+
+
+  const handleTimeChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: number,
+    field: keyof TableDataItem["waktu"]
+  ) => {
+    const { value } = e.target;
     let updatedValue = value;
     if (value.length === 1) {
       updatedValue = "0" + value;
@@ -203,800 +358,759 @@ const Percobaan1 = () => {
           ...data,
           waktu: {
             ...data.waktu,
-            [field]: updatedValue
-          }
+            [field]: updatedValue,
+          },
         };
       }
       return data;
     });
 
     setTableData(updatedTableData);
-    console.log(updatedTableData); // Cetak data tabel ke konsol
+
+    const updatedData = updatedTableData.find((data) => data.id === id);
+    if (updatedData) {
+      const { id, nilaiPerkenaanA, nilaiPerkenaanC, nilaiPerkenaanD, waktu, hasil } = updatedData;
+      updateNilaiPerkeneaanBE(
+        {
+          id,
+          nilaiPerkenaanA,
+          nilaiPerkenaanC,
+          nilaiPerkenaanD,
+          waktu,
+          hasil,
+        },
+        id
+      );
+    }
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, id: string | number) => {
+
+
+  const handleCheckboxChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: number
+  ) => {
     const { checked } = e.target;
 
     const updatedTableData = tableData.map((data) => {
       if (data.id === id) {
         return {
           ...data,
-          hasil: checked
+          hasil: checked,
         };
       }
       return data;
     });
 
     setTableData(updatedTableData);
-    console.log(updatedTableData); // Cetak data tabel ke konsol
+
+    const updatedCheckmarks = updatedTableData.map((data) => data.hasil);
+    updateHasilBE(updatedCheckmarks);
   };
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th colSpan={6}>Percobaan 1</th>
-        </tr>
-        <tr>
-          <th rowSpan={2}>No</th>
-          <th colSpan={3}>Nilai Perkenaan</th>
-          <th rowSpan={2}>Waktu</th>
-          <th rowSpan={2}>Hasil</th>
-        </tr>
-        <tr>
-          <th>A</th>
-          <th>C</th>
-          <th>D</th>
-        </tr>
-      </thead>
-      {tableData.map((data) => (
-        <tbody key={data.id}>
+    <section>
+      <table>
+        <thead>
           <tr>
-            <td rowSpan={2}>{data.id}</td>
-            <td>
-              <input
-                type="number"
-                min={0}
-                max={2 - data.nilaiPerkenaanC - data.nilaiPerkenaanD}
-                value={data.nilaiPerkenaanA}
-                onChange={(e) =>
-                  handleInputChange(e, data.id, "nilaiPerkenaanA")
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="number"
-                min={0}
-                max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanD}
-                value={data.nilaiPerkenaanC}
-                onChange={(e) =>
-                  handleInputChange(e, data.id, "nilaiPerkenaanC")
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="number"
-                min={0}
-                max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanC}
-                value={data.nilaiPerkenaanD}
-                onChange={(e) =>
-                  handleInputChange(e, data.id, "nilaiPerkenaanD")
-                }
-              />
-            </td>
-            <td rowSpan={2}>
-              <div className="stopwatch">
-                <input
-                  id={`minutes-${data.id}`}
-                  type="number"
-                  name="minute"
-                  max="59"
-                  min="00"
-                  placeholder="mm"
-                  value={data.waktu.minute}
-                  onChange={(e) => handleTimeChange(e, data.id, "minute")}
-                />
-                :
-                <input
-                  id={`seconds-${data.id}`}
-                  type="number"
-                  name="second"
-                  max="59"
-                  min="00"
-                  placeholder="ss"
-                  value={data.waktu.second}
-                  onChange={(e) => handleTimeChange(e, data.id, "second")}
-                />
-                :
-                <input
-                  id={`milliseconds-${data.id}`}
-                  type="number"
-                  name="millisecond"
-                  max="99"
-                  min="00"
-                  placeholder="SS"
-                  value={data.waktu.millisecond}
-                  onChange={(e) => handleTimeChange(e, data.id, "millisecond")}
-                />
-              </div>
-            </td>
-            <td rowSpan={2}>
-              <input
-                type="checkbox"
-                id={`seri-${data.id}`}
-                name="seri"
-                value="benar"
-                checked={data.hasil}
-                onChange={(e) => handleCheckboxChange(e, data.id)}
-              />
-            </td>
+            <th colSpan={6}>Percobaan 1</th>
           </tr>
-          <tr></tr>
-        </tbody>
-      ))}
-    </table>
+          <tr>
+            <th rowSpan={2}>No</th>
+            <th colSpan={3}>Nilai Perkenaan</th>
+            <th rowSpan={2}>Waktu</th>
+            <th rowSpan={2}>Hasil</th>
+          </tr>
+          <tr>
+            <th>A</th>
+            <th>C</th>
+            <th>D</th>
+          </tr>
+        </thead>
+        {tableData.map((data) => (
+          <tbody key={data.id}>
+            <tr>
+              <td rowSpan={2}>{data.id}</td>
+              <td>
+                <input
+                  type="number"
+                  min={0}
+                  max={2 - data.nilaiPerkenaanC - data.nilaiPerkenaanD}
+                  value={data.nilaiPerkenaanA}
+                  onChange={(e) =>
+                    handleInputChange(e, data.id, "nilaiPerkenaanA")
+                  }
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  min={0}
+                  max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanD}
+                  value={data.nilaiPerkenaanC}
+                  onChange={(e) =>
+                    handleInputChange(e, data.id, "nilaiPerkenaanC")
+                  }
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  min={0}
+                  max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanC}
+                  value={data.nilaiPerkenaanD}
+                  onChange={(e) =>
+                    handleInputChange(e, data.id, "nilaiPerkenaanD")
+                  }
+                />
+              </td>
+              <td rowSpan={2}>
+                <div className="stopwatch">
+                  <input
+                    id={`minutes-${data.id}`}
+                    type="number"
+                    name="minute"
+                    max="59"
+                    min="00"
+                    placeholder="mm"
+                    value={data.waktu.minute}
+                    onChange={(e) => handleTimeChange(e, data.id, "minute")}
+                  />
+                  :
+                  <input
+                    id={`seconds-${data.id}`}
+                    type="number"
+                    name="second"
+                    max="59"
+                    min="00"
+                    placeholder="ss"
+                    value={data.waktu.second}
+                    onChange={(e) => handleTimeChange(e, data.id, "second")}
+                  />
+                  :
+                  <input
+                    id={`milliseconds-${data.id}`}
+                    type="number"
+                    name="millisecond"
+                    max="99"
+                    min="00"
+                    placeholder="SS"
+                    value={data.waktu.millisecond}
+                    onChange={(e) => handleTimeChange(e, data.id, "millisecond")}
+                  />
+                </div>
+              </td>
+              <td rowSpan={2}>
+                <input
+                  type="checkbox"
+                  id={`seri-${data.id}`}
+                  name="seri"
+                  value="benar"
+                  checked={data.hasil}
+                  onChange={(e) => handleCheckboxChange(e, data.id)}
+                />
+              </td>
+            </tr>
+            <tr></tr>
+          </tbody>
+        ))}
+      </table>
+      <button>Buat Percobaan 2</button>
+    </section>
   );
 };
 
-const Percobaan2 = () => {
-  const [tableData, setTableData] = useState([
-    {
-      id: 1,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00"
-      },
-      hasil: false
-    },
-    {
-      id: 2,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00"
-      },
-      hasil: false
-    },
-    {
-      id: 3,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00"
-      },
-      hasil: false
-    },
-    {
-      id: 4,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00"
-      },
-      hasil: false
-    },
-    {
-      id: 5,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00"
-      },
-      hasil: false
-    },
-    {
-      id: 6,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00"
-      },
-      hasil: false
-    }
-  ]);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: string | number,
-    field: "nilaiPerkenaanA" | "nilaiPerkenaanC" | "nilaiPerkenaanD"
-  ) => {
-
-    const { value } = e.target;
-
-    const updatedTableData = tableData.map((data) => {
-      if (data.id === id) {
-        return {
-          ...data,
-          [field]: +value
-        };
-      }
-      return data;
-    });
-
-    const totalAlpha = updatedTableData.reduce(
-      (sum, data) => sum + data.nilaiPerkenaanA,
-      0
-    );
-    const totalCharlie = updatedTableData.reduce(
-      (sum, data) => sum + data.nilaiPerkenaanC,
-      0
-    );
-    const totalDelta = updatedTableData.reduce(
-      (sum, data) => sum + data.nilaiPerkenaanD,
-      0
-    );
-
-    if (totalAlpha <= 12 && totalCharlie <= 12 && totalDelta <= 12) {
-      setTableData(updatedTableData);
-      console.log(updatedTableData); // Cetak data tabel ke konsol
-    }
-  };
-
-  const handleTimeChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: string | number,
-    field: "minute" | "second" | "millisecond"
-  ) => {
-    const { value } = e.target;
-
-    let updatedValue = value;
-    if (value.length === 1) {
-      updatedValue = "0" + value;
-    }
-
-    const updatedTableData = tableData.map((data) => {
-      if (data.id === id) {
-        return {
-          ...data,
-          waktu: {
-            ...data.waktu,
-            [field]: updatedValue
-          }
-        };
-      }
-      return data;
-    });
-
-    setTableData(updatedTableData);
-    console.log(updatedTableData); // Cetak data tabel ke konsol
-  };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, id: string | number) => {
-    const { checked } = e.target;
-
-    const updatedTableData = tableData.map((data) => {
-      if (data.id === id) {
-        return {
-          ...data,
-          hasil: checked
-        };
-      }
-      return data;
-    });
-
-    setTableData(updatedTableData);
-    console.log(updatedTableData); // Cetak data tabel ke konsol
-  };
-
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th colSpan={6}>Percobaan 2</th>
-        </tr>
-        <tr>
-          <th rowSpan={2}>No</th>
-          <th colSpan={3}>Nilai Perkenaan</th>
-          <th rowSpan={2}>Waktu</th>
-          <th rowSpan={2}>Hasil</th>
-        </tr>
-        <tr>
-          <th>A</th>
-          <th>C</th>
-          <th>D</th>
-        </tr>
-      </thead>
-      {tableData.map((data) => (
-        <tbody key={data.id}>
-          <tr>
-            <td rowSpan={2}>{data.id}</td>
-            <td>
-              <input
-                type="number"
-                min={0}
-                max={2 - data.nilaiPerkenaanC - data.nilaiPerkenaanD}
-                value={data.nilaiPerkenaanA}
-                onChange={(e) =>
-                  handleInputChange(e, data.id, "nilaiPerkenaanA")
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="number"
-                min={0}
-                max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanD}
-                value={data.nilaiPerkenaanC}
-                onChange={(e) =>
-                  handleInputChange(e, data.id, "nilaiPerkenaanC")
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="number"
-                min={0}
-                max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanC}
-                value={data.nilaiPerkenaanD}
-                onChange={(e) =>
-                  handleInputChange(e, data.id, "nilaiPerkenaanD")
-                }
-              />
-            </td>
-            <td rowSpan={2}>
-              <div className="stopwatch">
-                <input
-                  id={`minutes-${data.id}`}
-                  type="number"
-                  name="minute"
-                  max="59"
-                  min="00"
-                  placeholder="mm"
-                  value={data.waktu.minute}
-                  onChange={(e) => handleTimeChange(e, data.id, "minute")}
-                />
-                :
-                <input
-                  id={`seconds-${data.id}`}
-                  type="number"
-                  name="second"
-                  max="59"
-                  min="00"
-                  placeholder="ss"
-                  value={data.waktu.second}
-                  onChange={(e) => handleTimeChange(e, data.id, "second")}
-                />
-                .
-                <input
-                  id={`milliseconds-${data.id}`}
-                  type="number"
-                  name="millisecond"
-                  max="99"
-                  min="00"
-                  placeholder="SS"
-                  value={data.waktu.millisecond}
-                  onChange={(e) => handleTimeChange(e, data.id, "millisecond")}
-                />
-              </div>
-            </td>
-            <td rowSpan={2}>
-              <input
-                type="checkbox"
-                id={`seri-${data.id}`}
-                name="seri"
-                value="benar"
-                checked={data.hasil}
-                onChange={(e) => handleCheckboxChange(e, data.id)}
-              />
-            </td>
-          </tr>
-          <tr></tr>
-        </tbody>
-      ))}
-    </table>
-  );
-};
 
 const Stage1 = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [try1Data, setTry1Data] = useState();
+
+
+  const [try2Data, setTry2Data] = useState({
+    scores: [],
+    duration: [],
+    checkmarks: [],
+  });
+
+  const { shooterid } = useParams();
+
+  useEffect(() => {
+    const fetchTry1Data = async () => {
+      try {
+        const response = await api.get(
+          `/scorer/shooter/${shooterid}/result/stage1`
+        );
+        const apiData = response.data;
+        const try1Data = apiData.data.stage_1.try_1;
+        setTry1Data(try1Data);
+        // console.log(try1Data)
+        setIsLoading(false); // Setelah data berhasil diambil dan diatur ke state, ubah isLoading menjadi false
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false); // Jika terjadi kesalahan saat mengambil data, tetap ubah isLoading menjadi false agar pesan error ditampilkan
+      }
+    };
+
+    fetchTry1Data();
+  }, [shooterid]);
+
+  // Jika isLoading masih true, tampilkan pesan pemuatan atau animasi pemuatan
+  if (isLoading) {
+    return <div>Loading...</div>; // Gantilah ini dengan komponen pemuatan yang sesuai
+  }
+
+  // Jika data masih kosong, tampilkan pesan bahwa data belum tersedia
   return (
     <Styles>
-      <Percobaan1 />
-      {/* <Percobaan2 /> */}
+      {try1Data ? (
+        <Percobaan1 shooterid={shooterid} try1Data={try1Data} />
+      ) : (
+        <div>Data belum tersedia.</div>
+      )}
     </Styles>
   );
-}
+};
 
 
 export default Stage1
 
-// Perobaan 1
 
-// type STAGE1 = {
-//   seri: string;
-//   A: number;
-//   B: number;
-//   C: number;
-//   waktu: string;
-//   hasil: boolean;
-// };
-// const defaultData: STAGE1[] = [
-//   {
-//     seri: '1',
-//     A: 1,
-//     B: 2,
-//     C: 3,
-//     waktu: '00:00',
-//     hasil: false,
-//   },
-//   {
-//     seri: '2',
-//     A: 1,
-//     B: 2,
-//     C: 3,
-//     waktu: '00:00',
-//     hasil: false,
-//   },
-//   {
-//     seri: '3',
-//     A: 1,
-//     B: 2,
-//     C: 3,
-//     waktu: '00:00',
-//     hasil: false,
-//   },
-//   {
-//     seri: '4',
-//     A: 1,
-//     B: 2,
-//     C: 3,
-//     waktu: '00:00',
-//     hasil: false,
-//   },
-// ];
-// const columnHelper = createColumnHelper<STAGE1>();
 
-// const EditableCell = ({ getValue, row, column, table }: any) => {
-//   const initialValue = getValue();
-//   const columnMeta = column.columnDef.meta;
-//   const [value, setValue] = useState(initialValue);
-//   useEffect(() => {
-//     setValue(initialValue);
-//   }, [initialValue]);
-//   const onBlur = () => {
-//     table.options.meta?.updateData(row.index, column.id, value);
+
+// PERCOBAAN 2
+// const Percobaan2 = () => {
+//   const [tableData, setTableData] = useState([
+//     {
+//       id: 1,
+//       nilaiPerkenaanA: 0,
+//       nilaiPerkenaanC: 0,
+//       nilaiPerkenaanD: 0,
+//       waktu: {
+//         minute: "00",
+//         second: "00",
+//         millisecond: "00"
+//       },
+//       hasil: false
+//     },
+//     {
+//       id: 2,
+//       nilaiPerkenaanA: 0,
+//       nilaiPerkenaanC: 0,
+//       nilaiPerkenaanD: 0,
+//       waktu: {
+//         minute: "00",
+//         second: "00",
+//         millisecond: "00"
+//       },
+//       hasil: false
+//     },
+//     {
+//       id: 3,
+//       nilaiPerkenaanA: 0,
+//       nilaiPerkenaanC: 0,
+//       nilaiPerkenaanD: 0,
+//       waktu: {
+//         minute: "00",
+//         second: "00",
+//         millisecond: "00"
+//       },
+//       hasil: false
+//     },
+//     {
+//       id: 4,
+//       nilaiPerkenaanA: 0,
+//       nilaiPerkenaanC: 0,
+//       nilaiPerkenaanD: 0,
+//       waktu: {
+//         minute: "00",
+//         second: "00",
+//         millisecond: "00"
+//       },
+//       hasil: false
+//     },
+//     {
+//       id: 5,
+//       nilaiPerkenaanA: 0,
+//       nilaiPerkenaanC: 0,
+//       nilaiPerkenaanD: 0,
+//       waktu: {
+//         minute: "00",
+//         second: "00",
+//         millisecond: "00"
+//       },
+//       hasil: false
+//     },
+//     {
+//       id: 6,
+//       nilaiPerkenaanA: 0,
+//       nilaiPerkenaanC: 0,
+//       nilaiPerkenaanD: 0,
+//       waktu: {
+//         minute: "00",
+//         second: "00",
+//         millisecond: "00"
+//       },
+//       hasil: false
+//     }
+//   ]);
+
+//   const handleInputChange = (
+//     e: React.ChangeEvent<HTMLInputElement>,
+//     id: string | number,
+//     field: "nilaiPerkenaanA" | "nilaiPerkenaanC" | "nilaiPerkenaanD"
+//   ) => {
+
+//     const { value } = e.target;
+
+//     const updatedTableData = tableData.map((data) => {
+//       if (data.id === id) {
+//         return {
+//           ...data,
+//           [field]: +value
+//         };
+//       }
+//       return data;
+//     });
+
+//     const totalAlpha = updatedTableData.reduce(
+//       (sum, data) => sum + data.nilaiPerkenaanA,
+//       0
+//     );
+//     const totalCharlie = updatedTableData.reduce(
+//       (sum, data) => sum + data.nilaiPerkenaanC,
+//       0
+//     );
+//     const totalDelta = updatedTableData.reduce(
+//       (sum, data) => sum + data.nilaiPerkenaanD,
+//       0
+//     );
+
+//     if (totalAlpha <= 12 && totalCharlie <= 12 && totalDelta <= 12) {
+//       setTableData(updatedTableData);
+//       console.log(updatedTableData); // Cetak data tabel ke konsol
+//     }
 //   };
-//   return columnMeta?.type === 'number' ? (
-//     <input className='w-[30px] text-center'
-//       min={0}
-//       max={10}
-//       type="number"
-//       value={value}
-//       onChange={(e) => setValue(e.target.value)}
-//       onBlur={onBlur}
-//     />
-//   ) : (
-//     <input className='w-[120px] text-center'
-//       min='00:00:00'
-//       step={'1'}
-//       type={columnMeta?.type || "text"}
-//       value={value}
-//       onChange={(e) => setValue(e.target.value)}
-//       onBlur={onBlur}
-//     />
+
+//   const handleTimeChange = (
+//     e: React.ChangeEvent<HTMLInputElement>,
+//     id: string | number,
+//     field: "minute" | "second" | "millisecond"
+//   ) => {
+//     const { value } = e.target;
+
+//     let updatedValue = value;
+//     if (value.length === 1) {
+//       updatedValue = "0" + value;
+//     }
+
+//     const updatedTableData = tableData.map((data) => {
+//       if (data.id === id) {
+//         return {
+//           ...data,
+//           waktu: {
+//             ...data.waktu,
+//             [field]: updatedValue
+//           }
+//         };
+//       }
+//       return data;
+//     });
+
+//     setTableData(updatedTableData);
+//     console.log(updatedTableData); // Cetak data tabel ke konsol
+//   };
+
+//   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, id: string | number) => {
+//     const { checked } = e.target;
+
+//     const updatedTableData = tableData.map((data) => {
+//       if (data.id === id) {
+//         return {
+//           ...data,
+//           hasil: checked
+//         };
+//       }
+//       return data;
+//     });
+
+//     setTableData(updatedTableData);
+//     console.log(updatedTableData); // Cetak data tabel ke konsol
+//   };
+
+//   return (
+//     <table>
+//       <thead>
+//         <tr>
+//           <th colSpan={6}>Percobaan 2</th>
+//         </tr>
+//         <tr>
+//           <th rowSpan={2}>No</th>
+//           <th colSpan={3}>Nilai Perkenaan</th>
+//           <th rowSpan={2}>Waktu</th>
+//           <th rowSpan={2}>Hasil</th>
+//         </tr>
+//         <tr>
+//           <th>A</th>
+//           <th>C</th>
+//           <th>D</th>
+//         </tr>
+//       </thead>
+//       {tableData.map((data) => (
+//         <tbody key={data.id}>
+//           <tr>
+//             <td rowSpan={2}>{data.id}</td>
+//             <td>
+//               <input
+//                 type="number"
+//                 min={0}
+//                 max={2 - data.nilaiPerkenaanC - data.nilaiPerkenaanD}
+//                 value={data.nilaiPerkenaanA}
+//                 onChange={(e) =>
+//                   handleInputChange(e, data.id, "nilaiPerkenaanA")
+//                 }
+//               />
+//             </td>
+//             <td>
+//               <input
+//                 type="number"
+//                 min={0}
+//                 max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanD}
+//                 value={data.nilaiPerkenaanC}
+//                 onChange={(e) =>
+//                   handleInputChange(e, data.id, "nilaiPerkenaanC")
+//                 }
+//               />
+//             </td>
+//             <td>
+//               <input
+//                 type="number"
+//                 min={0}
+//                 max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanC}
+//                 value={data.nilaiPerkenaanD}
+//                 onChange={(e) =>
+//                   handleInputChange(e, data.id, "nilaiPerkenaanD")
+//                 }
+//               />
+//             </td>
+//             <td rowSpan={2}>
+//               <div className="stopwatch">
+//                 <input
+//                   id={`minutes-${data.id}`}
+//                   type="number"
+//                   name="minute"
+//                   max="59"
+//                   min="00"
+//                   placeholder="mm"
+//                   value={data.waktu.minute}
+//                   onChange={(e) => handleTimeChange(e, data.id, "minute")}
+//                 />
+//                 :
+//                 <input
+//                   id={`seconds-${data.id}`}
+//                   type="number"
+//                   name="second"
+//                   max="59"
+//                   min="00"
+//                   placeholder="ss"
+//                   value={data.waktu.second}
+//                   onChange={(e) => handleTimeChange(e, data.id, "second")}
+//                 />
+//                 .
+//                 <input
+//                   id={`milliseconds-${data.id}`}
+//                   type="number"
+//                   name="millisecond"
+//                   max="99"
+//                   min="00"
+//                   placeholder="SS"
+//                   value={data.waktu.millisecond}
+//                   onChange={(e) => handleTimeChange(e, data.id, "millisecond")}
+//                 />
+//               </div>
+//             </td>
+//             <td rowSpan={2}>
+//               <input
+//                 type="checkbox"
+//                 id={`seri-${data.id}`}
+//                 name="seri"
+//                 value="benar"
+//                 checked={data.hasil}
+//                 onChange={(e) => handleCheckboxChange(e, data.id)}
+//               />
+//             </td>
+//           </tr>
+//           <tr></tr>
+//         </tbody>
+//       ))}
+//     </table>
 //   );
-// }
-
-// const columns1 = [
-//   columnHelper.group({
-//     header: 'Percobaan 1',
-//     columns: [
-//       columnHelper.group({
-//         id: 'seri',
-//         header: () => <span>Seri</span>,
-//         // footer: props => props.column.id,
-//         columns: [
-//           columnHelper.accessor('seri', {
-//             id: 'seri',
-//             header: () => <span>No Seri</span>,
-//           }),
-//         ]
-//       }),
-//       columnHelper.group({
-//         id: 'nilaiPerkenaan',
-//         header: () => <span>Nilai Perkenaan</span>,
-//         // footer: props => props.column.id,
-//         columns: [
-//           columnHelper.accessor('A', {
-//             id: 'A',
-//             header: () => <span>A</span>,
-//             cell: EditableCell,
-//             meta: {
-//               type: 'number',
-//             }
-//           }),
-//           columnHelper.accessor('B', {
-//             id: 'B',
-//             header: () => <span>B</span>,
-//             cell: EditableCell,
-//             meta: {
-//               type: 'number',
-//             }
-//           }),
-//           columnHelper.accessor('C', {
-//             id: 'C',
-//             header: () => <span>C</span>,
-//             cell: EditableCell,
-//             meta: {
-//               type: 'number',
-//             }
-//           }),
-//         ],
-//       }),
-//       columnHelper.group({
-//         id: 'waktu',
-//         header: () => <span>Waktu</span>,
-//         // footer: props => props.column.id,
-//         columns: [
-//           columnHelper.accessor('waktu', {
-//             id: 'waktu',
-//             header: () => <span>Hasil Waktu</span>,
-//             cell: EditableCell,
-//             meta: {
-//               type: 'time',
-//             }
-//           }),
-//         ]
-//       }),
-//       columnHelper.group({
-//         id: 'hasil',
-//         header: () => <span>Hasil</span>,
-//         // footer: props => props.column.id,
-//         columns: [
-//           columnHelper.accessor('hasil', {
-//             id: 'hasil',
-//             header: () => <span>Hasil (Centang)</span>,
-//             cell: EditableCell,
-//             meta: {
-//               type: 'checkbox',
-//             }
-//           }),
-//         ]
-//       }),
-//     ]
-//   })
-// ]
-// const columns2 = [
-//   columnHelper.group({
-//     header: 'Percobaan 2',
-//     columns: [
-//       columnHelper.group({
-//         id: 'seri',
-//         header: () => <span>Seri</span>,
-//         // footer: props => props.column.id,
-//         columns: [
-//           columnHelper.accessor('seri', {
-//             id: 'seri',
-//             header: () => <span>No Seri</span>,
-//           }),
-//         ]
-//       }),
-//       columnHelper.group({
-//         id: 'nilaiPerkenaan',
-//         header: () => <span>Nilai Perkenaan</span>,
-//         // footer: props => props.column.id,
-//         columns: [
-//           columnHelper.accessor('A', {
-//             id: 'A',
-//             header: () => <span>A</span>,
-//             cell: EditableCell,
-//             meta: {
-//               type: 'number',
-//             }
-//           }),
-//           columnHelper.accessor('B', {
-//             id: 'B',
-//             header: () => <span>B</span>,
-//             cell: EditableCell,
-//             meta: {
-//               type: 'number',
-//             }
-//           }),
-//           columnHelper.accessor('C', {
-//             id: 'C',
-//             header: () => <span>C</span>,
-//             cell: EditableCell,
-//             meta: {
-//               type: 'number',
-//             }
-//           }),
-//         ],
-//       }),
-//       columnHelper.group({
-//         id: 'waktu',
-//         header: () => <span>Waktu</span>,
-//         // footer: props => props.column.id,
-//         columns: [
-//           columnHelper.accessor('waktu', {
-//             id: 'waktu',
-//             header: () => <span>Hasil Waktu</span>,
-//             cell: EditableCell,
-//             meta: {
-//               type: 'time',
-//             }
-//           }),
-//         ]
-//       }),
-//       columnHelper.group({
-//         id: 'hasil',
-//         header: () => <span>Hasil</span>,
-//         // footer: props => props.column.id,
-//         columns: [
-//           columnHelper.accessor('hasil', {
-//             id: 'hasil',
-//             header: () => <span>Hasil (Centang)</span>,
-//             cell: EditableCell,
-//             meta: {
-//               type: 'checkbox',
-//             }
-//           }),
-//         ]
-//       }),
-//     ]
-//   })
-// ]
-
-// const Table1 = () => {
-//   const [data, setData] = useState(() => [...defaultData])
-//   const table = useReactTable({
-//     data,
-//     columns: columns1,
-//     getCoreRowModel: getCoreRowModel(),
-//     meta: {
-//       updateData: ({ rowIndex, columnId, value }: any) => {
-//         setData((old) =>
-//           old.map((row, index) => {
-//             if (index === rowIndex) {
-//               return {
-//                 ...old[rowIndex],
-//                 [columnId]: value,
-//               };
-//             }
-//             return row;
-//           })
-//         );
-//       },
-//     },
-//   });
-//   return (
-//     <Styles>
-//       <table>
-//         <thead>
-//           {table.getHeaderGroups().map((headerGroup) => (
-//             <tr key={headerGroup.id}>
-//               {headerGroup.headers.map((header) => (
-//                 <th key={header.id} colSpan={header.colSpan}>
-//                   {header.isPlaceholder
-//                     ? null
-//                     : flexRender(
-//                       header.column.columnDef.header,
-//                       header.getContext()
-//                     )}
-//                 </th>
-//               ))}
-//             </tr>
-//           ))}
-//         </thead>
-//         <tbody>
-//           {table.getRowModel().rows.map((row) => (
-//             <tr key={row.id}>
-//               {row.getVisibleCells().map((cell) => (
-//                 <td key={cell.id}>
-//                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-//                 </td>
-//               ))}
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </Styles>
-//   )
-// }
-// const Table2 = () => {
-//   const columns = [
+// };
+// // PERCOBAAN 1 BERHASIL
+// const Percobaan1 = () => {
+//   const [tableData, setTableData] = useState([
 //     {
-//       Header: 'No',
-//       accessor: 'no',
-//       groupBy: true,
+//       id: 1,
+//       nilaiPerkenaanA: 0,
+//       nilaiPerkenaanC: 0,
+//       nilaiPerkenaanD: 0,
+//       waktu: {
+//         minute: "00",
+//         second: "00",
+//         millisecond: "00"
+//       },
+//       hasil: false
 //     },
 //     {
-//       Header: 'Name',
-//       accessor: 'name',
-//     },
-//     // Kolom-kolom lainnya
-//   ];
-//   const [data, setData] = useState(() => [...defaultData])
-//   const table = useReactTable({
-//     data,
-//     columns: columns2,
-//     getCoreRowModel: getCoreRowModel(),
-//     meta: {
-//       updateData: ({ rowIndex, columnId, value }: any) => {
-//         setData((old) =>
-//           old.map((row, index) => {
-//             if (index === rowIndex) {
-//               return {
-//                 ...old[rowIndex],
-//                 [columnId]: value,
-//               };
-//             }
-//             return row;
-//           })
-//         );
+//       id: 2,
+//       nilaiPerkenaanA: 0,
+//       nilaiPerkenaanC: 0,
+//       nilaiPerkenaanD: 0,
+//       waktu: {
+//         minute: "00",
+//         second: "00",
+//         millisecond: "00"
 //       },
+//       hasil: false
 //     },
-//   });
+//     {
+//       id: 3,
+//       nilaiPerkenaanA: 0,
+//       nilaiPerkenaanC: 0,
+//       nilaiPerkenaanD: 0,
+//       waktu: {
+//         minute: "00",
+//         second: "00",
+//         millisecond: "00"
+//       },
+//       hasil: false
+//     },
+//     {
+//       id: 4,
+//       nilaiPerkenaanA: 0,
+//       nilaiPerkenaanC: 0,
+//       nilaiPerkenaanD: 0,
+//       waktu: {
+//         minute: "00",
+//         second: "00",
+//         millisecond: "00"
+//       },
+//       hasil: false
+//     },
+//     {
+//       id: 5,
+//       nilaiPerkenaanA: 0,
+//       nilaiPerkenaanC: 0,
+//       nilaiPerkenaanD: 0,
+//       waktu: {
+//         minute: "00",
+//         second: "00",
+//         millisecond: "00"
+//       },
+//       hasil: false
+//     },
+//     {
+//       id: 6,
+//       nilaiPerkenaanA: 0,
+//       nilaiPerkenaanC: 0,
+//       nilaiPerkenaanD: 0,
+//       waktu: {
+//         minute: "00",
+//         second: "00",
+//         millisecond: "00"
+//       },
+//       hasil: false
+//     }
+//   ]);
+
+//   const handleInputChange = (
+//     e: React.ChangeEvent<HTMLInputElement>,
+//     id: string | number,
+//     field: "nilaiPerkenaanA" | "nilaiPerkenaanC" | "nilaiPerkenaanD"
+//   ) => {
+
+//     const { value } = e.target;
+
+//     const updatedTableData = tableData.map((data) => {
+//       if (data.id === id) {
+//         return {
+//           ...data,
+//           [field]: +value
+//         };
+//       }
+//       return data;
+//     });
+
+//     const totalAlpha = updatedTableData.reduce(
+//       (sum, data) => sum + data.nilaiPerkenaanA,
+//       0
+//     );
+//     const totalCharlie = updatedTableData.reduce(
+//       (sum, data) => sum + data.nilaiPerkenaanC,
+//       0
+//     );
+//     const totalDelta = updatedTableData.reduce(
+//       (sum, data) => sum + data.nilaiPerkenaanD,
+//       0
+//     );
+
+//     if (totalAlpha <= 12 && totalCharlie <= 12 && totalDelta <= 12) {
+//       setTableData(updatedTableData);
+//       console.log(updatedTableData); // Cetak data tabel ke konsol
+//     }
+//   };
+
+//   const handleTimeChange = (
+//     e: React.ChangeEvent<HTMLInputElement>,
+//     id: string | number,
+//     field: "minute" | "second" | "millisecond"
+//   ) => {
+//     const { value } = e.target;
+
+//     let updatedValue = value;
+//     if (value.length === 1) {
+//       updatedValue = "0" + value;
+//     }
+
+//     const updatedTableData = tableData.map((data) => {
+//       if (data.id === id) {
+//         return {
+//           ...data,
+//           waktu: {
+//             ...data.waktu,
+//             [field]: updatedValue
+//           }
+//         };
+//       }
+//       return data;
+//     });
+
+//     setTableData(updatedTableData);
+//     console.log(updatedTableData); // Cetak data tabel ke konsol
+//   };
+
+//   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, id: string | number) => {
+//     const { checked } = e.target;
+
+//     const updatedTableData = tableData.map((data) => {
+//       if (data.id === id) {
+//         return {
+//           ...data,
+//           hasil: checked
+//         };
+//       }
+//       return data;
+//     });
+
+//     setTableData(updatedTableData);
+//     console.log(updatedTableData); // Cetak data tabel ke konsol
+//   };
+
 //   return (
-//     <Styles>
-//       <table>
-//         <thead>
-//           {table.getHeaderGroups().map((headerGroup) => (
-//             <tr key={headerGroup.id}>
-//               {headerGroup.headers.map((header) => (
-//                 <th key={header.id} colSpan={header.colSpan}>
-//                   {header.isPlaceholder
-//                     ? null
-//                     : flexRender(
-//                       header.column.columnDef.header,
-//                       header.getContext()
-//                     )}
-//                 </th>
-//               ))}
-//             </tr>
-//           ))}
-//         </thead>
-//         <tbody>
-//           {table.getRowModel().rows.map((row) => (
-//             <tr key={row.id}>
-//               {row.getVisibleCells().map((cell) => (
-//                 <td key={cell.id}>
-//                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-//                 </td>
-//               ))}
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </Styles>
-//   )
-// }
-// interface Data {
-//   no: number;
-//   nama: string;
-//   umur: number;
-// }
-// const data: Data[] = [
-//   { no: 2, nama: 'Jane Doe', umur: 30 },
-//   { no: 3, nama: 'Alice Smith', umur: 35 },
-//   { no: 4, nama: 'Emily Brown', umur: 45 },
-//   { no: 5, nama: 'Michael Davis', umur: 50 },
-// ];
-// const Stage1 = () => {
-//   return (
-//     <section className='flex flex-col gap-5'>
-//       <Table1 />
-//       <Table2 />
-//       {/* <Percobaan data={data} /> */}
-//     </section>
-//   )
-// }
+    // <table>
+    //   <thead>
+    //     <tr>
+    //       <th colSpan={6}>Percobaan 1</th>
+    //     </tr>
+    //     <tr>
+    //       <th rowSpan={2}>No</th>
+    //       <th colSpan={3}>Nilai Perkenaan</th>
+    //       <th rowSpan={2}>Waktu</th>
+    //       <th rowSpan={2}>Hasil</th>
+    //     </tr>
+    //     <tr>
+    //       <th>A</th>
+    //       <th>C</th>
+    //       <th>D</th>
+    //     </tr>
+    //   </thead>
+    //   {tableData.map((data) => (
+    //     <tbody key={data.id}>
+    //       <tr>
+    //         <td rowSpan={2}>{data.id}</td>
+    //         <td>
+    //           <input
+    //             type="number"
+    //             min={0}
+    //             max={2 - data.nilaiPerkenaanC - data.nilaiPerkenaanD}
+    //             value={data.nilaiPerkenaanA}
+    //             onChange={(e) =>
+    //               handleInputChange(e, data.id, "nilaiPerkenaanA")
+    //             }
+    //           />
+    //         </td>
+    //         <td>
+    //           <input
+    //             type="number"
+    //             min={0}
+    //             max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanD}
+    //             value={data.nilaiPerkenaanC}
+    //             onChange={(e) =>
+    //               handleInputChange(e, data.id, "nilaiPerkenaanC")
+    //             }
+    //           />
+    //         </td>
+    //         <td>
+    //           <input
+    //             type="number"
+    //             min={0}
+    //             max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanC}
+    //             value={data.nilaiPerkenaanD}
+    //             onChange={(e) =>
+    //               handleInputChange(e, data.id, "nilaiPerkenaanD")
+    //             }
+    //           />
+    //         </td>
+    //         <td rowSpan={2}>
+    //           <div className="stopwatch">
+    //             <input
+    //               id={`minutes-${data.id}`}
+    //               type="number"
+    //               name="minute"
+    //               max="59"
+    //               min="00"
+    //               placeholder="mm"
+    //               value={data.waktu.minute}
+    //               onChange={(e) => handleTimeChange(e, data.id, "minute")}
+    //             />
+    //             :
+    //             <input
+    //               id={`seconds-${data.id}`}
+    //               type="number"
+    //               name="second"
+    //               max="59"
+    //               min="00"
+    //               placeholder="ss"
+    //               value={data.waktu.second}
+    //               onChange={(e) => handleTimeChange(e, data.id, "second")}
+    //             />
+    //             :
+    //             <input
+    //               id={`milliseconds-${data.id}`}
+    //               type="number"
+    //               name="millisecond"
+    //               max="99"
+    //               min="00"
+    //               placeholder="SS"
+    //               value={data.waktu.millisecond}
+    //               onChange={(e) => handleTimeChange(e, data.id, "millisecond")}
+    //             />
+    //           </div>
+    //         </td>
+    //         <td rowSpan={2}>
+    //           <input
+    //             type="checkbox"
+    //             id={`seri-${data.id}`}
+    //             name="seri"
+    //             value="benar"
+    //             checked={data.hasil}
+    //             onChange={(e) => handleCheckboxChange(e, data.id)}
+    //           />
+    //         </td>
+    //       </tr>
+    //       <tr></tr>
+    //     </tbody>
+    //   ))}
+    // </table>
+//   );
+// };
