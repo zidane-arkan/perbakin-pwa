@@ -211,6 +211,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid }) => {
     }
   }, [try1Data]);
 
+  // BACKEND HANDLER
   const updateNilaiPerkeneaanBE = async (updatedData: TableDataItem, noBaris: number) => {
     console.log(updatedData);
     try {
@@ -270,47 +271,52 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid }) => {
       });
   };
 
-  const handleNextNo = (currentNo: number) => {
+  const handleNextNo = async (currentNo: number) => {
     const nextNo = currentNo + 1;
     console.log(nextNo);
-    const endpoint = `{{URL}}/{{API_VERSION}}/scorer/shooter/{{SHOOTER_ID}}/result/stage1/1/next`;
+    const endpoint = `/scorer/shooter/${shooterid}/result/stage1/1/next`;
 
-    api
-      .patch(endpoint)
-      .then((response) => {
-        console.log(response.data);
+    try {
+      const response = await api.patch(endpoint);
+      console.log(response.data);
 
-        const newTableData: TableDataItem = {
-          id: nextNo,
-          nilaiPerkenaanA: 0,
-          nilaiPerkenaanC: 0,
-          nilaiPerkenaanD: 0,
-          waktu: {
-            minute: "00",
-            second: "00",
-            millisecond: "00",
-          },
-          hasil: false,
-        };
+      // const newTableData: TableDataItem = {
+      //   id: nextNo,
+      //   nilaiPerkenaanA: 0,
+      //   nilaiPerkenaanC: 0,
+      //   nilaiPerkenaanD: 0,
+      //   waktu: {
+      //     minute: "00",
+      //     second: "00",
+      //     millisecond: "00",
+      //   },
+      //   hasil: false,
+      // };
 
-        const rowIndex = tableData.findIndex((data) => data.id === currentNo);
-        if (rowIndex !== -1) {
-          const updatedTableData = [...tableData];
-          updatedTableData.splice(rowIndex + 1, 0, newTableData);
-          // setTableData(updatedTableData);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      // const rowIndex = tableData.findIndex((data) => data.id === currentNo);
+      // if (rowIndex !== -1) {
+      //   const updatedTableData = [...tableData];
+      //   updatedTableData.splice(rowIndex + 1, 0, newTableData);
+      //   setTableData(updatedTableData);
+      // }
 
-    return {
-      message: `Berhasil melanjutkan no stage 1 percobaan 1 ke no ${nextNo}`,
-      status: 200,
-      data: null,
-    };
+      return {
+        message: `Berhasil melanjutkan no stage 1 percobaan 1 ke no ${nextNo}`,
+        status: 200,
+        data: null,
+      };
+    } catch (error : any) {
+      console.error(error);
+      return {
+        message: "Error: " + error.message,
+        status: error.response?.status,
+        data: null,
+      };
+    }
   };
 
+
+  // INPUT HANDLE
   const handleInputChange = <K extends keyof TableDataItem>(e: React.ChangeEvent<HTMLInputElement>, id: number, field: K) => {
     const { value } = e.target;
 
@@ -383,7 +389,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid }) => {
       );
     }
   };
-
 
 
   const handleCheckboxChange = (
