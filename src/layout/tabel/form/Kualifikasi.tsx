@@ -6,7 +6,9 @@
 // } from '@tanstack/react-table';
 import React, { useEffect, useMemo, useState, ChangeEvent } from 'react';
 import styled from 'styled-components';
-
+import { useParams } from 'react-router-dom';
+import api from '../../../api/api';
+import { AxiosError } from 'axios';
 
 const Styles = styled.div`
   input{
@@ -97,36 +99,150 @@ interface TableData {
     checkmarks: boolean[];
   };
 }
+interface ApiData {
+  series_1: number[];
+  series_2: number[];
+  series_3: number[];
+  series_4: number[];
+  series_5: number[];
+  checkmarks: boolean[];
+}
+interface Percobaan1Props {
+  kualifikasiData?: ApiData; // Assuming TableData is imported and defined here
+}
 
-const Percobaan1 = () => {
+
+const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
+  const { shooterid } = useParams()
+  if (!kualifikasiData) {
+    return <div className='pt-4 sm:pt-4'>Mengambil Data...</div>;
+  }
   const seriesNames = ["1", "2", "3", "4", "5"];
   const [tableData, setTableData] = useState<TableData | any>({
     stage_0: {
-      series_1: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      series_2: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      series_3: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      series_4: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      series_5: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      series_1: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      series_2: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      series_3: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      series_4: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      series_5: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       checkmarks: [false, false, false, false, false],
     },
   });
 
+  // USE DATA FROM API
+  useEffect(() => {
+    if (kualifikasiData) {
+      const formattedData: TableData = {
+        stage_0: {
+          series_1: kualifikasiData.series_1,
+          series_2: kualifikasiData.series_2,
+          series_3: kualifikasiData.series_3,
+          series_4: kualifikasiData.series_4,
+          series_5: kualifikasiData.series_5,
+          checkmarks: kualifikasiData.checkmarks,
+        },
+      };
+      setTableData(formattedData);
+    }
+  }, [kualifikasiData]);
+
+  // API UPDATE
+  const updateNilaiPerkeneaanBE = async (
+    updatedData: ApiData,
+    noBaris: number,
+    stageKey: string
+  ) => {
+    try {
+      const seriesKey = `series_${noBaris}`;
+      const scores = updatedData[stageKey][seriesKey].slice(0, 11);
+      // console.log(scores);
+      // const scores = updatedData[stageKey][seriesKey].slice(0, 11);
+      console.log(scores)
+      const response = await api.put(
+        `/scorer/shooter/${shooterid}/result/stage0/no/${noBaris}`,
+        {
+          scores: scores,
+        }
+      );
+      console.log(response.data);
+      return {
+        message: response.data.message,
+        error: false,
+        response: response,
+      };
+    } catch (error) {
+      const err = error as AxiosError<any>;
+      console.error(err);
+      return {
+        message:
+          "Error: " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  };
+  const updateCheckmarksBE = async (
+    updatedData: ApiData,
+  ) => {
+    try {
+      const checkmarks = updatedData;
+      console.log(checkmarks);
+      const response = await api.put(
+        `/scorer/shooter/${shooterid}/result/stage0/checkmarks`,
+        {
+          checkmarks: checkmarks,
+        }
+      );
+      console.log(response.data);
+      return {
+        message: response.data.message,
+        error: false,
+        response: response,
+      };
+    } catch (error) {
+      const err = error as AxiosError<any>;
+      console.error(err);
+      return {
+        message:
+          "Error: " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  };
+
+
+  // INPUT HANDLE
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement>,
-    stageKey: string | any,
+    stageKey: string,
     seriesKey: string,
     index: number
   ) => {
     const { value } = e.target;
-    setTableData((prevData: any) => {
-      const updatedData: any = { ...prevData };
-      updatedData[stageKey][seriesKey][index] = parseInt(value, 10);
-      updatedData[stageKey][seriesKey][11] = calculateTotal(
-        updatedData[stageKey][seriesKey].slice(0, 11) as number[]
-      );
+    setTableData((prevData: ApiData) => {
+      const updatedData: ApiData = { ...prevData };
+      const scoresData: number[] | undefined = updatedData?.[stageKey]?.[seriesKey];
+
+      if (!scoresData) {
+        console.error("Invalid data format");
+        return updatedData;
+      }
+
+      scoresData[index] = parseInt(value, 10);
+      const total = calculateTotal(scoresData.slice(0, 11));
+      scoresData[11] = total;
+
+      // console.log("Updated scores:", scoresData); // Add this line to see the scores before sending to the API
+
+      // Convert noBaris to the corresponding series number (1-5)
+      const seriesNumber = parseInt(seriesKey.split("_")[1]);
+      // console.log(seriesNumber)
+      // Call the API to update the data
+      updateNilaiPerkeneaanBE(updatedData, seriesNumber, stageKey);
+
       return updatedData;
     });
   };
+
 
   const handleCheckbox = (
     e: ChangeEvent<HTMLInputElement>,
@@ -137,9 +253,9 @@ const Percobaan1 = () => {
     setTableData((prevData: any) => {
       const updatedData: any = { ...prevData };
       updatedData[stageKey].checkmarks[index] = checked;
+      updateCheckmarksBE(updatedData.stage_0.checkmarks);
       return updatedData;
     });
-    console.log(tableData);
   };
 
   const calculateTotal = (seriesValues: number[]) => {
@@ -148,6 +264,8 @@ const Percobaan1 = () => {
       .reduce((acc, cur, index) => acc + cur * index, 0);
   };
 
+
+  // RENDER DATA
   const renderSeries = (stageKey: string | any) => {
     const stageData = tableData[stageKey];
     return Object.entries(stageData)
@@ -228,9 +346,29 @@ const Percobaan1 = () => {
 };
 
 const Kualifikasi = () => {
+  const { shooterid } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const [kualifikasiData, setKualifikasiData] = useState<TableData | undefined>();
+  useEffect(() => {
+    const fetchTableData = async () => {
+      try {
+        const response = await api.get(`/scorer/shooter/${shooterid}/result/stage0`);
+        const apiData = response.data;
+        const stage0Data = apiData.data.stage_0;
+        console.log(stage0Data)
+        setKualifikasiData(stage0Data);
+        setIsLoading(false); // Set isLoading to false after data is fetched and set to state
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false); // If there is an error while fetching data, set isLoading to false to show an error message
+      }
+    };
+
+    fetchTableData();
+  }, [shooterid]);
   return (
     <>
-      <Percobaan1 />
+      <Percobaan1 kualifikasiData={kualifikasiData} />
     </>
   )
 }

@@ -99,7 +99,7 @@ interface TableDataItem {
   hasil: boolean;
 }
 
-const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid }) => {
+const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) => {
   const [tableData, setTableData] = useState<TableDataItem[]>([
     {
       id: 1,
@@ -248,28 +248,46 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid }) => {
   };
 
   // CHECKMARS
-  const updateHasilBE = (updatedCheckmarks: boolean[]) => {
+  interface UpdateHasilResponse {
+    message: string;
+    error: boolean;
+    response?: any;
+  }
+
+  const updateHasilBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
     console.log(updatedCheckmarks);
-    const endpoint = "https://example.com/checkmarks-endpoint"; // Ganti dengan URL endpoint yang sesuai
+    const endpoint = `/scorer/shooter/${shooterid}/result/stage1/1/finish`
     const requestBody = {
       checkmarks: updatedCheckmarks,
     };
 
-    fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error(error);
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
       });
+
+      const data = await response.json();
+      console.log(data);
+
+      return {
+        message: "Checkmarks updated successfully",
+        error: false,
+        response: data,
+      };
+    } catch (error) {
+      console.error(error);
+
+      return {
+        message: "Error updating checkmarks",
+        error: true,
+      };
+    }
   };
+
 
   const handleNextNo = async (currentNo: number) => {
     const nextNo = currentNo + 1;
@@ -305,7 +323,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid }) => {
         status: 200,
         data: null,
       };
-    } catch (error : any) {
+    } catch (error: any) {
       console.error(error);
       return {
         message: "Error: " + error.message,
