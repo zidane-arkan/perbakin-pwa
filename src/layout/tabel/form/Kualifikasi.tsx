@@ -264,6 +264,34 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
       .reduce((acc, cur, index) => acc + cur * index, 0);
   };
 
+  const handleNextNo = async (currentNo: number) => {
+    const nextNo = currentNo + 1;
+    console.log(nextNo);
+    const endpoint = `/scorer/shooter/${shooterid}/result/stage0/next`;
+    const confirmMoveNext = window.confirm(
+      `Apakah Anda yakin ingin pindah ke No Seri ${nextNo}?`
+    );
+    if (confirmMoveNext) {
+      try {
+        const response = await api.patch(endpoint);
+        console.log(response.data);
+        return {
+          message: `Berhasil melanjutkan no  Stage Kualifikasi ke no ${nextNo}`,
+          status: 200,
+          data: null,
+        };
+      } catch (error: any) {
+        console.error(error);
+        return {
+          message: "Error: " + error.message,
+          status: error.response?.status,
+          data: null,
+        };
+      }
+    } else {
+      return;
+    }
+  };
 
   // RENDER DATA
   const renderSeries = (stageKey: string | any) => {
@@ -303,6 +331,9 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
                   onChange={(e) => handleCheckbox(e, stageKey, index)}
                 />
               </td>
+              <td rowSpan={2}>
+                <button className='text-sm w-[60px] sm:w-[80px] border border-solid p-2 rounded-xl border-blue-400' onClick={() => handleNextNo(index + 1)}>Next No</button>
+              </td>
             </tr>
             <tr>
               {(seriesValues as number[]).slice(0, 11).map((nilai: number, nilaiIndex: number) => (
@@ -323,6 +354,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
             <th colSpan={11}>Nilai Perkenaan</th>
             <th rowSpan={2}>Jumlah </th>
             <th rowSpan={2}>Hasil </th>
+            <th rowSpan={3}>Aksi</th>
           </tr>
           <tr>
             <th>No Seri</th>
