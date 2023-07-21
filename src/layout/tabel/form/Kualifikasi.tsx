@@ -113,7 +113,6 @@ interface Percobaan1Props {
 
 
 const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
-  const { shooterid } = useParams()
   if (!kualifikasiData) {
     return <div className='pt-4 sm:pt-4'>Mengambil Data...</div>;
   }
@@ -128,7 +127,9 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
       checkmarks: [false, false, false, false, false],
     },
   });
-
+  const [isTimeoutCleared, setIsTimeoutCleared] = useState(true);
+  
+  const { shooterid } = useParams()
   // USE DATA FROM API
   useEffect(() => {
     if (kualifikasiData) {
@@ -180,6 +181,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
       };
     }
   };
+
   const updateCheckmarksBE = async (
     updatedData: ApiData,
   ) => {
@@ -233,11 +235,16 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
 
       // console.log("Updated scores:", scoresData); // Add this line to see the scores before sending to the API
 
-      // Convert noBaris to the corresponding series number (1-5)
-      const seriesNumber = parseInt(seriesKey.split("_")[1]);
-      // console.log(seriesNumber)
-      // Call the API to update the data
-      updateNilaiPerkeneaanBE(updatedData, seriesNumber, stageKey);
+      if (isTimeoutCleared) {
+        setIsTimeoutCleared(false);
+        setTimeout(async () => {
+          setIsTimeoutCleared(true);
+          // Convert noBaris to the corresponding series number (1-5)
+          const seriesNumber = parseInt(seriesKey.split("_")[1]);
+          // Call the API to update the data
+          await updateNilaiPerkeneaanBE(updatedData, seriesNumber, stageKey);
+        }, 1000);
+      }
 
       return updatedData;
     });
