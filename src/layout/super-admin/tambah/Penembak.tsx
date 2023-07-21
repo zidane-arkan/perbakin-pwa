@@ -48,7 +48,6 @@ const Penembak = () => {
                 const lastExam = exams[exams.length - 1];
                 latestExamId = lastExam.id;
             }
-
             if (penembakCtx?.getExamId) {
                 const examId = await penembakCtx.getExamId(null);
                 return examId ?? latestExamId;

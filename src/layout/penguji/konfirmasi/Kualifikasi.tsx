@@ -7,7 +7,7 @@ const Kualifikasi = () => {
 
     console.log(shooterid); // Output: nilai ID dari URL
     return (
-        <TandaTangan title='Ujian Kualifikasi 20 Meter' link={`/penguji/stage1_aturan/${shooterid}`} />
+        <TandaTangan stage={'stage0'} title='Ujian Kualifikasi 20 Meter' link={`/penguji/stage1_aturan/${shooterid}`} />
     )
 }
 
