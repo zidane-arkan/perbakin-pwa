@@ -4,14 +4,28 @@ import { Layout, LayoutChild } from '../../components/Layout'
 import { CardText } from '../../components/ui/Card';
 import SignaturePad from 'react-signature-canvas';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import api from '../../api/api';
+import { AxiosError } from 'axios';
 
 
 
 const TandaTangan = (props: any) => {
     const sigCanvasPenguji = useRef<SignaturePad>(null);
     const sigCanvasPeserta = useRef<SignaturePad>(null);
+    const [stageStatus, setStageStatus] = useState<any>(false);
     const [imageURL, setImageURL] = useState<String | null>(null);
     const [imageURLPeserta, setImageURLPeserta] = useState<String | null>(null);
+    const { shooterid } = useParams();
+
+    const handleSuccessButton = () => {
+        setStageStatus(true);
+    };
+
+    const handleGagalButton = () => {
+        setStageStatus(false);
+    };
+    // RESET TANDA TANGAN
     const resetSigPenguji = () => {
         if (sigCanvasPenguji.current !== null) {
             return sigCanvasPenguji.current.clear();
@@ -22,11 +36,30 @@ const TandaTangan = (props: any) => {
             return sigCanvasPeserta.current.clear();
         }
     }
+    // SIMPAN TANDA TANGAN
+    const dataURLtoBlob = (dataURL: String) => {
+        const arr = dataURL.split(',');
+        const mime = arr[0].match(/:(.*?);/)![1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], { type: mime });
+    };
     const savePenguji = () => {
         if (sigCanvasPenguji.current) {
             const trimmedCanvas = sigCanvasPenguji.current.getTrimmedCanvas();
             if (trimmedCanvas) {
-                setImageURL(trimmedCanvas.toDataURL('image/png'));
+                const dataURL = trimmedCanvas.toDataURL('image/png');
+                
+                // Ubah data URL menjadi Blob
+                setImageURL(dataURL);
+                const blob = dataURLtoBlob(dataURL);
+                // Simpan tanda tangan dalam bentuk Blob
+                // Misalnya, untuk mengirim ke API sebagai file, Anda dapat menyimpannya dalam state atau melakukan sesuatu dengan Blob ini.
+                console.log(blob);
             }
         }
     }
@@ -38,13 +71,47 @@ const TandaTangan = (props: any) => {
             }
         }
     }
+    // API PATCH
+    const sendFinishData = async () => {
+        try {
+            const formData = new FormData();
+            formData.append("success", stageStatus.toString())
+            if (imageURL) {
+                const bloPenguji = dataURLtoBlob(imageURL);
+                formData.append("scorer_sign", bloPenguji);
+            }
+            if (imageURLPeserta) {
+                const bloPenembak = dataURLtoBlob(imageURLPeserta);
+                formData.append("shooter_sign", bloPenembak);
+            }
+            // console.log("FormData entries:");
+            // for (const [key, value] of formData.entries()) {
+            //     console.log(key, value);
+            // }
+            const response = await api.patch(`/scorer/shooter/${shooterid}/result/${props.stage}/finish`, formData);
+            console.log(response.data);
+            return {
+                message: response.data.message,
+                error: false,
+                response: response,
+            };
+        } catch (error) {
+            const err = error as AxiosError<any>;
+            console.error(err);
+            return {
+                message:
+                    "Error: " + err.response?.status + ": " + err.response?.data.message,
+                error: true,
+            };
+        }
+    };
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pb-8 sm:pb-4 pt-[10%] sm:pt-[7%]'}>
             <HeaderBlueCustom typeIcon='close' title={props.title} />
             {props.children}
             <LayoutChild className='justify-between gap-6'>
-                <button className='py-2 h-[48px] w-[165px] sm:w-1/2 sm:h-[50px] sm:rounded-2xl rounded-xl bg-[#62DE5F]'>Berhasil</button>
-                <button className='button-gagal py-2 rounded-xl h-[48px] w-[165px] sm:rounded-2xl sm:w-1/2 sm:h-[50px]'>Gagal</button>
+                <button onClick={handleSuccessButton} className='py-2 h-[48px] w-[165px] sm:w-1/2 sm:h-[50px] sm:rounded-2xl rounded-xl bg-[#62DE5F]'>Berhasil</button>
+                <button onClick={handleGagalButton} className='button-gagal py-2 rounded-xl h-[48px] w-[165px] sm:rounded-2xl sm:w-1/2 sm:h-[50px]'>Gagal</button>
             </LayoutChild>
             <LayoutChild className='flex-col gap-12'>
                 <section className='flex flex-col gap-2'>
@@ -82,9 +149,21 @@ const TandaTangan = (props: any) => {
                     </div>
                 </section>
                 <CardText>
-                    <Link to={`${props.link}`} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>Selesai Pengujian</Link>
+                    {/* <Link to={`${props.link}`} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>Selesai Pengujian</Link> */}
+                    <button onClick={sendFinishData} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>
+                        Selesai Pengujian
+                    </button>
                 </CardText>
-                {/* {
+
+            </LayoutChild>
+        </Layout>
+    )
+}
+
+export default TandaTangan
+
+
+{/* {
                     imageURL && (
                         <>
                             <img src={imageURL} alt="signature" className="signature" />
@@ -98,9 +177,3 @@ const TandaTangan = (props: any) => {
                         </>
                     )
                 } */}
-            </LayoutChild>
-        </Layout>
-    )
-}
-
-export default TandaTangan
