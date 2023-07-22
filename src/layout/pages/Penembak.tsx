@@ -17,6 +17,7 @@ type Penembak = {
     scorer_id: string;
     id: string;
     name: string;
+    stage: string;
     club: string;
     province: string;
     scorer: string;
@@ -34,8 +35,8 @@ export const Penembak = (props: any) => {
         const fetchShooters = async () => {
             try {
                 // const examId = await getExamId();
-                const response = await api.get(`/scorer/shooter`);
-                const shooters = response.data.data.shooters;
+                const response = await api.get(`/scorer/result`);
+                const shooters = response.data.data.results;
                 setShooters(shooters);
             } catch (error) {
                 const err = error as AxiosError<ResponseData<null>>;
@@ -85,7 +86,7 @@ export const Penembak = (props: any) => {
                             penembak={shooter.name}
                             scorerId={shooter.scorer_id}
                             klub={shooter.club}
-                            stage={'Stage #2'}
+                            stage={shooter.stage}
                             pengprov={shooter.province}
                             penguji={shooter.scorer}
                         />

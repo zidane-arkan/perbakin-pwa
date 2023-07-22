@@ -8,6 +8,8 @@ import { LayoutChild } from '../Layout';
 
 export const Detail = (props: any) => {
     const shooterId = props.id;
+    const parsedStage = parseInt(props.stage);
+    const stageWithText = isNaN(parsedStage) ? props.stage : `Stage ${parsedStage}`;
     return (
         <Modal shownCardHandler={props.shownCardHandler}>
             <section className='flex flex-col w-full sm:max-w-md h-auto'>
@@ -35,9 +37,10 @@ export const Detail = (props: any) => {
                     </div>
                     <div className='flex w-full items-start flex-col gap-6'>
                         <span className='max-w-full px-2 py-1 text-xs font-bold text-white uppercase transition-colors duration-300 transform bg-[#62DE5F] rounded'>
-                            {props.stage}
+                            {stageWithText}
                         </span>
                         <Link to={`kualifikasi_ketentuan/${shooterId}`} className='w-full items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Mulai Ujian</Link>
+                        <Link to={`/penguji/stage${props.stage}_aturan/${shooterId}`} className='w-full items-center text-center px-4 py-3 border-2 border-solid text-gray-900 bg-transparent rounded-lg' >Lanjut Ujian</Link>
                     </div>
                 </LayoutChild>
             </section>

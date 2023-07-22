@@ -27,7 +27,7 @@ export const CardText = (props: Props) => {
 }
 
 export const CardPenguji = (props: any) => {
-    
+
     return (
         <>
             <section className="flex items-center max-w-md sm:max-w-full sm:w-full overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 shadow-custom">
@@ -228,6 +228,8 @@ export const CardPenembak = (props: any) => {
     const shownCardHandler = () => {
         return setIsCardShown(!isCartShown);
     }
+    const parsedStage = parseInt(props.stage);
+    const stageWithText = isNaN(parsedStage) ? props.stage : `Stage ${parsedStage}`;
     return (
         <>
             {(isCartShown && true) &&
@@ -251,7 +253,7 @@ export const CardPenembak = (props: any) => {
                     <div className="flex justify-between item-start">
                         <button
                             className="px-2 py-1 text-[.65rem] font-bold text-white transition-colors duration-300 transform bg-[#62DE5F] rounded">
-                            {props.stage}
+                            {stageWithText}
                         </button>
                     </div>
                 </div>
