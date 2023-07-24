@@ -102,7 +102,7 @@ interface TableDataItem {
 // PERCOBAAN 1
 const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
   const [tableData, setTableData] = useState<TableDataItem[]>([]);
-  const [isTimeoutCleared, setIsTimeoutCleared] = useState(true);
+  // const [isTimeoutCleared, setIsTimeoutCleared] = useState(true);
   // STATUS INPUT
   const [status, setStatus] = useState<number>(0);
 
@@ -279,6 +279,8 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
       try {
         const response = await api.patch(endpoint);
         console.log(`Berhasil melanjutkan no stage 1 percobaan 1 ke no ${nextNo}`)
+        // Set status to the next number and trigger data refresh
+        setStatus(nextNo);
         return {
           message: response.data.message,
           status: 200,
@@ -314,7 +316,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
 
       setTableData(updatedTableData);
       // WAIT UNTIL USER FINISH
-      setIsTimeoutCleared(true);
+      // setIsTimeoutCleared(true);
       updateNilaiPerkeneaanBE(updatedRow, id);
     }
   };
@@ -514,59 +516,63 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
 // PERCOBAAN 2
 const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
   const [tableData, setTableData] = useState<TableDataItem[]>([]);
-  const [isTimeoutCleared, setIsTimeoutCleared] = useState(true);
+
   // STATUS INPUT
   const [status, setStatus] = useState<number>(0);
 
   // CONVERT DATA FROM API TO TABLE DATA
   // Fetch data from API and update tableData
-  useEffect(() => {
-    const fetchTry1Data = async () => {
-      try {
-        const response = await api.get(
-          `/scorer/shooter/${shooterid}/result/stage1`
-        );
-        const apiData = response.data;
-        const stage1Data = apiData.data.stage_1.try_2;
-        setStatus(parseInt(stage1Data.status, 10));
+  const fetchTry2Data = async () => {
+    try {
+      const response = await api.get(
+        `/scorer/shooter/${shooterid}/result/stage1`
+      );
+      const apiData = response.data;
+      const stage1Data = apiData.data.stage_1.try_2;
+      setStatus(parseInt(stage1Data.status, 10));
 
-        const updatedTableData = Object.keys(stage1Data).map((key) => {
-          if (key.startsWith("no_")) {
-            const rowData = stage1Data[key];
-            const { scores, duration } = rowData;
-            const id = parseInt(key.split("_")[1]);
+      const updatedTableData = Object.keys(stage1Data).map((key) => {
+        if (key.startsWith("no_")) {
+          const rowData = stage1Data[key];
+          const { scores, duration } = rowData;
+          const id = parseInt(key.split("_")[1]);
 
-            if (scores && duration) {
-              const updatedScores = scores || [0, 0, 0];
-              const updatedDuration = duration || [0, 0, 0];
+          if (scores && duration) {
+            const updatedScores = scores || [0, 0, 0];
+            const updatedDuration = duration || [0, 0, 0];
 
-              return {
-                id,
-                nilaiPerkenaanA: updatedScores[0] || 0,
-                nilaiPerkenaanC: updatedScores[1] || 0,
-                nilaiPerkenaanD: updatedScores[2] || 0,
-                waktu: {
-                  minute: updatedDuration[0]?.toString().padStart(2, "0") || "00",
-                  second: updatedDuration[1]?.toString().padStart(2, "0") || "00",
-                  millisecond: updatedDuration[2]?.toString().padStart(2, "0") || "00",
-                },
-                hasil: stage1Data.checkmarks[id - 1] || false,
-              };
-            }
+            return {
+              id,
+              nilaiPerkenaanA: updatedScores[0] || 0,
+              nilaiPerkenaanC: updatedScores[1] || 0,
+              nilaiPerkenaanD: updatedScores[2] || 0,
+              waktu: {
+                minute: updatedDuration[0]?.toString().padStart(2, "0") || "00",
+                second: updatedDuration[1]?.toString().padStart(2, "0") || "00",
+                millisecond: updatedDuration[2]?.toString().padStart(2, "0") || "00",
+              },
+              hasil: stage1Data.checkmarks[id - 1] || false,
+            };
           }
-          return null;
-        }).filter(Boolean);
+        }
+        return null;
+      }).filter(Boolean);
 
-        setTableData(updatedTableData);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+      setTableData(updatedTableData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    // Cleanup function to reset tableData before fetching new data
+  // Cleanup function to reset tableData before fetching new data
+  useEffect(() => {
     setTableData([]); // Clear existing tableData
-    fetchTry1Data();
+    fetchTry2Data();
   }, [shooterid]);
+
+  useEffect(() => {
+    fetchTry2Data();
+  }, [shooterid, status]);
 
   const isReadOnly = (id: number) => {
     return status !== 0 && id !== status;
@@ -577,7 +583,7 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
     console.log(updatedData);
     try {
       const response = await api.put(
-        `/scorer/shooter/${shooterid}/result/stage1/1/no/${noBaris}`,
+        `/scorer/shooter/${shooterid}/result/stage1/2/no/${noBaris}`,
         {
           scores: [
             updatedData.nilaiPerkenaanA,
@@ -618,7 +624,7 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
       const checkmarks = updatedCheckmarks;
       console.log(checkmarks);
       const response = await api.put(
-        `/scorer/shooter/${shooterid}/result/stage1/1/checkmarks`,
+        `/scorer/shooter/${shooterid}/result/stage1/2/checkmarks`,
         {
           checkmarks: checkmarks,
         }
@@ -649,11 +655,11 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
 
     if (confirmed) {
       console.log(nextNo);
-      const endpoint = `/scorer/shooter/${shooterid}/result/stage1/1/next`;
+      const endpoint = `/scorer/shooter/${shooterid}/result/stage1/2/next`;
 
       try {
         const response = await api.patch(endpoint);
-        console.log(`Berhasil melanjutkan no stage 1 percobaan 1 ke no ${nextNo}`)
+        console.log(`Berhasil melanjutkan no stage 1 percobaan 2 ke no ${nextNo}`)
         return {
           message: response.data.message,
           status: 200,
@@ -689,7 +695,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
 
       setTableData(updatedTableData);
       // WAIT UNTIL USER FINISH
-      setIsTimeoutCleared(true);
       updateNilaiPerkeneaanBE(updatedRow, id);
     }
   };
@@ -792,7 +797,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                   onChange={(e) =>
                     handleInputChange(e, data.id, "nilaiPerkenaanA")
                   }
-                  readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                 />
               </td>
               <td>
@@ -804,7 +808,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                   onChange={(e) =>
                     handleInputChange(e, data.id, "nilaiPerkenaanC")
                   }
-                  readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                 />
               </td>
               <td>
@@ -816,7 +819,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                   onChange={(e) =>
                     handleInputChange(e, data.id, "nilaiPerkenaanD")
                   }
-                  readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                 />
               </td>
               <td rowSpan={2}>
@@ -830,7 +832,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                     placeholder="mm"
                     value={data.waktu.minute}
                     onChange={(e) => handleTimeChange(e, data.id, "minute")}
-                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                   />
                   :
                   <input
@@ -842,7 +843,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                     placeholder="ss"
                     value={data.waktu.second}
                     onChange={(e) => handleTimeChange(e, data.id, "second")}
-                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                   />
                   :
                   <input
@@ -854,7 +854,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                     placeholder="SS"
                     value={data.waktu.millisecond}
                     onChange={(e) => handleTimeChange(e, data.id, "millisecond")}
-                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                   />
                 </div>
               </td>
@@ -888,31 +887,33 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
 
 const Stage1 = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [stage1Data, setStage1Data] = useState();
-
-
+  // const [stage1Data, setStage1Data] = useState();
   const [try2Status, setTry2Status] = useState(false);
 
   const { shooterid } = useParams();
 
-  useEffect(() => {
-    const fetchTry1Data = async () => {
-      try {
-        const response = await api.get(
-          `/scorer/shooter/${shooterid}/result/stage1`
-        );
-        const apiData = response.data;
-        const stage1Data = apiData.data.stage_1;
-        console.log(stage1Data)
-        setTry2Status(stage1Data.is_try_2);
-        // console.log(stage1Data)
-        setIsLoading(false); // Setelah data berhasil diambil dan diatur ke state, ubah isLoading menjadi false
-      } catch (error) {
-        console.error(error);
-        setIsLoading(false); // Jika terjadi kesalahan saat mengambil data, tetap ubah isLoading menjadi false agar pesan error ditampilkan
-      }
-    };
+  const fetchTry1Data = async () => {
+    try {
+      const response = await api.get(`/scorer/shooter/${shooterid}/result/stage1`);
+      const apiData = response.data;
+      const stage1Data = apiData.data.stage_1;
+      // setStage1Data(stage1Data);
+      setTry2Status(stage1Data.is_try_2);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
+    fetchTry1Data(); // Memanggil fungsi fetchTry1Data untuk mengambil data awal saat komponen dipasang
+  }, []);
+
+  // useEffect untuk mendeteksi perubahan pada try2Status
+  useEffect(() => {
+    // Lakukan sesuatu ketika try2Status berubah
+    // Misalnya, panggil fungsi fetchTry1Data untuk memperbarui data dari server
     fetchTry1Data();
   }, [try2Status]);
 

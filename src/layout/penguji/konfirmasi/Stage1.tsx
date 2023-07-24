@@ -7,7 +7,7 @@ const Stage1 = () => {
 
     console.log(shooterid); 
     return (
-        <TandaTangan title='Stage 1' link={`/penguji/stage2_aturan/${shooterid}`} />
+        <TandaTangan stage={'stage1/2'} title='Stage 1' link={`/penguji/stage2_aturan/${shooterid}`} />
     )
 }
 
