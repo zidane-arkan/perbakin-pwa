@@ -46,21 +46,21 @@ const Penguji = () => {
                 <Route path='/kualifikasi_konfirmasi/:shooterid' element={<KualifikasiKonfirmasi />} />
                 {/* Route Stages Aturan */}
                 <Route path='/stage1_aturan/:shooterid' element={<Stage1 />} />
-                <Route path='/stage2_aturan' element={<Stage2 />} />
+                <Route path='/stage2_aturan/:shooterid' element={<Stage2 />} />
                 <Route path='/stage3_aturan' element={<Stage3 />} />
                 <Route path='/stage4_aturan/:shooterid' element={<Stage4 />} />
                 <Route path='/stage5_aturan' element={<Stage5 />} />
                 <Route path='/stage6_aturan/:shooterid' element={<Stage6 />} />
                 {/* Route Stages Form */}
                 <Route path='/stage1_form/:shooterid' element={<Stage1Form />} />
-                <Route path='/stage2_form' element={<Stage2Form />} />
+                <Route path='/stage2_form/:shooterid' element={<Stage2Form />} />
                 <Route path='/stage3_form' element={<Stage3Form />} />
                 <Route path='/stage4_form/:shooterid' element={<Stage4Form />} />
                 <Route path='/stage5_form' element={<Stage5Form />} />
                 <Route path='/stage6_form' element={<Stage6Form />} />
                 {/* Route Stage Konfirmasi */}
                 <Route path='/stage1_konfirmasi/:shooterid' element={<Stage1Konfirmasi />} />
-                <Route path='/stage2_konfirmasi' element={<Stage2Konfirmasi />} />
+                <Route path='/stage2_konfirmasi/:shooterid' element={<Stage2Konfirmasi />} />
                 <Route path='/stage3_konfirmasi' element={<Stage3Konfirmasi />} />
                 <Route path='/stage4_konfirmasi' element={<Stage4Konfirmasi />} />
                 <Route path='/stage5_konfirmasi' element={<Stage5Konfirmasi />} />
