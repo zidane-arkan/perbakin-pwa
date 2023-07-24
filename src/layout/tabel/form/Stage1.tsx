@@ -75,14 +75,14 @@ const Styles = styled.div`
 `
 
 interface Percobaan1Props {
-  try1Data: {
-    [key: string]: {
-      scores: number[];
-      duration: number[];
-    } & {
-      checkmarks: boolean[];
-    }
-  },
+  // stage1Data: {
+  //   [key: string]: {
+  //     scores: number[];
+  //     duration: number[];
+  //   } & {
+  //     checkmarks: boolean[];
+  //   }
+  // },
   shooterid: string | undefined;
 }
 
@@ -99,117 +99,103 @@ interface TableDataItem {
   hasil: boolean;
 }
 
-const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) => {
-  const [tableData, setTableData] = useState<TableDataItem[]>([
-    {
-      id: 1,
-      nilaiPerkenaanA: 1,
-      nilaiPerkenaanC: 1,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "02",
-        second: "03",
-        millisecond: "00",
-      },
-      hasil: false,
-    },
-    {
-      id: 2,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00",
-      },
-      hasil: false,
-    },
-    {
-      id: 3,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00",
-      },
-      hasil: false,
-    },
-    {
-      id: 4,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00",
-      },
-      hasil: false,
-    },
-    {
-      id: 5,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00",
-      },
-      hasil: false,
-    },
-    {
-      id: 6,
-      nilaiPerkenaanA: 0,
-      nilaiPerkenaanC: 0,
-      nilaiPerkenaanD: 0,
-      waktu: {
-        minute: "00",
-        second: "00",
-        millisecond: "00",
-      },
-      hasil: false,
-    },
-  ]);
+// PERCOBAAN 1
+const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
+  const [tableData, setTableData] = useState<TableDataItem[]>([]);
+  const [isTimeoutCleared, setIsTimeoutCleared] = useState(true);
+  // STATUS INPUT
+  const [status, setStatus] = useState<number>(0);
 
-
+  // CONVERT DATA FROM API TO TABLE DATA
+  // Fetch data from API and update tableData
   useEffect(() => {
-    console.log(try1Data);
+    const fetchTry1Data = async () => {
+      try {
+        const response = await api.get(
+          `/scorer/shooter/${shooterid}/result/stage1`
+        );
+        const apiData = response.data;
+        const stage1Data = apiData.data.stage_1.try_1;
+        setStatus(parseInt(stage1Data.status, 10));
 
-    if (try1Data && Object.keys(try1Data).length > 0) {
-      const updatedTableData = Object.keys(try1Data).map((key) => {
-        if (key.startsWith("no_")) {
-          const rowData = try1Data[key];
-          const { scores, duration } = rowData;
-          const id = parseInt(key.split("_")[1]);
+        const updatedTableData = Object.keys(stage1Data).map((key) => {
+          if (key.startsWith("no_")) {
+            const rowData = stage1Data[key];
+            const { scores, duration } = rowData;
+            const id = parseInt(key.split("_")[1]);
 
-          if (scores && duration) {
-            const updatedScores = scores || [0, 0, 0];
-            const updatedDuration = duration || [0, 0, 0];
+            if (scores && duration) {
+              const updatedScores = scores || [0, 0, 0];
+              const updatedDuration = duration || [0, 0, 0];
 
-            return {
-              id,
-              nilaiPerkenaanA: updatedScores[0] || 0,
-              nilaiPerkenaanC: updatedScores[1] || 0,
-              nilaiPerkenaanD: updatedScores[2] || 0,
-              waktu: {
-                minute: updatedDuration[0]?.toString().padStart(2, "0") || "00",
-                second: updatedDuration[1]?.toString().padStart(2, "0") || "00",
-                millisecond: updatedDuration[2]?.toString().padStart(2, "0") || "00",
-              },
-              hasil: try1Data.checkmarks[id - 1] || false, // Get the corresponding checkmark value
-            };
+              return {
+                id,
+                nilaiPerkenaanA: updatedScores[0] || 0,
+                nilaiPerkenaanC: updatedScores[1] || 0,
+                nilaiPerkenaanD: updatedScores[2] || 0,
+                waktu: {
+                  minute: updatedDuration[0]?.toString().padStart(2, "0") || "00",
+                  second: updatedDuration[1]?.toString().padStart(2, "0") || "00",
+                  millisecond: updatedDuration[2]?.toString().padStart(2, "0") || "00",
+                },
+                hasil: stage1Data.checkmarks[id - 1] || false,
+              };
+            }
           }
-        }
-        return null; // Skip other keys like "checkmarks"
-      }).filter(Boolean);
+          return null;
+        }).filter(Boolean);
 
-      setTableData(updatedTableData);
-    }
-  }, [try1Data]);
+        setTableData(updatedTableData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    // Cleanup function to reset tableData before fetching new data
+    setTableData([]); // Clear existing tableData
+    fetchTry1Data();
+  }, [shooterid]);
+
+  // useEffect(() => {
+  //   // console.log(stage1Data.status);
+
+  //   if (stage1Data && Object.keys(stage1Data).length > 0) {
+  //     // Convert the status to a number before setting it in the state
+  //     setStatus(parseInt(stage1Data.status, 10));
+  //     const updatedTableData = Object.keys(stage1Data).map((key) => {
+  //       if (key.startsWith("no_")) {
+  //         const rowData = stage1Data[key];
+  //         const { scores, duration } = rowData;
+  //         const id = parseInt(key.split("_")[1]);
+
+  //         if (scores && duration) {
+  //           const updatedScores = scores || [0, 0, 0];
+  //           const updatedDuration = duration || [0, 0, 0];
+
+  //           return {
+  //             id,
+  //             nilaiPerkenaanA: updatedScores[0] || 0,
+  //             nilaiPerkenaanC: updatedScores[1] || 0,
+  //             nilaiPerkenaanD: updatedScores[2] || 0,
+  //             waktu: {
+  //               minute: updatedDuration[0]?.toString().padStart(2, "0") || "00",
+  //               second: updatedDuration[1]?.toString().padStart(2, "0") || "00",
+  //               millisecond: updatedDuration[2]?.toString().padStart(2, "0") || "00",
+  //             },
+  //             hasil: stage1Data.checkmarks[id - 1] || false, // Get the corresponding checkmark value
+  //           };
+  //         }
+  //       }
+  //       return null; // Skip other keys like "checkmarks"
+  //     }).filter(Boolean);
+
+  //     setTableData(updatedTableData);
+  //   }
+  // }, [stage1Data]);
+
+  const isReadOnly = (id: number) => {
+    return status !== 0 && id !== status;
+  };
 
   // BACKEND HANDLER
   const updateNilaiPerkeneaanBE = async (updatedData: TableDataItem, noBaris: number) => {
@@ -246,95 +232,71 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) =>
       };
     }
   };
-
   // CHECKMARS
   interface UpdateHasilResponse {
     message: string;
     error: boolean;
     response?: any;
   }
-
-  const updateHasilBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
-    console.log(updatedCheckmarks);
-    const endpoint = `/scorer/shooter/${shooterid}/result/stage1/1/finish`
-    const requestBody = {
-      checkmarks: updatedCheckmarks,
-    };
-
+  const updateCheckmarksBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
     try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      const data = await response.json();
-      console.log(data);
-
+      const checkmarks = updatedCheckmarks;
+      console.log(checkmarks);
+      const response = await api.put(
+        `/scorer/shooter/${shooterid}/result/stage1/1/checkmarks`,
+        {
+          checkmarks: checkmarks,
+        }
+      );
+      console.log(response.data);
       return {
-        message: "Checkmarks updated successfully",
+        message: response.data.message,
         error: false,
-        response: data,
+        response: response,
       };
     } catch (error) {
-      console.error(error);
-
+      const err = error as AxiosError<any>;
+      console.error(err);
       return {
-        message: "Error updating checkmarks",
+        message:
+          "Error: " + err.response?.status + ": " + err.response?.data.message,
         error: true,
       };
     }
   };
-
-
+  // GANTI KE NO SELANJUTNYA
   const handleNextNo = async (currentNo: number) => {
     const nextNo = currentNo + 1;
-    console.log(nextNo);
-    const endpoint = `/scorer/shooter/${shooterid}/result/stage1/1/next`;
 
-    try {
-      const response = await api.patch(endpoint);
-      console.log(response.data);
+    // Show confirmation dialog
+    const confirmMessage = `Apakah anda yakin ingin pindah nomor ke ${nextNo}?`;
+    const confirmed = window.confirm(confirmMessage);
 
-      // const newTableData: TableDataItem = {
-      //   id: nextNo,
-      //   nilaiPerkenaanA: 0,
-      //   nilaiPerkenaanC: 0,
-      //   nilaiPerkenaanD: 0,
-      //   waktu: {
-      //     minute: "00",
-      //     second: "00",
-      //     millisecond: "00",
-      //   },
-      //   hasil: false,
-      // };
+    if (confirmed) {
+      console.log(nextNo);
+      const endpoint = `/scorer/shooter/${shooterid}/result/stage1/1/next`;
 
-      // const rowIndex = tableData.findIndex((data) => data.id === currentNo);
-      // if (rowIndex !== -1) {
-      //   const updatedTableData = [...tableData];
-      //   updatedTableData.splice(rowIndex + 1, 0, newTableData);
-      //   setTableData(updatedTableData);
-      // }
-
-      return {
-        message: `Berhasil melanjutkan no stage 1 percobaan 1 ke no ${nextNo}`,
-        status: 200,
-        data: null,
-      };
-    } catch (error: any) {
-      console.error(error);
-      return {
-        message: "Error: " + error.message,
-        status: error.response?.status,
-        data: null,
-      };
+      try {
+        const response = await api.patch(endpoint);
+        console.log(`Berhasil melanjutkan no stage 1 percobaan 1 ke no ${nextNo}`)
+        return {
+          message: response.data.message,
+          status: 200,
+          data: null,
+        };
+      } catch (error: any) {
+        console.error(error);
+        return {
+          message: "Error: " + error.message,
+          status: error.response?.status,
+          data: null,
+        };
+      }
     }
   };
 
 
-  // INPUT HANDLE
+  // HANDLE DATA
   const handleInputChange = <K extends keyof TableDataItem>(e: React.ChangeEvent<HTMLInputElement>, id: number, field: K) => {
     const { value } = e.target;
 
@@ -351,19 +313,11 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) =>
       ]);
 
       setTableData(updatedTableData);
-      updateNilaiPerkeneaanBE(
-        {
-          ...updatedRow,
-          waktu: {
-            ...updatedRow.waktu,
-            [field]: +value,
-          },
-        },
-        id
-      );
+      // WAIT UNTIL USER FINISH
+      setIsTimeoutCleared(true);
+      updateNilaiPerkeneaanBE(updatedRow, id);
     }
   };
-
 
   const handleTimeChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -408,7 +362,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) =>
     }
   };
 
-
   const handleCheckboxChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     id: number
@@ -428,7 +381,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) =>
     setTableData(updatedTableData);
 
     const updatedCheckmarks = updatedTableData.map((data) => data.hasil);
-    updateHasilBE(updatedCheckmarks);
+    updateCheckmarksBE(updatedCheckmarks);
   };
 
   return (
@@ -436,13 +389,14 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) =>
       <table>
         <thead>
           <tr>
-            <th colSpan={6}>Percobaan 1</th>
+            <th colSpan={7}>Percobaan 1</th>
           </tr>
           <tr>
             <th rowSpan={2}>No</th>
             <th colSpan={3}>Nilai Perkenaan</th>
             <th rowSpan={2}>Waktu</th>
             <th rowSpan={2}>Hasil</th>
+            <th rowSpan={2}>Aksi</th>
           </tr>
           <tr>
             <th>A</th>
@@ -463,6 +417,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) =>
                   onChange={(e) =>
                     handleInputChange(e, data.id, "nilaiPerkenaanA")
                   }
+                  readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                 />
               </td>
               <td>
@@ -474,6 +429,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) =>
                   onChange={(e) =>
                     handleInputChange(e, data.id, "nilaiPerkenaanC")
                   }
+                  readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                 />
               </td>
               <td>
@@ -485,6 +441,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) =>
                   onChange={(e) =>
                     handleInputChange(e, data.id, "nilaiPerkenaanD")
                   }
+                  readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                 />
               </td>
               <td rowSpan={2}>
@@ -498,6 +455,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) =>
                     placeholder="mm"
                     value={data.waktu.minute}
                     onChange={(e) => handleTimeChange(e, data.id, "minute")}
+                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                   />
                   :
                   <input
@@ -509,6 +467,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) =>
                     placeholder="ss"
                     value={data.waktu.second}
                     onChange={(e) => handleTimeChange(e, data.id, "second")}
+                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                   />
                   :
                   <input
@@ -520,6 +479,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) =>
                     placeholder="SS"
                     value={data.waktu.millisecond}
                     onChange={(e) => handleTimeChange(e, data.id, "millisecond")}
+                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                   />
                 </div>
               </td>
@@ -533,28 +493,405 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ try1Data, shooterid } : any) =>
                   onChange={(e) => handleCheckboxChange(e, data.id)}
                 />
               </td>
+              <td rowSpan={2}>
+                <button
+                  className='text-sm w-[60px] sm:w-[80px] border border-solid p-2 rounded-xl border-blue-400'
+                  onClick={() => handleNextNo(data.id)}
+                >
+                  Next No
+                </button>
+              </td>
             </tr>
             <tr></tr>
           </tbody>
         ))}
       </table>
-      <button>Buat Percobaan 2</button>
+
     </section>
   );
 };
 
+// PERCOBAAN 2
+const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
+  const [tableData, setTableData] = useState<TableDataItem[]>([]);
+  const [isTimeoutCleared, setIsTimeoutCleared] = useState(true);
+  // STATUS INPUT
+  const [status, setStatus] = useState<number>(0);
 
+  // CONVERT DATA FROM API TO TABLE DATA
+  // Fetch data from API and update tableData
+  useEffect(() => {
+    const fetchTry1Data = async () => {
+      try {
+        const response = await api.get(
+          `/scorer/shooter/${shooterid}/result/stage1`
+        );
+        const apiData = response.data;
+        const stage1Data = apiData.data.stage_1.try_2;
+        setStatus(parseInt(stage1Data.status, 10));
+
+        const updatedTableData = Object.keys(stage1Data).map((key) => {
+          if (key.startsWith("no_")) {
+            const rowData = stage1Data[key];
+            const { scores, duration } = rowData;
+            const id = parseInt(key.split("_")[1]);
+
+            if (scores && duration) {
+              const updatedScores = scores || [0, 0, 0];
+              const updatedDuration = duration || [0, 0, 0];
+
+              return {
+                id,
+                nilaiPerkenaanA: updatedScores[0] || 0,
+                nilaiPerkenaanC: updatedScores[1] || 0,
+                nilaiPerkenaanD: updatedScores[2] || 0,
+                waktu: {
+                  minute: updatedDuration[0]?.toString().padStart(2, "0") || "00",
+                  second: updatedDuration[1]?.toString().padStart(2, "0") || "00",
+                  millisecond: updatedDuration[2]?.toString().padStart(2, "0") || "00",
+                },
+                hasil: stage1Data.checkmarks[id - 1] || false,
+              };
+            }
+          }
+          return null;
+        }).filter(Boolean);
+
+        setTableData(updatedTableData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    // Cleanup function to reset tableData before fetching new data
+    setTableData([]); // Clear existing tableData
+    fetchTry1Data();
+  }, [shooterid]);
+
+  const isReadOnly = (id: number) => {
+    return status !== 0 && id !== status;
+  };
+
+  // BACKEND HANDLER
+  const updateNilaiPerkeneaanBE = async (updatedData: TableDataItem, noBaris: number) => {
+    console.log(updatedData);
+    try {
+      const response = await api.put(
+        `/scorer/shooter/${shooterid}/result/stage1/1/no/${noBaris}`,
+        {
+          scores: [
+            updatedData.nilaiPerkenaanA,
+            updatedData.nilaiPerkenaanC,
+            updatedData.nilaiPerkenaanD
+          ],
+          duration: [
+            parseInt(updatedData.waktu.minute),
+            parseInt(updatedData.waktu.second),
+            parseInt(updatedData.waktu.millisecond)
+          ]
+        }
+      );
+      console.log(response.data);
+      return {
+        message: response.data.message,
+        error: false,
+        response: response
+      };
+    } catch (error) {
+      const err = error as AxiosError<any>;
+      console.error(err);
+      return {
+        message:
+          "Error: " + err.response?.status + ": " + err.response?.data.message,
+        error: true
+      };
+    }
+  };
+  // CHECKMARS
+  interface UpdateHasilResponse {
+    message: string;
+    error: boolean;
+    response?: any;
+  }
+  const updateCheckmarksBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
+    try {
+      const checkmarks = updatedCheckmarks;
+      console.log(checkmarks);
+      const response = await api.put(
+        `/scorer/shooter/${shooterid}/result/stage1/1/checkmarks`,
+        {
+          checkmarks: checkmarks,
+        }
+      );
+      console.log(response.data);
+      return {
+        message: response.data.message,
+        error: false,
+        response: response,
+      };
+    } catch (error) {
+      const err = error as AxiosError<any>;
+      console.error(err);
+      return {
+        message:
+          "Error: " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  };
+  // GANTI KE NO SELANJUTNYA
+  const handleNextNo = async (currentNo: number) => {
+    const nextNo = currentNo + 1;
+
+    // Show confirmation dialog
+    const confirmMessage = `Apakah anda yakin ingin pindah nomor ke ${nextNo}?`;
+    const confirmed = window.confirm(confirmMessage);
+
+    if (confirmed) {
+      console.log(nextNo);
+      const endpoint = `/scorer/shooter/${shooterid}/result/stage1/1/next`;
+
+      try {
+        const response = await api.patch(endpoint);
+        console.log(`Berhasil melanjutkan no stage 1 percobaan 1 ke no ${nextNo}`)
+        return {
+          message: response.data.message,
+          status: 200,
+          data: null,
+        };
+      } catch (error: any) {
+        console.error(error);
+        return {
+          message: "Error: " + error.message,
+          status: error.response?.status,
+          data: null,
+        };
+      }
+    }
+  };
+
+
+  // HANDLE DATA
+  const handleInputChange = <K extends keyof TableDataItem>(e: React.ChangeEvent<HTMLInputElement>, id: number, field: K) => {
+    const { value } = e.target;
+
+    const updatedTableData = [...tableData];
+    const updatedRow = updatedTableData.find((data) => data.id === id);
+
+    if (updatedRow) {
+      updatedRow[field] = +value as TableDataItem[K];
+
+      const updatedDuration = updatedTableData.map((data) => [
+        parseInt(data.waktu.minute, 10),
+        parseInt(data.waktu.second, 10),
+        parseInt(data.waktu.millisecond, 10)
+      ]);
+
+      setTableData(updatedTableData);
+      // WAIT UNTIL USER FINISH
+      setIsTimeoutCleared(true);
+      updateNilaiPerkeneaanBE(updatedRow, id);
+    }
+  };
+
+  const handleTimeChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: number,
+    field: keyof TableDataItem["waktu"]
+  ) => {
+    const { value } = e.target;
+    let updatedValue = value;
+    if (value.length === 1) {
+      updatedValue = "0" + value;
+    }
+
+    const updatedTableData = tableData.map((data) => {
+      if (data.id === id) {
+        return {
+          ...data,
+          waktu: {
+            ...data.waktu,
+            [field]: updatedValue,
+          },
+        };
+      }
+      return data;
+    });
+
+    setTableData(updatedTableData);
+
+    const updatedData = updatedTableData.find((data) => data.id === id);
+    if (updatedData) {
+      const { id, nilaiPerkenaanA, nilaiPerkenaanC, nilaiPerkenaanD, waktu, hasil } = updatedData;
+      updateNilaiPerkeneaanBE(
+        {
+          id,
+          nilaiPerkenaanA,
+          nilaiPerkenaanC,
+          nilaiPerkenaanD,
+          waktu,
+          hasil,
+        },
+        id
+      );
+    }
+  };
+
+  const handleCheckboxChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: number
+  ) => {
+    const { checked } = e.target;
+
+    const updatedTableData = tableData.map((data) => {
+      if (data.id === id) {
+        return {
+          ...data,
+          hasil: checked,
+        };
+      }
+      return data;
+    });
+
+    setTableData(updatedTableData);
+
+    const updatedCheckmarks = updatedTableData.map((data) => data.hasil);
+    updateCheckmarksBE(updatedCheckmarks);
+  };
+
+  return (
+    <section>
+      <table>
+        <thead>
+          <tr>
+            <th colSpan={7}>Percobaan 2</th>
+          </tr>
+          <tr>
+            <th rowSpan={2}>No</th>
+            <th colSpan={3}>Nilai Perkenaan</th>
+            <th rowSpan={2}>Waktu</th>
+            <th rowSpan={2}>Hasil</th>
+            <th rowSpan={2}>Aksi</th>
+          </tr>
+          <tr>
+            <th>A</th>
+            <th>C</th>
+            <th>D</th>
+          </tr>
+        </thead>
+        {tableData.map((data) => (
+          <tbody key={data.id}>
+            <tr>
+              <td rowSpan={2}>{data.id}</td>
+              <td>
+                <input
+                  type="number"
+                  min={0}
+                  max={2 - data.nilaiPerkenaanC - data.nilaiPerkenaanD}
+                  value={data.nilaiPerkenaanA}
+                  onChange={(e) =>
+                    handleInputChange(e, data.id, "nilaiPerkenaanA")
+                  }
+                  readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  min={0}
+                  max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanD}
+                  value={data.nilaiPerkenaanC}
+                  onChange={(e) =>
+                    handleInputChange(e, data.id, "nilaiPerkenaanC")
+                  }
+                  readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  min={0}
+                  max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanC}
+                  value={data.nilaiPerkenaanD}
+                  onChange={(e) =>
+                    handleInputChange(e, data.id, "nilaiPerkenaanD")
+                  }
+                  readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
+                />
+              </td>
+              <td rowSpan={2}>
+                <div className="stopwatch">
+                  <input
+                    id={`minutes-${data.id}`}
+                    type="number"
+                    name="minute"
+                    max="59"
+                    min="00"
+                    placeholder="mm"
+                    value={data.waktu.minute}
+                    onChange={(e) => handleTimeChange(e, data.id, "minute")}
+                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
+                  />
+                  :
+                  <input
+                    id={`seconds-${data.id}`}
+                    type="number"
+                    name="second"
+                    max="59"
+                    min="00"
+                    placeholder="ss"
+                    value={data.waktu.second}
+                    onChange={(e) => handleTimeChange(e, data.id, "second")}
+                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
+                  />
+                  :
+                  <input
+                    id={`milliseconds-${data.id}`}
+                    type="number"
+                    name="millisecond"
+                    max="99"
+                    min="00"
+                    placeholder="SS"
+                    value={data.waktu.millisecond}
+                    onChange={(e) => handleTimeChange(e, data.id, "millisecond")}
+                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
+                  />
+                </div>
+              </td>
+              <td rowSpan={2}>
+                <input
+                  type="checkbox"
+                  id={`seri-${data.id}`}
+                  name="seri"
+                  value="benar"
+                  checked={data.hasil}
+                  onChange={(e) => handleCheckboxChange(e, data.id)}
+                />
+              </td>
+              <td rowSpan={2}>
+                <button
+                  className='text-sm w-[60px] sm:w-[80px] border border-solid p-2 rounded-xl border-blue-400'
+                  onClick={() => handleNextNo(data.id)}
+                >
+                  Next No
+                </button>
+              </td>
+            </tr>
+            <tr></tr>
+          </tbody>
+        ))}
+      </table>
+
+    </section>
+  );
+};
 
 const Stage1 = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [try1Data, setTry1Data] = useState();
+  const [stage1Data, setStage1Data] = useState();
 
 
-  const [try2Data, setTry2Data] = useState({
-    scores: [],
-    duration: [],
-    checkmarks: [],
-  });
+  const [try2Status, setTry2Status] = useState(false);
 
   const { shooterid } = useParams();
 
@@ -565,9 +902,10 @@ const Stage1 = () => {
           `/scorer/shooter/${shooterid}/result/stage1`
         );
         const apiData = response.data;
-        const try1Data = apiData.data.stage_1.try_1;
-        setTry1Data(try1Data);
-        // console.log(try1Data)
+        const stage1Data = apiData.data.stage_1;
+        console.log(stage1Data)
+        setTry2Status(stage1Data.is_try_2);
+        // console.log(stage1Data)
         setIsLoading(false); // Setelah data berhasil diambil dan diatur ke state, ubah isLoading menjadi false
       } catch (error) {
         console.error(error);
@@ -576,21 +914,24 @@ const Stage1 = () => {
     };
 
     fetchTry1Data();
-  }, [shooterid]);
+  }, [try2Status]);
 
   // Jika isLoading masih true, tampilkan pesan pemuatan atau animasi pemuatan
   if (isLoading) {
-    return <div>Loading...</div>; // Gantilah ini dengan komponen pemuatan yang sesuai
+    return <div className='pt-4'>Loading Tabel...</div>; // Gantilah ini dengan komponen pemuatan yang sesuai
   }
 
   // Jika data masih kosong, tampilkan pesan bahwa data belum tersedia
   return (
     <Styles>
-      {try1Data ? (
-        <Percobaan1 shooterid={shooterid} try1Data={try1Data} />
-      ) : (
-        <div>Data belum tersedia.</div>
-      )}
+      <Percobaan1 shooterid={shooterid} />
+      <div className='flex items-center justify-center'>
+        <button className='items-center text-white sm:w-[40%] px-2 py-4 bg-blue-400 rounded-xl'>Buat Percobaan 2</button>
+      </div>
+      {try2Status ? 
+        <Percobaan2 shooterid={shooterid} /> :
+        <p>Tabel Percobaan 2 Belum Dibuat</p>
+      }
     </Styles>
   );
 };
@@ -598,7 +939,40 @@ const Stage1 = () => {
 
 export default Stage1
 
+// API HANDLE CHECKMARKS
+  // const updateHasilBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
+  //   console.log(updatedCheckmarks);
+  //   const endpoint = `/scorer/shooter/${shooterid}/result/stage1/1/next`
+  //   const requestBody = {
+  //     checkmarks: updatedCheckmarks,
+  //   };
 
+  //   try {
+  //     const response = await fetch(endpoint, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(requestBody),
+  //     });
+
+  //     const data = await response.json();
+  //     console.log(data);
+
+  //     return {
+  //       message: "Checkmarks updated successfully",
+  //       error: false,
+  //       response: data,
+  //     };
+  //   } catch (error) {
+  //     console.error(error);
+
+  //     return {
+  //       message: "Error updating checkmarks",
+  //       error: true,
+  //     };
+  //   }
+  // };
 
 
 // PERCOBAAN 2
