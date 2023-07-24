@@ -916,6 +916,34 @@ const Stage1 = () => {
     fetchTry1Data();
   }, [try2Status]);
 
+  // SELESAIKAN PERCOBAAN 1
+  const finishPercobaan1 = async () => {
+
+    // Show confirmation dialog
+    const confirmMessage = `Apakah anda yakin Membuat Percobaan 2 ?`;
+    const confirmed = window.confirm(confirmMessage);
+
+    if (confirmed) {
+      const endpoint = `/scorer/shooter/${shooterid}/result/stage1/2`;
+
+      try {
+        const response = await api.post(endpoint);
+        return {
+          message: response.data.message,
+          status: 200,
+          data: null,
+        };
+      } catch (error: any) {
+        console.error(error);
+        return {
+          message: "Error: " + error.message,
+          status: error.response?.status,
+          data: null,
+        };
+      }
+    }
+  };
+
   // Jika isLoading masih true, tampilkan pesan pemuatan atau animasi pemuatan
   if (isLoading) {
     return <div className='pt-4'>Loading Tabel...</div>; // Gantilah ini dengan komponen pemuatan yang sesuai
@@ -926,9 +954,9 @@ const Stage1 = () => {
     <Styles>
       <Percobaan1 shooterid={shooterid} />
       <div className='flex items-center justify-center'>
-        <button className='items-center text-white sm:w-[40%] px-2 py-4 bg-blue-400 rounded-xl'>Buat Percobaan 2</button>
+        <button onClick={() => { finishPercobaan1() }} className='items-center text-white sm:w-[40%] px-2 py-4 bg-blue-400 rounded-xl'>Buat Percobaan 2</button>
       </div>
-      {try2Status ? 
+      {try2Status ?
         <Percobaan2 shooterid={shooterid} /> :
         <p>Tabel Percobaan 2 Belum Dibuat</p>
       }
