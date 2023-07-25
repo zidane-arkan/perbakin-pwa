@@ -913,6 +913,7 @@ const Stage1 = () => {
   // useEffect untuk mendeteksi perubahan pada try2Status
   useEffect(() => {
     // Lakukan sesuatu ketika try2Status berubah
+    console.log('1 oi')
     // Misalnya, panggil fungsi fetchTry1Data untuk memperbarui data dari server
     fetchTry1Data();
   }, [try2Status]);
