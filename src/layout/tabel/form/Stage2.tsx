@@ -948,7 +948,7 @@ const Stage2 = () => {
     };
 
     // Jika isLoading masih true, tampilkan pesan pemuatan atau animasi pemuatan
-    if (!isLoading) {
+    if (isLoading) {
         return (
             <div className='flex flex-col w-full p-4 gap-4 border border-solid border-blue-500 rounded-xl mt-4'>
                 <h2 className="mb-2 text-lg font-semibold text-gray-900">Mengambil data tabel:</h2>
