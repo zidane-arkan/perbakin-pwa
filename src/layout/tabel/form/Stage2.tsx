@@ -300,10 +300,9 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
     ) => {
         const { value } = e.target;
         let updatedValue = value;
-        if (value.length === 1) {
-            updatedValue = "0" + value;
-        }
-
+        // if (value.length === 1) {
+        //     updatedValue = "0" + value;
+        // }
         const updatedTableData = tableData.map((data) => {
             if (data.id === id) {
                 return {
@@ -694,10 +693,9 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
     ) => {
         const { value } = e.target;
         let updatedValue = value;
-        if (value.length === 1) {
-            updatedValue = "0" + value;
-        }
-
+        // if (value.length === 1) {
+        //     updatedValue = "0" + value;
+        // }
         const updatedTableData = tableData.map((data) => {
             if (data.id === id) {
                 return {
@@ -930,6 +928,7 @@ const Stage2 = () => {
             try {
                 const response = await api.post(endpoint);
                 setIsLoading(false);
+                window.location.reload();
                 return {
                     message: response.data.message,
                     status: 200,
