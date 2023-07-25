@@ -18,7 +18,9 @@ const TandaTangan = (props: any) => {
     const [imageURLPeserta, setImageURLPeserta] = useState<String | null>(null);
     const navigate = useNavigate();
     const { shooterid } = useParams();
-    console.log(props.stage)
+
+    // console.log(props.stage)
+
     const handleSuccessButton = () => {
         setStageStatus(true);
     };
