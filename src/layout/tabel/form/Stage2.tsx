@@ -142,7 +142,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                         }
                     }
                     return null;
-                }).filter(Boolean);
+                }).filter(Boolean) as TableDataItem[];
 
                 setTableData(updatedTableData);
             } catch (error) {
