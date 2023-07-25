@@ -18,7 +18,7 @@ const TandaTangan = (props: any) => {
     const [imageURLPeserta, setImageURLPeserta] = useState<String | null>(null);
     const navigate = useNavigate();
     const { shooterid } = useParams();
-
+    console.log(props.stage)
     const handleSuccessButton = () => {
         setStageStatus(true);
     };
@@ -54,7 +54,7 @@ const TandaTangan = (props: any) => {
             const trimmedCanvas = sigCanvasPenguji.current.getTrimmedCanvas();
             if (trimmedCanvas) {
                 const dataURL = trimmedCanvas.toDataURL('image/png');
-                
+
                 // Ubah data URL menjadi Blob
                 setImageURL(dataURL);
                 const blob = dataURLtoBlob(dataURL);
@@ -74,7 +74,7 @@ const TandaTangan = (props: any) => {
     }
     // API PATCH
     const sendFinishData = async () => {
-        
+
         try {
             const formData = new FormData();
             formData.append("success", stageStatus.toString())
@@ -90,7 +90,8 @@ const TandaTangan = (props: any) => {
             // for (const [key, value] of formData.entries()) {
             //     console.log(key, value);
             // }
-            const response = await api.patch(`/scorer/shooter/${shooterid}/result/${props.stage}/finish`, formData);
+            const endpoint = `/scorer/shooter/${shooterid}/result/${props.stage}/finish`
+            const response = await api.patch(endpoint, formData);
             console.log(response.data);
             navigate('/penguji')
             return {
@@ -98,7 +99,7 @@ const TandaTangan = (props: any) => {
                 error: false,
                 response: response,
             };
-            
+
         } catch (error) {
             const err = error as AxiosError<any>;
             console.error(err);

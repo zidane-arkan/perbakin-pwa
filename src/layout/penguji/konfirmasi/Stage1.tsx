@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 const Stage1 = () => {
     const { shooterid } = useParams();
 
-    console.log(shooterid); 
     return (
         <TandaTangan stage={'stage1/2'} title='Stage 1' link={`/penguji/stage2_aturan/${shooterid}`} />
     )
