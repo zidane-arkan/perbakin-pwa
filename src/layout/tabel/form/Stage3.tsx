@@ -300,10 +300,9 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
     ) => {
         const { value } = e.target;
         let updatedValue = value;
-        if (value.length === 1) {
-            updatedValue = "0" + value;
-        }
-
+        // if (value.length === 1) {
+        //     updatedValue = "0" + value;
+        // }
         const updatedTableData = tableData.map((data) => {
             if (data.id === id) {
                 return {

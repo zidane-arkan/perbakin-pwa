@@ -28,16 +28,17 @@ interface PenembakAdminProps {
 export const Penembak = (props: any) => {
     const [loading, setLoading] = useState(true);
     const [shooters, setShooters] = useState<Penembak[]>([]);
+    const [initialFetchDone, setInitialFetchDone] = useState(false);
 
     const classname = `${props.classname} rounded-3xl`;
 
     useEffect(() => {
-        const fetchShooters = async () => {
+        const fetchInitialShooters = async () => {
             try {
-                // const examId = await getExamId();
-                const response = await api.get(`/scorer/result`);
-                const shooters = response.data.data.results;
+                const response = await api.get(`/scorer/shooter`);
+                const shooters = response.data.data.shooters;
                 setShooters(shooters);
+                setInitialFetchDone(true);
             } catch (error) {
                 const err = error as AxiosError<ResponseData<null>>;
                 console.error("Error:", err);
@@ -45,8 +46,27 @@ export const Penembak = (props: any) => {
             setLoading(false);
         };
 
-        fetchShooters();
+        fetchInitialShooters();
     }, []);
+
+    useEffect(() => {
+        console.log('initial Fect Done!')
+        if (initialFetchDone) {
+            const fetchShooters = async () => {
+                try {
+                    const response = await api.get(`/scorer/result`);
+                    const shooters = response.data.data.results;
+                    setShooters(shooters);
+                } catch (error) {
+                    const err = error as AxiosError<ResponseData<null>>;
+                    console.error("Error:", err);
+                }
+            };
+            const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
+
+            return () => clearInterval(interval);
+        }
+    }, [initialFetchDone]);
 
     if (loading) {
         return (

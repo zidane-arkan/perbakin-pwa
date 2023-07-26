@@ -230,6 +230,23 @@ export const CardPenembak = (props: any) => {
     }
     const parsedStage = parseInt(props.stage);
     const stageWithText = isNaN(parsedStage) ? props.stage : `Stage ${parsedStage}`;
+    // if (!props.stage) {
+    //     return (
+    //         <section className="flex max-w-md overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 sm:max-w-full sm:w-full shadow-custom">
+    //             <div className="animate-pulse bg-gray-200 rounded w-1/6 sm:w-1/6" style={{ height: '80px' }}></div>
+    //             <div className="animate-pulse flex flex-col w-4/6 sm:w-4/6 gap-1 pl-6 md:p-4">
+    //                 <div className="animate-pulse bg-gray-200 rounded h-6 w-1/2"></div>
+    //                 <div className="animate-pulse bg-gray-200 rounded h-4 w-2/3"></div>
+    //                 <div className="flex justify-between items-start">
+    //                     <div className="animate-pulse bg-gray-200 rounded h-6 w-1/4"></div>
+    //                 </div>
+    //             </div>
+    //             <span className="flex items-center w-1/6">
+    //                 <button onClick={shownCardHandler} className="px-2 py-1 sm:px-2 sm:py-1 text-4xl sm:text-[2.5rem] text-[#036BB0]">{'>'}</button>
+    //             </span>
+    //         </section>
+    //     );
+    // }
     return (
         <>
             {(isCartShown && true) &&
@@ -251,10 +268,15 @@ export const CardPenembak = (props: any) => {
                     <h1 className="text-base sm:text-xl font-bold text-gray-800">{props.penembak}</h1>
                     <p className="text-sm sm:text-base text-gray-600 ">{props.klub}</p>
                     <div className="flex justify-between item-start">
-                        <button
-                            className="px-2 py-1 text-[.65rem] font-bold text-white transition-colors duration-300 transform bg-[#62DE5F] rounded">
-                            {stageWithText}
-                        </button>
+                        {props.stage ? (
+                            <button
+                                className="px-2 py-1 text-[.65rem] font-bold text-white transition-colors duration-300 transform bg-[#62DE5F] rounded"
+                            >
+                                {stageWithText}
+                            </button>
+                        ) : (
+                            <div className="flex px-2 py-1 text-[.65rem] font-bold w-auto animate-pulse  bg-gray-200 h-6 rounded-md">Loading Stage...</div>
+                        )}
                     </div>
                 </div>
                 <span className="flex items-center w-1/6">
