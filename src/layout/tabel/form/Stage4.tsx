@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import api from "../../../api/api";
+import { AxiosError } from "axios";
 
 const Styles = styled.div`
   input[type="number"] {
@@ -84,11 +85,13 @@ interface DataItem {
     hasil: boolean;
 }
 
+// Define types for the API data and the table data item
 interface APIDataItem {
     scores_a: number[];
     scores_b: number[];
     duration: number[];
 }
+
 
 interface APIResponse {
     [key: string]: APIDataItem | boolean[];
@@ -148,37 +151,128 @@ const Percobaan1 = ({ apiData, shooterid }) => {
     });
 
     // API HANDLE
+    // NILAI
+    const updateNilaiPerkenaanBE = async (updatedData: any, noBaris: number) => {
+        console.log(noBaris)
+        try {
+            // if (!updatedData) {
+            //     // Handle the case when updatedData is undefined or null
+            //     throw new Error("Invalid data");
+            // }
 
-    // INPUT HANDLE
-    const handleInputChange = (e, id, field) => {
+            // const scores_a: number[] = [];
+            // const scores_b: number[] = [];
+
+            // // Extract scores_a and scores_b data from the updatedData object
+            // if (updatedData.no && updatedData.no.endsWith('A')) {
+            //     scores_a.push(updatedData.nilaiPerkenaanA);
+            //     scores_b.push(updatedData.nilaiPerkenaanB);
+            // } else if (updatedData.no && updatedData.no.endsWith('B')) {
+            //     scores_a.push(updatedData.nilaiPerkenaanA);
+            //     scores_b.push(updatedData.nilaiPerkenaanB);
+            // } else {
+            //     // Handle the case when the 'no' property is missing or doesn't end with 'A' or 'B'
+            //     throw new Error("Invalid 'no' property in updatedData");
+            // }
+            // // Prepare combined data for 'A' and 'B' rows
+            // const combinedData = [
+            //     parseInt(updatedData.waktu.minutes),
+            //     parseInt(updatedData.waktu.seconds),
+            //     parseInt(updatedData.waktu.milliseconds),
+            // ];
+
+            const response = await api.put(
+                `/scorer/shooter/${shooterid}/result/stage4/1/no/${noBaris}`,
+                updatedData
+            );
+
+            console.log(response.data);
+            return {
+                message: "Data updated successfully",
+                error: false,
+                response: response,
+            };
+        } catch (error) {
+            console.error(error);
+            return {
+                message: "Error updating data",
+                error: true,
+            };
+        }
+    };
+
+    // HANDLE INPUT NUMBER
+    // Helper function to get the pair number (e.g., '1A' -> '1B', '2A' -> '2B', etc.)
+    const getPairNo = (no: string) => {
+        const num = parseInt(no);
+        const letter = no.slice(-1);
+        return num + (letter === 'A' ? 'B' : 'A');
+    };
+
+    const handleInputChange = async (
+        e: ChangeEvent<HTMLInputElement>,
+        id: string,
+        field: keyof DataItem
+    ) => {
         const { value } = e.target;
 
         const updatedData = data.map((item) => {
             if (item.no === id) {
+                // If it's the row itself, update the corresponding field
                 return {
                     ...item,
-                    [field]: +value
+                    [field]: +value,
                 };
             }
             return item;
         });
 
-        const totalAlpha = updatedData.reduce(
-            (sum, item) => sum + item.nilaiPerkenaanA,
-            0
-        );
-        const totalCharlie = updatedData.reduce(
-            (sum, item) => sum + item.nilaiPerkenaanC,
-            0
-        );
-        const totalDelta = updatedData.reduce(
-            (sum, item) => sum + item.nilaiPerkenaanD,
-            0
-        );
+        setData(updatedData);
 
-        if (totalAlpha <= 12 && totalCharlie <= 12 && totalDelta <= 12) {
-            setData(updatedData);
-            console.log(updatedData); // Cetak data tabel ke konsol
+        // Find the corresponding pair (A or B) based on the id
+        const pairId = getPairNo(id);
+
+        // Prepare separate arrays for 'A' and 'B' row values
+        const scores_a: number[] = [];
+        const scores_b: number[] = [];
+        let duration: number[] | null = null; // Duration for the changed row
+
+        // Extract scores_a and scores_b data from the updatedData array
+        updatedData.forEach((item) => {
+            if (item.no === id || item.no === pairId) {
+                scores_a.push(item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD);
+                scores_b.push(item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD);
+            }
+        });
+
+        // Only include duration for the changed row (id) or its pair
+        const rowIndex = data.findIndex((item) => item.no === id);
+        if (rowIndex >= 0) {
+            duration = [
+                parseInt(updatedData[rowIndex].waktu.minutes),
+                parseInt(updatedData[rowIndex].waktu.seconds),
+                parseInt(updatedData[rowIndex].waktu.milliseconds),
+            ];
+        }
+
+        // Call the API function to update the nilaiPerkenaan data
+        try {
+            // Send the combined data to the API
+            await updateNilaiPerkenaanBE(
+                {
+                    scores_a: scores_a.slice(0, 3),
+                    scores_b: scores_b.slice(0, 3),
+                    duration: duration || [], // If duration is still null, use an empty array
+                },
+                rowIndex + 1
+            );
+        } catch (error) {
+            const err = error as AxiosError<any>;
+            console.error(err);
+            return {
+                message: "Error: " + err.response?.status + ": " + err.response?.data.message,
+                error: true,
+            };
         }
     };
 
@@ -323,11 +417,33 @@ const Percobaan1 = ({ apiData, shooterid }) => {
     );
 };
 
+// Define the type for the try_1 data
+interface Try1Data {
+    try_1: {
+        status: string;
+        no_1: {
+            scores_a: number[];
+            scores_b: number[];
+            duration: number[];
+        };
+        no_2: {
+            scores_a: number[];
+            scores_b: number[];
+            duration: number[];
+        };
+        no_3: {
+            scores_a: number[];
+            scores_b: number[];
+            duration: number[];
+        };
+        checkmarks: boolean[];
+    }
+}
 // Render the Percobaan1 component with the API data
 const Stage4 = () => {
     const { shooterid } = useParams();
     const [isLoading, setIsLoading] = useState(true);
-    const [stage4Data, setStage1Data] = useState();
+    const [stage4Data, setStage4Data] = useState<Try1Data>({} as Try1Data);
     const [try2Status, setTry2Status] = useState(false);
 
     const fetchTry1Data = async () => {
@@ -335,7 +451,7 @@ const Stage4 = () => {
             const response = await api.get(`/scorer/shooter/${shooterid}/result/stage4`);
             const apiData = response.data;
             const stage4Data = apiData.data.stage_4;
-            setStage1Data(stage4Data);
+            setStage4Data(stage4Data);
             setTry2Status(stage4Data.is_try_2);
             setIsLoading(false);
         } catch (error) {

@@ -274,11 +274,11 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
         if (updatedRow) {
             updatedRow[field] = +value as TableDataItem[K];
 
-            const updatedDuration = updatedTableData.map((data) => [
-                parseInt(data.waktu.minute, 10),
-                parseInt(data.waktu.second, 10),
-                parseInt(data.waktu.millisecond, 10)
-            ]);
+            // const updatedDuration = updatedTableData.map((data) => [
+            //     parseInt(data.waktu.minute, 10),
+            //     parseInt(data.waktu.second, 10),
+            //     parseInt(data.waktu.millisecond, 10)
+            // ]);
 
             setTableData(updatedTableData);
             // Clear existing timeout (if any) before setting a new one
