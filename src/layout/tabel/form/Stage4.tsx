@@ -169,11 +169,17 @@ const Percobaan1 = ({ apiData, shooterid }) => {
         return dataArray;
     });
 
+    // STATUS INPUT
+    const [status, setStatus] = useState<number>(0);
     // Helper function to get the pair numbers (e.g., '1A' -> ['1A', '1B'], '2A' -> ['2A', '2B'], etc.)
     // const getPairNumbers = (no: string) => {
     //     const num = parseInt(no);
     //     return [`${num}A`, `${num}B`];
     // };
+    const isReadOnly = (no: string) => {
+        const num = parseInt(no) + 1;
+        return status !== 0 && num !== status;
+    };
 
     // Helper function to get the pair row index
     const getPairRowIndex = (index: number) => {
@@ -229,7 +235,6 @@ const Percobaan1 = ({ apiData, shooterid }) => {
             };
         }
     };
-
     // CHECKMARKS
     interface UpdateHasilResponse {
         message: string;
@@ -262,15 +267,56 @@ const Percobaan1 = ({ apiData, shooterid }) => {
             };
         }
     };
+    // GANTI KE NO SELANJUTNYA
+    const handleNextNo = async (currentNo: number) => {
+        // Calculate the next row index
+        const nextRowIndex = Math.floor(currentNo / 2) + 1;
 
-    // HANDLE INPUT NUMBER
+        // Show confirmation dialog
+        const confirmMessage = `Apakah anda yakin ingin pindah nomor ke ${nextRowIndex + 1}?`;
+        const confirmed = window.confirm(confirmMessage);
+
+        if (confirmed) {
+            const endpoint = `/scorer/shooter/${shooterid}/result/stage4/1/next`;
+
+            try {
+                const response = await api.patch(endpoint);
+                console.log(`Berhasil melanjutkan no stage 1 percobaan 1 ke no ${nextRowIndex}`);
+
+                // Set status to the next number and trigger data refresh
+                setStatus(nextRowIndex);
+
+                // Update data for the rows that should no longer be read-only
+                const updatedData = data.map((item) => ({
+                    ...item,
+                    readOnly: isReadOnly(item.no),
+                }));
+
+                setData(updatedData);
+
+                return {
+                    message: response.data.message,
+                    status: 200,
+                    data: null,
+                };
+            } catch (error: any) {
+                console.error(error);
+                return {
+                    message: "Error: " + error.message,
+                    status: error.response?.status,
+                    data: null,
+                };
+            }
+        }
+    };
+
+    // INPUT HANDLE
     // Helper function to get the pair number (e.g., '1A' -> '1B', '2A' -> '2B', etc.)
     const getPairNo = (no: string) => {
         const num = parseInt(no);
         const letter = no.slice(-1);
         return num + (letter === 'A' ? 'B' : 'A');
     };
-
     const handleInputChange = async (
         e: ChangeEvent<HTMLInputElement>,
         id: string,
@@ -351,7 +397,6 @@ const Percobaan1 = ({ apiData, shooterid }) => {
             };
         }
     };
-
     // HANDLE TIME
     const handleWaktuChange = async (
         e: ChangeEvent<HTMLInputElement>,
@@ -396,6 +441,15 @@ const Percobaan1 = ({ apiData, shooterid }) => {
         });
 
         // Only include duration for the changed row (id) or its pair
+        // const rowIndex = data.findIndex((item) => item.no === id);
+        // if (rowIndex >= 0) {
+        //     duration = [
+        //         parseInt(updatedData[rowIndex].waktu.minutes),
+        //         parseInt(updatedData[rowIndex].waktu.seconds),
+        //         parseInt(updatedData[rowIndex].waktu.milliseconds),
+        //     ];
+        // }
+
         const rowIndex = data.findIndex((item) => item.no === id);
         if (rowIndex >= 0) {
             duration = [
@@ -404,6 +458,13 @@ const Percobaan1 = ({ apiData, shooterid }) => {
                 parseInt(updatedData[rowIndex].waktu.milliseconds),
             ];
         }
+
+        // Find the index of the pair numbers in the data array
+        const pairIndex = data.findIndex(
+            (item) => item.no === pairId
+        );
+
+        console.log(getPairRowIndex(pairIndex) + 1)
 
         // Call the API function to update the nilaiPerkenaan data
         try {
@@ -414,7 +475,7 @@ const Percobaan1 = ({ apiData, shooterid }) => {
                     scores_b: scores_b.slice(0, 3),
                     duration: duration || [], // If duration is still null, use an empty array
                 },
-                rowIndex + 1
+                getPairRowIndex(pairIndex) + 1
             );
         } catch (error) {
             const err = error as AxiosError<any>;
@@ -425,9 +486,11 @@ const Percobaan1 = ({ apiData, shooterid }) => {
             };
         }
     };
-
     // HANDLE HASIL / CHECKBOX
-    const handleCheckboxChange = (e, index) => {
+    const handleCheckboxChange = (
+        e: ChangeEvent<HTMLInputElement>,
+        index: number
+    ) => {
         const { checked } = e.target;
         const updatedData = [...data];
         updatedData[index].hasil = checked;
@@ -453,6 +516,7 @@ const Percobaan1 = ({ apiData, shooterid }) => {
                     <th colSpan={3}>Nilai Perkenaan</th>
                     <th rowSpan={2}>Waktu</th>
                     <th rowSpan={2}>Hasil</th>
+                    <th rowSpan={2}>Aksi</th>
                 </tr>
                 <tr>
                     <th>A</th>
@@ -473,6 +537,7 @@ const Percobaan1 = ({ apiData, shooterid }) => {
                                 onChange={(e) =>
                                     handleInputChange(e, item.no, "nilaiPerkenaanA")
                                 }
+                                readOnly={isReadOnly(item.no)}
                             />
                         </td>
                         <td>
@@ -542,6 +607,14 @@ const Percobaan1 = ({ apiData, shooterid }) => {
                                         checked={item.hasil}
                                         onChange={(e) => handleCheckboxChange(e, index)}
                                     />
+                                </td>
+                                <td rowSpan={2}>
+                                    <button
+                                        className='text-sm w-[60px] sm:w-[80px] border border-solid p-2 rounded-xl border-blue-400'
+                                        onClick={() => handleNextNo(index)}
+                                    >
+                                        Next No
+                                    </button>
                                 </td>
                             </>
                         )}
