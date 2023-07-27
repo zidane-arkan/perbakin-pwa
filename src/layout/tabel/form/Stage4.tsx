@@ -96,6 +96,25 @@ interface APIDataItem {
 interface APIResponse {
     [key: string]: APIDataItem | boolean[];
 }
+// CHECKMARKS
+const generateCheckmarks = (data: DataItem[]): boolean[] => {
+    const checkmarks: boolean[] = [];
+    let currentPairCheckmark = false;
+
+    for (let i = 0; i < data.length; i++) {
+        const currentItem = data[i];
+        const nextItem = data[i + 1];
+
+        if (currentItem.no.endsWith('A')) {
+            currentPairCheckmark = currentItem.hasil;
+            checkmarks.push(currentPairCheckmark);
+        } else if (nextItem && nextItem.no.endsWith('B')) {
+            checkmarks.push(currentPairCheckmark);
+        }
+    }
+
+    return checkmarks;
+};
 
 const Percobaan1 = ({ apiData, shooterid }) => {
     // CHANGE API DATA TO TABLE DATA
@@ -151,10 +170,10 @@ const Percobaan1 = ({ apiData, shooterid }) => {
     });
 
     // Helper function to get the pair numbers (e.g., '1A' -> ['1A', '1B'], '2A' -> ['2A', '2B'], etc.)
-    const getPairNumbers = (no: string) => {
-        const num = parseInt(no);
-        return [`${num}A`, `${num}B`];
-    };
+    // const getPairNumbers = (no: string) => {
+    //     const num = parseInt(no);
+    //     return [`${num}A`, `${num}B`];
+    // };
 
     // Helper function to get the pair row index
     const getPairRowIndex = (index: number) => {
@@ -206,6 +225,39 @@ const Percobaan1 = ({ apiData, shooterid }) => {
             console.error(error);
             return {
                 message: "Error updating data",
+                error: true,
+            };
+        }
+    };
+
+    // CHECKMARKS
+    interface UpdateHasilResponse {
+        message: string;
+        error: boolean;
+        response?: any;
+    }
+    const updateCheckmarksBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
+        try {
+            const checkmarks = updatedCheckmarks;
+            console.log(checkmarks);
+            const response = await api.put(
+                `/scorer/shooter/${shooterid}/result/stage4/1/checkmarks`,
+                {
+                    checkmarks: checkmarks,
+                }
+            );
+            console.log(response.data);
+            return {
+                message: response.data.message,
+                error: false,
+                response: response,
+            };
+        } catch (error) {
+            const err = error as AxiosError<any>;
+            console.error(err);
+            return {
+                message:
+                    "Error: " + err.response?.status + ": " + err.response?.data.message,
                 error: true,
             };
         }
@@ -309,9 +361,9 @@ const Percobaan1 = ({ apiData, shooterid }) => {
         const { value } = e.target;
         let updatedValue = value;
 
-        if (value.length === 1) {
-            updatedValue = "0" + value;
-        }
+        // if (value.length === 1) {
+        //     updatedValue = "0" + value;
+        // }
 
         const updatedData = [...data];
         updatedData[index].waktu[field] = updatedValue;
@@ -385,7 +437,12 @@ const Percobaan1 = ({ apiData, shooterid }) => {
         } else {
             updatedData[index - 1].hasil = checked;
         }
+        // console.log(updatedData);
         setData(updatedData);
+
+        const newCheckmarks = generateCheckmarks(updatedData);
+        console.log(newCheckmarks);
+        updateCheckmarksBE(newCheckmarks);
     };
 
     return (
