@@ -1,4 +1,4 @@
-import React, { useEffect, ChangeEvent, useState } from "react";
+import React, { useEffect, ChangeEvent, useState, useRef } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import api from "../../../api/api";
@@ -116,7 +116,7 @@ const generateCheckmarks = (data: DataItem[]): boolean[] => {
     return checkmarks;
 };
 
-const Percobaan1 = ({ apiData, shooterid }) => {
+const Percobaan1 = ({ apiData, shooterid }: any) => {
     // CHANGE API DATA TO TABLE DATA
     const mapAPIToDataItem = (
         apiItem: APIDataItem,
@@ -157,7 +157,7 @@ const Percobaan1 = ({ apiData, shooterid }) => {
 
     const [data, setData] = useState<DataItem[]>(() => {
         const dataArray: DataItem[] = [];
-        apiData.checkmarks.forEach((_, index) => {
+        apiData.checkmarks.forEach((item: any, index: number) => {
             if (typeof apiData[`no_${index + 1}`] !== "boolean") {
                 const dataItems = mapAPIToDataItem(
                     apiData[`no_${index + 1}`] as APIDataItem,
@@ -169,6 +169,8 @@ const Percobaan1 = ({ apiData, shooterid }) => {
         return dataArray;
     });
 
+    // Create a ref to store the timeout ID
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     // STATUS INPUT
     const [status, setStatus] = useState<number>(0);
     // Helper function to get the pair numbers (e.g., '1A' -> ['1A', '1B'], '2A' -> ['2A', '2B'], etc.)
@@ -180,11 +182,10 @@ const Percobaan1 = ({ apiData, shooterid }) => {
         const num = parseInt(no) + 1;
         return status !== 0 && num !== status;
     };
-
-    // Helper function to get the pair row index
     const getPairRowIndex = (index: number) => {
         return Math.floor(index / 2);
     };
+
     // API HANDLE
     // NILAI
     const updateNilaiPerkenaanBE = async (updatedData: any, noBaris: number) => {
@@ -379,15 +380,22 @@ const Percobaan1 = ({ apiData, shooterid }) => {
         console.log(getPairRowIndex(pairIndex) + 1)
         // Call the API function to update the nilaiPerkenaan data
         try {
-            // Send the combined data to the API
-            await updateNilaiPerkenaanBE(
-                {
-                    scores_a: scores_a.slice(0, 3),
-                    scores_b: scores_b.slice(0, 3),
-                    duration: duration || [], // If duration is still null, use an empty array
-                },
-                getPairRowIndex(pairIndex) + 1 // Use the pair index to get the correct noBaris
-            );
+            // Clear existing timeout (if any) before setting a new one
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+            // Set a new timeout to update the backend data after 500ms of inactivity
+            timeoutRef.current = setTimeout(async () => {
+                // Send the combined data to the API
+                await updateNilaiPerkenaanBE(
+                    {
+                        scores_a: scores_a.slice(0, 3),
+                        scores_b: scores_b.slice(0, 3),
+                        duration: duration || [], // If duration is still null, use an empty array
+                    },
+                    getPairRowIndex(pairIndex) + 1 // Use the pair index to get the correct noBaris
+                );
+            }, 500);
         } catch (error) {
             const err = error as AxiosError<any>;
             console.error(err);
@@ -468,15 +476,22 @@ const Percobaan1 = ({ apiData, shooterid }) => {
 
         // Call the API function to update the nilaiPerkenaan data
         try {
-            // Send the combined data to the API
-            await updateNilaiPerkenaanBE(
-                {
-                    scores_a: scores_a.slice(0, 3),
-                    scores_b: scores_b.slice(0, 3),
-                    duration: duration || [], // If duration is still null, use an empty array
-                },
-                getPairRowIndex(pairIndex) + 1
-            );
+            // Clear existing timeout (if any) before setting a new one
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+            // Set a new timeout to update the backend data after 500ms of inactivity
+            timeoutRef.current = setTimeout(async () => {
+                // Send the combined data to the API
+                await updateNilaiPerkenaanBE(
+                    {
+                        scores_a: scores_a.slice(0, 3),
+                        scores_b: scores_b.slice(0, 3),
+                        duration: duration || [], // If duration is still null, use an empty array
+                    },
+                    getPairRowIndex(pairIndex) + 1 // Use the pair index to get the correct noBaris
+                );
+            }, 500);
         } catch (error) {
             const err = error as AxiosError<any>;
             console.error(err);
