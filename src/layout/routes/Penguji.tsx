@@ -62,7 +62,7 @@ const Penguji = () => {
                 <Route path='/stage1_konfirmasi/:shooterid' element={<Stage1Konfirmasi />} />
                 <Route path='/stage2_konfirmasi/:shooterid' element={<Stage2Konfirmasi />} />
                 <Route path='/stage3_konfirmasi/:shooterid' element={<Stage3Konfirmasi />} />
-                <Route path='/stage4_konfirmasi' element={<Stage4Konfirmasi />} />
+                <Route path='/stage4_konfirmasi/:shooterid' element={<Stage4Konfirmasi />} />
                 <Route path='/stage5_konfirmasi' element={<Stage5Konfirmasi />} />
                 <Route path='/stage6_konfirmasi' element={<Stage6Konfirmasi />} />
                 {/* Route Selesai */}
