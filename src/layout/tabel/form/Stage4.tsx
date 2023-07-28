@@ -1166,7 +1166,7 @@ interface Try2Data {
 const Stage4 = () => {
     const { shooterid } = useParams();
     const [isLoading, setIsLoading] = useState(true);
-    const [stage4Data, setStage4Data] = useState<Try1Data | Try2Data>({});
+    const [stage4Data, setStage4Data] = useState<Try1Data | Try2Data | null | any>();
     const [try2Status, setTry2Status] = useState(false);
 
     const fetchTry1Data = async () => {

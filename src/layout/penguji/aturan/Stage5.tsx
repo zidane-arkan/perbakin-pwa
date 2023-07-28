@@ -1,6 +1,9 @@
 import React from 'react'
 import Aturan from '../../pages/Aturan'
+import { useParams } from 'react-router-dom';
+
 const Stage5 = () => {
+    const { shooterid } = useParams();
     return (
         <Aturan
             title="Stage #5"
@@ -11,7 +14,7 @@ const Stage5 = () => {
             senjataDua='(Revolver)'
             sasaran="3"
             tembakMaks='12'
-            link='stage5_form'
+            link={`stage5_form/${shooterid}`}
             posisiAwal='Berdiri membelakangi sasaran, kedua pergelangan tangan diangkat diatas bahu.'
         >
             <li>Cabut senjata dan tembak 2 kali pada setiap sasaran, kemudian ganti magasin dan tembak 2 kali pada sasaran yang sama.</li>
