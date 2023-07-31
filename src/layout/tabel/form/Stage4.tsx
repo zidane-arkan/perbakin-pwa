@@ -168,73 +168,44 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         });
         return dataArray;
     });
-
+    // Define a state to keep track of the changed pair index
+    const [changedPairIndex, setChangedPairIndex] = useState<number | null>(null);
     // Create a ref to store the timeout ID
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     // STATUS INPUT
     const [status, setStatus] = useState<number>(0);
-    // Helper function to get the pair numbers (e.g., '1A' -> ['1A', '1B'], '2A' -> ['2A', '2B'], etc.)
-    // const getPairNumbers = (no: string) => {
-    //     const num = parseInt(no);
-    //     return [`${num}A`, `${num}B`];
-    // };
+
     const isReadOnly = (no: string) => {
         const num = parseInt(no) + 1;
         return status !== 0 && num !== status;
     };
-    const getPairRowIndex = (index: number) => {
-        return Math.floor(index / 2);
-    };
-
     // API HANDLE
     // NILAI
     const updateNilaiPerkenaanBE = async (updatedData: any, noBaris: number) => {
         console.log(updatedData)
-        try {
-            // if (!updatedData) {
-            //     // Handle the case when updatedData is undefined or null
-            //     throw new Error("Invalid data");
-            // }
+        // try {
+        //     const response = await api.put(
+        //         `/scorer/shooter/${shooterid}/result/stage4/1/no/${noBaris}`,
+        //         {
+        //             "scores_a": updatedData.scores_a,
+        //             "scores_b": updatedData.scores_b,
+        //             "duration": updatedData.duration,
+        //         }
+        //     );
 
-            // const scores_a: number[] = [];
-            // const scores_b: number[] = [];
-
-            // // Extract scores_a and scores_b data from the updatedData object
-            // if (updatedData.no && updatedData.no.endsWith('A')) {
-            //     scores_a.push(updatedData.nilaiPerkenaanA);
-            //     scores_b.push(updatedData.nilaiPerkenaanB);
-            // } else if (updatedData.no && updatedData.no.endsWith('B')) {
-            //     scores_a.push(updatedData.nilaiPerkenaanA);
-            //     scores_b.push(updatedData.nilaiPerkenaanB);
-            // } else {
-            //     // Handle the case when the 'no' property is missing or doesn't end with 'A' or 'B'
-            //     throw new Error("Invalid 'no' property in updatedData");
-            // }
-            // // Prepare combined data for 'A' and 'B' rows
-            // const combinedData = [
-            //     parseInt(updatedData.waktu.minutes),
-            //     parseInt(updatedData.waktu.seconds),
-            //     parseInt(updatedData.waktu.milliseconds),
-            // ];
-
-            const response = await api.put(
-                `/scorer/shooter/${shooterid}/result/stage4/1/no/${noBaris}`,
-                updatedData
-            );
-
-            console.log(response.data);
-            return {
-                message: "Data updated successfully",
-                error: false,
-                response: response,
-            };
-        } catch (error) {
-            console.error(error);
-            return {
-                message: "Error updating data",
-                error: true,
-            };
-        }
+        //     console.log(response.data);
+        //     return {
+        //         message: "Data updated successfully",
+        //         error: false,
+        //         response: response,
+        //     };
+        // } catch (error) {
+        //     console.error(error);
+        //     return {
+        //         message: "Error updating data",
+        //         error: true,
+        //     };
+        // }
     };
     // CHECKMARKS
     interface UpdateHasilResponse {
@@ -312,674 +283,96 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
     };
 
     // INPUT HANDLE
-    // Helper function to get the pair number (e.g., '1A' -> '1B', '2A' -> '2B', etc.)
-    const getPairNo = (no: string) => {
-        const num = parseInt(no);
-        const letter = no.slice(-1);
-        return num + (letter === 'A' ? 'B' : 'A');
-    };
-    const handleInputChange = async (
+    // HANDLE NILAI PERKENAAN (A, C, D) CHANGE
+    const handleInputChange = (
         e: ChangeEvent<HTMLInputElement>,
-        id: string,
+        no: string,
         field: keyof DataItem
     ) => {
         const { value } = e.target;
+        const index = data.findIndex((item) => item.no === no);
+        if (index === -1) return;
 
-        const updatedData = data.map((item) => {
-            if (item.no === id) {
-                // If it's the row itself, update the corresponding field
-                return {
-                    ...item,
-                    [field]: +value,
-                };
-            }
-            return item;
-        });
+        // Check if the item is read-only, if it is, don't update the value
+        if (isReadOnly(no)) return;
 
+        const updatedData = [...data];
+        updatedData[index][field] = parseInt(value);
+
+        // If it's an 'A' item, update only the 'A' value of the corresponding 'A' item
+        if (no.endsWith('A')) {
+            const bIndex = index + 1;
+            updatedData[bIndex][field] = data[bIndex][field];
+        } else if (no.endsWith('B')) { // If it's a 'B' item, update only the 'B' value of the corresponding 'B' item
+            const aIndex = index - 1;
+            updatedData[aIndex][field] = data[aIndex][field];
+        }
+
+        // Update state with the modified data
         setData(updatedData);
 
-        // Find the corresponding pair (A or B) based on the id
-        const pairId = getPairNo(id);
+        // Prepare the data to be sent to the API
+        const pasanganIndex = Math.floor(index / 2);
+        const pasanganStartIdx = pasanganIndex * 2;
 
-        // Prepare separate arrays for 'A' and 'B' row values
-        const scores_a: number[] = [];
-        const scores_b: number[] = [];
-        let duration: number[] | null = null; // Duration for the changed row
+        // Separate scores_a and scores_b for 'A' and 'B' items
+        const scores_a = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 2)
+            .map((item) => item.no.endsWith('A') ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD] : [0, 0, 0]);
 
-        // Extract scores_a and scores_b data from the updatedData array
-        updatedData.forEach((item) => {
-            // console.log(item.no)
-            if (item.no === id) {
-                scores_a.push(item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD);
-            } else if (item.no === pairId) {
-                scores_b.push(item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD);
-            }
-        });
-        // updatedData.forEach((item) => {
-        //     if (item.no === id || item.no === pairId) {
-        //         scores_a.push(item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD);
-        //         scores_b.push(item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD);
-        //     }
-        // });
+        const scores_b = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 2)
+            .map((item) => item.no.endsWith('B') ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD] : [0, 0, 0]);
 
-        // Only include duration for the changed row (id) or its pair
-        const rowIndex = data.findIndex((item) => item.no === id);
-        if (rowIndex >= 0) {
-            duration = [
-                parseInt(updatedData[rowIndex].waktu.minutes),
-                parseInt(updatedData[rowIndex].waktu.seconds),
-                parseInt(updatedData[rowIndex].waktu.milliseconds),
-            ];
-        }
-
-        // Find the index of the pair numbers in the data array
-        const pairIndex = data.findIndex(
-            (item) => item.no === pairId
+        const duration = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 2)
+            .map((item) => ({
+                minutes: item.waktu.minutes,
+                seconds: item.waktu.seconds,
+                milliseconds: item.waktu.milliseconds
+            }));
+        
+        // Call the API function to update the nilai perkenaan
+        updateNilaiPerkenaanBE(
+            {
+                scores_a: scores_a[0],
+                scores_b: scores_b[1],
+                duration : duration[0],
+            },
+            pasanganIndex + 1 // The API endpoint uses pairs' number (1-indexed)
         );
-
-        console.log(getPairRowIndex(pairIndex) + 1)
-        // Call the API function to update the nilaiPerkenaan data
-        try {
-            // Clear existing timeout (if any) before setting a new one
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-            }
-            // Set a new timeout to update the backend data after 500ms of inactivity
-            timeoutRef.current = setTimeout(async () => {
-                // Send the combined data to the API
-                await updateNilaiPerkenaanBE(
-                    {
-                        scores_a: scores_a.slice(0, 3),
-                        scores_b: scores_b.slice(0, 3),
-                        duration: duration || [], // If duration is still null, use an empty array
-                    },
-                    getPairRowIndex(pairIndex) + 1 // Use the pair index to get the correct noBaris
-                );
-            }, 500);
-        } catch (error) {
-            const err = error as AxiosError<any>;
-            console.error(err);
-            return {
-                message: "Error: " + err.response?.status + ": " + err.response?.data.message,
-                error: true,
-            };
-        }
     };
+
     // HANDLE TIME
-    const handleWaktuChange = async (
-        e: ChangeEvent<HTMLInputElement>,
-        index: number,
-        field: keyof DataItem['waktu']
-    ) => {
-        const { value } = e.target;
-        let updatedValue = value;
 
-        // if (value.length === 1) {
-        //     updatedValue = "0" + value;
-        // }
+    // Use the 'changedPairIndex' state to determine which pair to update in the API call
+    useEffect(() => {
+        if (changedPairIndex !== null) {
+            const startIdx = changedPairIndex * 2;
+            const endIdx = startIdx + 2;
 
-        const updatedData = [...data];
-        updatedData[index].waktu[field] = updatedValue;
+            // Prepare the data to be sent to the API
+            const scores_a = data.slice(startIdx, endIdx).filter((item) => item.no.endsWith('A')).map((item) => item.nilaiPerkenaanA);
+            const scores_b = data.slice(startIdx, endIdx).filter((item) => item.no.endsWith('B')).map((item) => item.nilaiPerkenaanA);
+            const duration = data.slice(startIdx, endIdx).map((item) => ({
+                minutes: item.waktu.minutes,
+                seconds: item.waktu.seconds,
+                milliseconds: item.waktu.milliseconds
+            }));
 
-        if (index % 2 === 0) {
-            updatedData[index + 1].waktu[field] = value;
-            updatedData[index + 1].hasil = updatedData[index].hasil;
-        } else {
-            updatedData[index - 1].waktu[field] = value;
-            updatedData[index - 1].hasil = updatedData[index].hasil;
-        }
-        setData(updatedData);
-
-        // Find the corresponding pair (A or B) based on the id
-        const id = updatedData[index].no;
-        const pairId = getPairNo(id);
-
-        // Prepare separate arrays for 'A' and 'B' row values
-        const scores_a: number[] = [];
-        const scores_b: number[] = [];
-        let duration: number[] | null = null; // Duration for the changed row
-
-        // Extract scores_a and scores_b data from the updatedData array
-        updatedData.forEach((item) => {
-            if (item.no === id) {
-                scores_a.push(item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD);
-            } else if (item.no === pairId) {
-                scores_b.push(item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD);
-            }
-        });
-
-        // Only include duration for the changed row (id) or its pair
-        // const rowIndex = data.findIndex((item) => item.no === id);
-        // if (rowIndex >= 0) {
-        //     duration = [
-        //         parseInt(updatedData[rowIndex].waktu.minutes),
-        //         parseInt(updatedData[rowIndex].waktu.seconds),
-        //         parseInt(updatedData[rowIndex].waktu.milliseconds),
-        //     ];
-        // }
-
-        const rowIndex = data.findIndex((item) => item.no === id);
-        if (rowIndex >= 0) {
-            duration = [
-                parseInt(updatedData[rowIndex].waktu.minutes),
-                parseInt(updatedData[rowIndex].waktu.seconds),
-                parseInt(updatedData[rowIndex].waktu.milliseconds),
-            ];
-        }
-
-        // Find the index of the pair numbers in the data array
-        const pairIndex = data.findIndex(
-            (item) => item.no === pairId
-        );
-
-        console.log(getPairRowIndex(pairIndex) + 1)
-
-        // Call the API function to update the nilaiPerkenaan data
-        try {
-            // Clear existing timeout (if any) before setting a new one
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-            }
-            // Set a new timeout to update the backend data after 500ms of inactivity
-            timeoutRef.current = setTimeout(async () => {
-                // Send the combined data to the API
-                await updateNilaiPerkenaanBE(
-                    {
-                        scores_a: scores_a.slice(0, 3),
-                        scores_b: scores_b.slice(0, 3),
-                        duration: duration || [], // If duration is still null, use an empty array
-                    },
-                    getPairRowIndex(pairIndex) + 1 // Use the pair index to get the correct noBaris
-                );
-            }, 500);
-        } catch (error) {
-            const err = error as AxiosError<any>;
-            console.error(err);
-            return {
-                message: "Error: " + err.response?.status + ": " + err.response?.data.message,
-                error: true,
-            };
-        }
-    };
-    // HANDLE HASIL / CHECKBOX
-    const handleCheckboxChange = (
-        e: ChangeEvent<HTMLInputElement>,
-        index: number
-    ) => {
-        const { checked } = e.target;
-        const updatedData = [...data];
-        updatedData[index].hasil = checked;
-
-        if (index % 2 === 0) {
-            updatedData[index + 1].hasil = checked;
-        } else {
-            updatedData[index - 1].hasil = checked;
-        }
-        // console.log(updatedData);
-        setData(updatedData);
-
-        const newCheckmarks = generateCheckmarks(updatedData);
-        console.log(newCheckmarks);
-        updateCheckmarksBE(newCheckmarks);
-    };
-
-    return (
-        <table>
-            <thead>
-                <tr>
-                    <th rowSpan={2}>No</th>
-                    <th colSpan={3}>Nilai Perkenaan</th>
-                    <th rowSpan={2}>Waktu</th>
-                    <th rowSpan={2}>Hasil</th>
-                    <th rowSpan={2}>Aksi</th>
-                </tr>
-                <tr>
-                    <th>A</th>
-                    <th>C</th>
-                    <th>D</th>
-                </tr>
-            </thead>
-            <tbody>
-                {data.map((item, index) => (
-                    <tr key={index}>
-                        <td rowSpan={1}>{item.no}</td>
-                        <td>
-                            <input
-                                type="number"
-                                min={0}
-                                max={2 - item.nilaiPerkenaanC - item.nilaiPerkenaanD}
-                                value={item.nilaiPerkenaanA}
-                                onChange={(e) =>
-                                    handleInputChange(e, item.no, "nilaiPerkenaanA")
-                                }
-                                readOnly={isReadOnly(item.no)}
-                            />
-                        </td>
-                        <td>
-                            <input
-                                type="number"
-                                min={0}
-                                max={2 - item.nilaiPerkenaanA - item.nilaiPerkenaanD}
-                                value={item.nilaiPerkenaanC}
-                                onChange={(e) =>
-                                    handleInputChange(e, item.no, "nilaiPerkenaanC")
-                                }
-                            />
-                        </td>
-                        <td>
-                            <input
-                                type="number"
-                                min={0}
-                                max={2 - item.nilaiPerkenaanA - item.nilaiPerkenaanC}
-                                value={item.nilaiPerkenaanD}
-                                onChange={(e) =>
-                                    handleInputChange(e, item.no, "nilaiPerkenaanD")
-                                }
-                            />
-                        </td>
-                        {item.no !== "1B" && item.no !== "2B" && item.no !== "3B" && (
-                            <>
-                                <td rowSpan={2}>
-                                    <div className="stopwatch">
-                                        <input
-                                            type="number"
-                                            name="minute"
-                                            max="59"
-                                            min="0"
-                                            placeholder="menit"
-                                            value={item.waktu.minutes}
-                                            onChange={(e) => handleWaktuChange(e, index, "minutes")}
-                                        />
-                                        :
-                                        <input
-                                            type="number"
-                                            name="second"
-                                            max="59"
-                                            min="0"
-                                            placeholder="detik"
-                                            value={item.waktu.seconds}
-                                            onChange={(e) => handleWaktuChange(e, index, "seconds")}
-                                        />
-                                        :
-                                        <input
-                                            type="number"
-                                            name="millisecond"
-                                            max="99"
-                                            min="0"
-                                            placeholder="milid"
-                                            value={item.waktu.milliseconds}
-                                            onChange={(e) =>
-                                                handleWaktuChange(e, index, "milliseconds")
-                                            }
-                                        />
-                                    </div>
-                                </td>
-                                <td rowSpan={2}>
-                                    <input
-                                        type="checkbox"
-                                        id={`hasil-${index}`}
-                                        name="hasil"
-                                        checked={item.hasil}
-                                        onChange={(e) => handleCheckboxChange(e, index)}
-                                    />
-                                </td>
-                                <td rowSpan={2}>
-                                    <button
-                                        className='text-sm w-[60px] sm:w-[80px] border border-solid p-2 rounded-xl border-blue-400'
-                                        onClick={() => handleNextNo(index)}
-                                    >
-                                        Next No
-                                    </button>
-                                </td>
-                            </>
-                        )}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    );
-};
-
-// PERCOBAAN 2
-const Percobaan2 = ({ apiData, shooterid }: any) => {
-    // CHANGE API DATA TO TABLE DATA
-    const mapAPIToDataItem = (
-        apiItem: APIDataItem,
-        index: number
-    ): DataItem[] => {
-        const no = index + 1;
-        const scores_a = apiItem.scores_a;
-        const scores_b = apiItem.scores_b;
-
-        const dataItemA: DataItem = {
-            no: `${no}A`,
-            nilaiPerkenaanA: scores_a[0],
-            nilaiPerkenaanC: scores_a[1],
-            nilaiPerkenaanD: scores_a[2],
-            waktu: {
-                minutes: apiItem.duration[0].toString().padStart(2, "0"),
-                seconds: apiItem.duration[1].toString().padStart(2, "0"),
-                milliseconds: apiItem.duration[2].toString().padStart(2, "0")
-            },
-            hasil: apiData.checkmarks[index]
-        };
-
-        const dataItemB: DataItem = {
-            no: `${no}B`,
-            nilaiPerkenaanA: scores_b[0],
-            nilaiPerkenaanC: scores_b[1],
-            nilaiPerkenaanD: scores_b[2],
-            waktu: {
-                minutes: apiItem.duration[0].toString().padStart(2, "0"),
-                seconds: apiItem.duration[1].toString().padStart(2, "0"),
-                milliseconds: apiItem.duration[2].toString().padStart(2, "0")
-            },
-            hasil: apiData.checkmarks[index]
-        };
-
-        return [dataItemA, dataItemB];
-    };
-
-    const [data, setData] = useState<DataItem[]>(() => {
-        const dataArray: DataItem[] = [];
-        apiData.checkmarks.forEach((item: any, index: number) => {
-            if (typeof apiData[`no_${index + 1}`] !== "boolean") {
-                const dataItems = mapAPIToDataItem(
-                    apiData[`no_${index + 1}`] as APIDataItem,
-                    index
-                );
-                dataArray.push(...dataItems);
-            }
-        });
-        return dataArray;
-    });
-
-    // Create a ref to store the timeout ID
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-    // STATUS INPUT
-    const [status, setStatus] = useState<number>(0);
-
-    const isReadOnly = (no: string) => {
-        const num = parseInt(no);
-        return status !== 0 && num !== status;
-    };
-    const getPairRowIndex = (index: number) => {
-        return Math.floor(index / 2);
-    };
-
-    // API HANDLE
-    // NILAI
-    const updateNilaiPerkenaanBE = async (updatedData: any, noBaris: number) => {
-        console.log(updatedData)
-        try {
-            const response = await api.put(
-                `/scorer/shooter/${shooterid}/result/stage4/2/no/${noBaris}`,
-                updatedData
-            );
-
-            console.log(response.data);
-            return {
-                message: "Data updated successfully",
-                error: false,
-                response: response,
-            };
-        } catch (error) {
-            console.error(error);
-            return {
-                message: "Error updating data",
-                error: true,
-            };
-        }
-    };
-    // CHECKMARKS
-    interface UpdateHasilResponse {
-        message: string;
-        error: boolean;
-        response?: any;
-    }
-    const updateCheckmarksBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
-        try {
-            const checkmarks = updatedCheckmarks;
-            console.log(checkmarks);
-            const response = await api.put(
-                `/scorer/shooter/${shooterid}/result/stage4/2/checkmarks`,
+            // Call the API function to update the nilai perkenaan
+            updateNilaiPerkenaanBE(
                 {
-                    checkmarks: checkmarks,
-                }
+                    scores_a,
+                    scores_b,
+                    duration,
+                },
+                changedPairIndex + 1 // The API endpoint uses pairs' number (1-indexed)
             );
-            console.log(response.data);
-            return {
-                message: response.data.message,
-                error: false,
-                response: response,
-            };
-        } catch (error) {
-            const err = error as AxiosError<any>;
-            console.error(err);
-            return {
-                message:
-                    "Error: " + err.response?.status + ": " + err.response?.data.message,
-                error: true,
-            };
         }
-    };
-    // GANTI KE NO SELANJUTNYA
-    const handleNextNo = async (currentNo: number) => {
-        // Calculate the next row index
-        const nextRowIndex = Math.floor(currentNo / 2) + 1;
+    }, [changedPairIndex, data]);
 
-        // Show confirmation dialog
-        const confirmMessage = `Apakah anda yakin ingin pindah nomor ke ${nextRowIndex + 1}?`;
-        const confirmed = window.confirm(confirmMessage);
-
-        if (confirmed) {
-            const endpoint = `/scorer/shooter/${shooterid}/result/stage4/2/next`;
-
-            try {
-                const response = await api.patch(endpoint);
-                console.log(`Berhasil melanjutkan no stage 4 percobaan 2 ke no ${nextRowIndex + 1}`);
-
-                // Set status to the next number and trigger data refresh
-                setStatus(nextRowIndex);
-
-                // Update data for the rows that should no longer be read-only
-                const updatedData = data.map((item) => ({
-                    ...item,
-                    readOnly: isReadOnly(item.no),
-                }));
-
-                setData(updatedData);
-
-                return {
-                    message: response.data.message,
-                    status: 200,
-                    data: null,
-                };
-            } catch (error: any) {
-                console.error(error);
-                return {
-                    message: "Error: " + error.message,
-                    status: error.response?.status,
-                    data: null,
-                };
-            }
-        }
-    };
-
-    // INPUT HANDLE
-    // Helper function to get the pair number (e.g., '1A' -> '1B', '2A' -> '2B', etc.)
-    const getPairNo = (no: string) => {
-        const num = parseInt(no);
-        const letter = no.slice(-1);
-        return num + (letter === 'A' ? 'B' : 'A');
-    };
-    const handleInputChange = async (
-        e: ChangeEvent<HTMLInputElement>,
-        id: string,
-        field: keyof DataItem
-    ) => {
-        const { value } = e.target;
-
-        const updatedData = data.map((item) => {
-            if (item.no === id) {
-                // If it's the row itself, update the corresponding field
-                return {
-                    ...item,
-                    [field]: +value,
-                };
-            }
-            return item;
-        });
-
-        setData(updatedData);
-
-        // Find the corresponding pair (A or B) based on the id
-        const pairId = getPairNo(id);
-
-        // Prepare separate arrays for 'A' and 'B' row values
-        const scores_a: number[] = [];
-        const scores_b: number[] = [];
-        let duration: number[] | null = null; // Duration for the changed row
-
-        // Extract scores_a and scores_b data from the updatedData array
-        updatedData.forEach((item) => {
-            // console.log(item.no)
-            if (item.no === id) {
-                scores_a.push(item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD);
-            } else if (item.no === pairId) {
-                scores_b.push(item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD);
-            }
-        });
-
-        // Only include duration for the changed row (id) or its pair
-        const rowIndex = data.findIndex((item) => item.no === id);
-        if (rowIndex >= 0) {
-            duration = [
-                parseInt(updatedData[rowIndex].waktu.minutes),
-                parseInt(updatedData[rowIndex].waktu.seconds),
-                parseInt(updatedData[rowIndex].waktu.milliseconds),
-            ];
-        }
-
-        // Find the index of the pair numbers in the data array
-        const pairIndex = data.findIndex(
-            (item) => item.no === pairId
-        );
-
-        console.log(getPairRowIndex(pairIndex) + 1)
-        // Call the API function to update the nilaiPerkenaan data
-        try {
-            // Clear existing timeout (if any) before setting a new one
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-            }
-            // Set a new timeout to update the backend data after 500ms of inactivity
-            timeoutRef.current = setTimeout(async () => {
-                // Send the combined data to the API
-                await updateNilaiPerkenaanBE(
-                    {
-                        scores_a: scores_a.slice(0, 3),
-                        scores_b: scores_b.slice(0, 3),
-                        duration: duration || [], // If duration is still null, use an empty array
-                    },
-                    getPairRowIndex(pairIndex) + 1 // Use the pair index to get the correct noBaris
-                );
-            }, 500);
-        } catch (error) {
-            const err = error as AxiosError<any>;
-            console.error(err);
-            return {
-                message: "Error: " + err.response?.status + ": " + err.response?.data.message,
-                error: true,
-            };
-        }
-    };
-    // HANDLE TIME
-    const handleWaktuChange = async (
-        e: ChangeEvent<HTMLInputElement>,
-        index: number,
-        field: keyof DataItem['waktu']
-    ) => {
-        const { value } = e.target;
-        let updatedValue = value;
-
-        // if (value.length === 1) {
-        //     updatedValue = "0" + value;
-        // }
-
-        const updatedData = [...data];
-        updatedData[index].waktu[field] = updatedValue;
-
-        if (index % 2 === 0) {
-            updatedData[index + 1].waktu[field] = value;
-            updatedData[index + 1].hasil = updatedData[index].hasil;
-        } else {
-            updatedData[index - 1].waktu[field] = value;
-            updatedData[index - 1].hasil = updatedData[index].hasil;
-        }
-        setData(updatedData);
-
-        // Find the corresponding pair (A or B) based on the id
-        const id = updatedData[index].no;
-        const pairId = getPairNo(id);
-
-        // Prepare separate arrays for 'A' and 'B' row values
-        const scores_a: number[] = [];
-        const scores_b: number[] = [];
-        let duration: number[] | null = null; // Duration for the changed row
-
-        // Extract scores_a and scores_b data from the updatedData array
-        updatedData.forEach((item) => {
-            if (item.no === id) {
-                scores_a.push(item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD);
-            } else if (item.no === pairId) {
-                scores_b.push(item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD);
-            }
-        });
-
-        const rowIndex = data.findIndex((item) => item.no === id);
-        if (rowIndex >= 0) {
-            duration = [
-                parseInt(updatedData[rowIndex].waktu.minutes),
-                parseInt(updatedData[rowIndex].waktu.seconds),
-                parseInt(updatedData[rowIndex].waktu.milliseconds),
-            ];
-        }
-
-        // Find the index of the pair numbers in the data array
-        const pairIndex = data.findIndex(
-            (item) => item.no === pairId
-        );
-
-        console.log(getPairRowIndex(pairIndex) + 1)
-
-        // Call the API function to update the nilaiPerkenaan data
-        try {
-            // Clear existing timeout (if any) before setting a new one
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-            }
-            // Set a new timeout to update the backend data after 500ms of inactivity
-            timeoutRef.current = setTimeout(async () => {
-                // Send the combined data to the API
-                await updateNilaiPerkenaanBE(
-                    {
-                        scores_a: scores_a.slice(0, 3),
-                        scores_b: scores_b.slice(0, 3),
-                        duration: duration || [], // If duration is still null, use an empty array
-                    },
-                    getPairRowIndex(pairIndex) + 1 // Use the pair index to get the correct noBaris
-                );
-            }, 500);
-        } catch (error) {
-            const err = error as AxiosError<any>;
-            console.error(err);
-            return {
-                message: "Error: " + err.response?.status + ": " + err.response?.data.message,
-                error: true,
-            };
-        }
-    };
+    
     // HANDLE HASIL / CHECKBOX
     const handleCheckboxChange = (
         e: ChangeEvent<HTMLInputElement>,
@@ -1118,6 +511,8 @@ const Percobaan2 = ({ apiData, shooterid }: any) => {
         </table>
     );
 };
+
+
 
 // Define the type for the try_1 data
 interface Try1Data {
@@ -1266,9 +661,9 @@ const Stage4 = () => {
                     <button onClick={() => { finishPercobaan1() }} className='items-center text-white sm:w-[40%] px-2 py-4 bg-blue-400 rounded-xl'>Buat Percobaan 2</button>
                 </div>
             ) : null}
-            {try2Status && 'try_2' in stage4Data ? (
+            {/* {try2Status && 'try_2' in stage4Data ? (
                 <Percobaan2 apiData={stage4Data.try_2} shooterid={shooterid} />
-            ) : <p>Tabel Percobaan 2 Belum Dibuat</p>}
+            ) : <p>Tabel Percobaan 2 Belum Dibuat</p>} */}
         </Styles>
     );
 };
