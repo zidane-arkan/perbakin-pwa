@@ -6,15 +6,15 @@ import api from '../../../api/api';
 const Stage4 = () => {
     const { shooterid } = useParams();
     const [isLoading, setIsLoading] = useState(true);
-    // const [stage3Data, setStage1Data] = useState();
+    // const [stage4Data, setStage1Data] = useState();
     const [try2Status, setTry2Status] = useState('1');
     const fetchTry1Data = async () => {
         try {
             const response = await api.get(`/scorer/shooter/${shooterid}/result/stage4`);
             const apiData = response.data;
-            const stage3Data = apiData.data.stage_4;
-            // setStage1Data(stage3Data);
-            if (stage3Data.is_try_2) {
+            const stage4Data = apiData.data.stage_4;
+            // setStage1Data(stage4Data);
+            if (stage4Data.is_try_2) {
                 setTry2Status('2');
             } else {
                 setTry2Status('1');
