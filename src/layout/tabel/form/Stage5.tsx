@@ -197,7 +197,6 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         return status !== 0 && num !== status;
     };
 
-
     // API HANDLE
     // NILAI
     const updateNilaiPerkenaanBE = async (updatedData: any, noBaris: number) => {
@@ -302,10 +301,10 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         }
     };
 
+    // INPUT HANDLE
     // Define types for scores_a, scores_b, and duration
     type Scores = [number, number, number];
     type Duration = { minutes: number; seconds: number; milliseconds: number };
-    // INPUT HANDLE
     // HANDLE NILAI PERKENAAN (A, C, D) CHANGE
     const handleInputChange = (
         e: ChangeEvent<HTMLInputElement>,
@@ -474,6 +473,8 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         const newCheckmarks = generateCheckmarks(updatedData);
         updateCheckmarksBE(newCheckmarks);
     };
+
+    // RETURN TABLE
     return (
         <table>
             <thead>
@@ -599,430 +600,487 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         </table>
     );
 };
-// // PERCOBAAN 2
-// const Percobaan2 = ({ apiData, shooterid }: any) => {
-//     // CHANGE API DATA TO TABLE DATA
-//     const mapAPIToDataItem = (
-//         apiItem: APIDataItem,
-//         index: number
-//     ): DataItem[] => {
-//         const no = index + 1;
-//         const scores_a = apiItem.scores_a;
-//         const scores_b = apiItem.scores_b;
 
-//         const dataItemA: DataItem = {
-//             no: `${no}A`,
-//             nilaiPerkenaanA: scores_a[0],
-//             nilaiPerkenaanC: scores_a[1],
-//             nilaiPerkenaanD: scores_a[2],
-//             waktu: {
-//                 minutes: apiItem.duration[0].toString().padStart(2, "0"),
-//                 seconds: apiItem.duration[1].toString().padStart(2, "0"),
-//                 milliseconds: apiItem.duration[2].toString().padStart(2, "0")
-//             },
-//             hasil: apiData.checkmarks[index]
-//         };
+// PERCOBAAN 2
+const Percobaan2 = ({ apiData, shooterid }: any) => {
+    // CHANGE API DATA TO TABLE DATA
+    const mapAPIToDataItem = (
+        apiItem: APIDataItem,
+        index: number
+    ): DataItem[] => {
+        const no = index + 1;
+        const scores_a = apiItem.scores_a;
+        const scores_b = apiItem.scores_b;
+        const scores_c = apiItem.scores_c;
 
-//         const dataItemB: DataItem = {
-//             no: `${no}B`,
-//             nilaiPerkenaanA: scores_b[0],
-//             nilaiPerkenaanC: scores_b[1],
-//             nilaiPerkenaanD: scores_b[2],
-//             waktu: {
-//                 minutes: apiItem.duration[0].toString().padStart(2, "0"),
-//                 seconds: apiItem.duration[1].toString().padStart(2, "0"),
-//                 milliseconds: apiItem.duration[2].toString().padStart(2, "0")
-//             },
-//             hasil: apiData.checkmarks[index]
-//         };
+        const dataItemA: DataItem = {
+            no: `${no}A`,
+            nilaiPerkenaanA: scores_a[0],
+            nilaiPerkenaanC: scores_a[1],
+            nilaiPerkenaanD: scores_a[2],
+            waktu: {
+                minutes: apiItem.duration[0].toString().padStart(2, "0"),
+                seconds: apiItem.duration[1].toString().padStart(2, "0"),
+                milliseconds: apiItem.duration[2].toString().padStart(2, "0")
+            },
+            hasil: apiData.checkmarks[index]
+        };
 
-//         return [dataItemA, dataItemB];
-//     };
+        const dataItemB: DataItem = {
+            no: `${no}B`,
+            nilaiPerkenaanA: scores_b[0],
+            nilaiPerkenaanC: scores_b[1],
+            nilaiPerkenaanD: scores_b[2],
+            waktu: {
+                minutes: apiItem.duration[0].toString().padStart(2, "0"),
+                seconds: apiItem.duration[1].toString().padStart(2, "0"),
+                milliseconds: apiItem.duration[2].toString().padStart(2, "0")
+            },
+            hasil: apiData.checkmarks[index]
+        };
 
-//     const [data, setData] = useState<DataItem[]>(() => {
-//         const dataArray: DataItem[] = [];
-//         apiData.checkmarks.forEach((item: any, index: number) => {
-//             if (typeof apiData[`no_${index + 1}`] !== "boolean") {
-//                 const dataItems = mapAPIToDataItem(
-//                     apiData[`no_${index + 1}`] as APIDataItem,
-//                     index
-//                 );
-//                 dataArray.push(...dataItems);
-//             }
-//         });
-//         return dataArray;
-//     });
-//     // Create a ref to store the timeout ID
-//     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-//     // STATUS INPUT
-//     const [status, setStatus] = useState<number>(0);
+        const dataItemC: DataItem = {
+            no: `${no}C`,
+            nilaiPerkenaanA: scores_c[0],
+            nilaiPerkenaanC: scores_c[1],
+            nilaiPerkenaanD: scores_c[2],
+            waktu: {
+                minutes: apiItem.duration[0].toString().padStart(2, "0"),
+                seconds: apiItem.duration[1].toString().padStart(2, "0"),
+                milliseconds: apiItem.duration[2].toString().padStart(2, "0")
+            },
+            hasil: apiData.checkmarks[index]
+        };
 
-//     const isReadOnly = (no: string) => {
-//         const num = parseInt(no) + 1;
-//         return status !== 0 && num !== status;
-//     };
+        return [dataItemA, dataItemB, dataItemC];
+    };
+
+    const [data, setData] = useState<DataItem[]>(() => {
+        const dataArray: DataItem[] = [];
+        apiData.checkmarks.forEach((item: any, index: number) => {
+            if (typeof apiData[`no_${index + 1}`] !== "boolean") {
+                const dataItems = mapAPIToDataItem(
+                    apiData[`no_${index + 1}`] as APIDataItem,
+                    index
+                );
+                dataArray.push(...dataItems);
+            }
+        });
+        return dataArray;
+    });
+    // Create a ref to store the timeout ID
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    // STATUS INPUT
+    const [status, setStatus] = useState<number>(0);
+
+    const isReadOnly = (no: string) => {
+        const num = parseInt(no) + 1;
+        return status !== 0 && num !== status;
+    };
+
+    // API HANDLE
+    // NILAI
+    const updateNilaiPerkenaanBE = async (updatedData: any, noBaris: number) => {
+        console.log(updatedData)
+        try {
+            const response = await api.put(
+                `/scorer/shooter/${shooterid}/result/stage5/2/no/${noBaris}`,
+                {
+                    "scores_a": updatedData.scores_a,
+                    "scores_b": updatedData.scores_b,
+                    "scores_c": updatedData.scores_c,
+                    "duration": updatedData.duration,
+                }
+            );
+
+            console.log(response.data);
+            return {
+                message: "Data updated successfully",
+                error: false,
+                response: response,
+            };
+        } catch (error) {
+            console.error(error);
+            return {
+                message: "Error updating data",
+                error: true,
+            };
+        }
+    };
+    // CHECKMARKS
+    interface UpdateHasilResponse {
+        message: string;
+        error: boolean;
+        response?: any;
+    }
+    const updateCheckmarksBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
+        try {
+            const checkmarks = updatedCheckmarks;
+            console.log(checkmarks);
+            const response = await api.put(
+                `/scorer/shooter/${shooterid}/result/stage5/2/checkmarks`,
+                {
+                    checkmarks: [checkmarks[0], checkmarks[2]],
+                }
+            );
+            console.log(response.data);
+            return {
+                message: response.data.message,
+                error: false,
+                response: response,
+            };
+        } catch (error) {
+            const err = error as AxiosError<any>;
+            console.error(err);
+            return {
+                message:
+                    "Error: " + err.response?.status + ": " + err.response?.data.message,
+                error: true,
+            };
+        }
+    };
+    // GANTI KE NO SELANJUTNYA
+    const handleNextNo = async (currentNo: number) => {
+        // Calculate the next row index
+        const nextRowIndex = Math.floor(currentNo / 2) + 1;
+        console.log(nextRowIndex + 1)
+        // Show confirmation dialog
+        const confirmMessage = `Apakah anda yakin ingin pindah nomor ke ${nextRowIndex + 1}?`;
+        const confirmed = window.confirm(confirmMessage);
+
+        if (confirmed) {
+            const endpoint = `/scorer/shooter/${shooterid}/result/stage5/2/next`;
+
+            try {
+                const response = await api.patch(endpoint);
+                console.log(`Berhasil melanjutkan no Stage 5 Percobaan 2 ke no ${nextRowIndex + 1}`);
+
+                // Set status to the next number and trigger data refresh
+                setStatus(nextRowIndex);
+
+                // Update data for the rows that should no longer be read-only
+                const updatedData = data.map((item) => ({
+                    ...item,
+                    readOnly: isReadOnly(item.no),
+                }));
+
+                setData(updatedData);
+
+                return {
+                    message: response.data.message,
+                    status: 200,
+                    data: null,
+                };
+            } catch (error: any) {
+                console.error(error);
+                return {
+                    message: "Error: " + error.message,
+                    status: error.response?.status,
+                    data: null,
+                };
+            }
+        }
+    };
+
+    // INPUT HANDLE
+    // Define types for scores_a, scores_b, and duration
+    type Scores = [number, number, number];
+    type Duration = { minutes: number; seconds: number; milliseconds: number };
+    // HANDLE NILAI PERKENAAN (A, C, D) CHANGE
+    const handleInputChange = (
+        e: ChangeEvent<HTMLInputElement>,
+        no: string,
+        field: keyof DataItem
+    ) => {
+        const { value } = e.target;
+        const index = data.findIndex((item) => item.no === no);
+        if (index === -1) return;
+
+        const updatedData = [...data];
+        updatedData[index][field] = parseInt(value);
+
+        // If it's an 'A' item, update only the 'A' value of the corresponding 'A' item
+        if (no.endsWith('A')) {
+            const bIndex = index + 1;
+            updatedData[bIndex][field] = data[bIndex][field];
+        } else if (no.endsWith('B')) { // If it's a 'B' item, update only the 'B' value of the corresponding 'B' item
+            const aIndex = index - 1;
+            updatedData[aIndex][field] = data[aIndex][field];
+        } else if (no.endsWith('C')) {
+            // If it's a 'C' item, update only the 'C' value of the corresponding 'C' item
+            const aIndex = index - 2;
+            updatedData[aIndex][field] = data[aIndex][field];
+        }
 
 
-//     // API HANDLE
-//     // NILAI
-//     const updateNilaiPerkenaanBE = async (updatedData: any, noBaris: number) => {
-//         console.log(updatedData)
-//         try {
-//             const response = await api.put(
-//                 `/scorer/shooter/${shooterid}/result/stage5/2/no/${noBaris}`,
-//                 {
-//                     "scores_a": updatedData.scores_a,
-//                     "scores_b": updatedData.scores_b,
-//                     "duration": updatedData.duration,
-//                 }
-//             );
+        // Update state with the modified data
+        setData(updatedData);
 
-//             console.log(response.data);
-//             return {
-//                 message: "Data updated successfully",
-//                 error: false,
-//                 response: response,
-//             };
-//         } catch (error) {
-//             console.error(error);
-//             return {
-//                 message: "Error updating data",
-//                 error: true,
-//             };
-//         }
-//     };
-//     // CHECKMARKS
-//     interface UpdateHasilResponse {
-//         message: string;
-//         error: boolean;
-//         response?: any;
-//     }
-//     const updateCheckmarksBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
-//         try {
-//             const checkmarks = updatedCheckmarks;
-//             console.log(checkmarks);
-//             const response = await api.put(
-//                 `/scorer/shooter/${shooterid}/result/stage5/2/checkmarks`,
-//                 {
-//                     checkmarks: checkmarks,
-//                 }
-//             );
-//             console.log(response.data);
-//             return {
-//                 message: response.data.message,
-//                 error: false,
-//                 response: response,
-//             };
-//         } catch (error) {
-//             const err = error as AxiosError<any>;
-//             console.error(err);
-//             return {
-//                 message:
-//                     "Error: " + err.response?.status + ": " + err.response?.data.message,
-//                 error: true,
-//             };
-//         }
-//     };
-//     // GANTI KE NO SELANJUTNYA
-//     const handleNextNo = async (currentNo: number) => {
-//         // Calculate the next row index
-//         const nextRowIndex = Math.floor(currentNo / 2) + 1;
-//         console.log(nextRowIndex + 1)
-//         // Show confirmation dialog
-//         const confirmMessage = `Apakah anda yakin ingin pindah nomor ke ${nextRowIndex + 1}?`;
-//         const confirmed = window.confirm(confirmMessage);
+        // Prepare the data to be sent to the API
+        const pasanganIndex = Math.floor(index / 3);
+        const pasanganStartIdx = pasanganIndex * 3;
 
-//         if (confirmed) {
-//             const endpoint = `/scorer/shooter/${shooterid}/result/stage5/2/next`;
+        // Separate scores_a and scores_b for 'A' and 'B' items
+        const scores_a = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 3)
+            .map((item) => item.no.endsWith('A') ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD] : [0, 0, 0]);
 
-//             try {
-//                 const response = await api.patch(endpoint);
-//                 console.log(`Berhasil melanjutkan no stage 5 percobaan 2 ke no ${nextRowIndex + 1}`);
+        const scores_b = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 3)
+            .map((item) => item.no.endsWith('B') ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD] : [0, 0, 0]);
 
-//                 // Set status to the next number and trigger data refresh
-//                 setStatus(nextRowIndex);
+        const scores_c = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 3)
+            .map((item) => item.no.endsWith('C') ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD] : [0, 0, 0]);
 
-//                 // Update data for the rows that should no longer be read-only
-//                 const updatedData = data.map((item) => ({
-//                     ...item,
-//                     readOnly: isReadOnly(item.no),
-//                 }));
+        const duration = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 2)
+            .map((item) => ({
+                minutes: parseInt(item.waktu.minutes),
+                seconds: parseInt(item.waktu.seconds),
+                milliseconds: parseInt(item.waktu.milliseconds)
+            }));
 
-//                 setData(updatedData);
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+        timeoutRef.current = setTimeout(() => {
+            // Send the combined data to the API
+            updateNilaiPerkenaanBE(
+                {
+                    scores_a: scores_a[0],
+                    scores_b: scores_b[1],
+                    scores_c: scores_c[2],
+                    duration: [duration[0].minutes, duration[0].seconds, duration[0].milliseconds],
+                },
+                pasanganIndex + 1 // The API endpoint uses pairs' number (1-indexed)
+            );
+        }, 500);
+    };
+    // HANDLE TIME
+    const handleWaktuChange = (
+        e: ChangeEvent<HTMLInputElement>,
+        index: number,
+        field: keyof Waktu
+    ) => {
+        const { value } = e.target;
 
-//                 return {
-//                     message: response.data.message,
-//                     status: 200,
-//                     data: null,
-//                 };
-//             } catch (error: any) {
-//                 console.error(error);
-//                 return {
-//                     message: "Error: " + error.message,
-//                     status: error.response?.status,
-//                     data: null,
-//                 };
-//             }
-//         }
-//     };
-//     // INPUT HANDLE
-//     // HANDLE NILAI PERKENAAN (A, C, D) CHANGE
-//     const handleInputChange = (
-//         e: ChangeEvent<HTMLInputElement>,
-//         no: string,
-//         field: keyof DataItem
-//     ) => {
-//         const { value } = e.target;
-//         const index = data.findIndex((item) => item.no === no);
-//         if (index === -1) return;
+        // Prevent invalid inputs (e.g., negative values or more than allowed maximum)
+        if (parseInt(value) < 0 || parseInt(value) > 59) {
+            return;
+        }
 
-//         const updatedData = [...data];
-//         updatedData[index][field] = parseInt(value);
+        const updatedData = [...data];
+        updatedData[index].waktu[field] = value;
 
-//         // If it's an 'A' item, update only the 'A' value of the corresponding 'A' item
-//         if (no.endsWith('A')) {
-//             const bIndex = index + 1;
-//             updatedData[bIndex][field] = data[bIndex][field];
-//         } else if (no.endsWith('B')) { // If it's a 'B' item, update only the 'B' value of the corresponding 'B' item
-//             const aIndex = index - 1;
-//             updatedData[aIndex][field] = data[aIndex][field];
-//         }
+        // Prepare the data to be sent to the API
+        const pasanganIndex = Math.floor(index / 3);
+        const pasanganStartIdx = pasanganIndex * 3;
 
-//         // Update state with the modified data
-//         setData(updatedData);
+        const scores_a = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 3)
+            .map((item) =>
+                item.no.endsWith("A")
+                    ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD]
+                    : [0, 0, 0]
+            );
 
-//         // Prepare the data to be sent to the API
-//         const pasanganIndex = Math.floor(index / 2);
-//         const pasanganStartIdx = pasanganIndex * 2;
+        const scores_b = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 3)
+            .map((item) =>
+                item.no.endsWith("B")
+                    ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD]
+                    : [0, 0, 0]
+            );
 
-//         // Separate scores_a and scores_b for 'A' and 'B' items
-//         const scores_a = data
-//             .slice(pasanganStartIdx, pasanganStartIdx + 2)
-//             .map((item) => item.no.endsWith('A') ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD] : [0, 0, 0]);
+        const scores_c = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 3)
+            .map((item) =>
+                item.no.endsWith("C")
+                    ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD]
+                    : [0, 0, 0]
+            );
 
-//         const scores_b = data
-//             .slice(pasanganStartIdx, pasanganStartIdx + 2)
-//             .map((item) => item.no.endsWith('B') ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD] : [0, 0, 0]);
+        const duration = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 3)
+            .map((item) => ({
+                minutes: parseInt(item.waktu.minutes),
+                seconds: parseInt(item.waktu.seconds),
+                milliseconds: parseInt(item.waktu.milliseconds),
+            }));
 
-//         const duration = data
-//             .slice(pasanganStartIdx, pasanganStartIdx + 2)
-//             .map((item) => ({
-//                 minutes: parseInt(item.waktu.minutes),
-//                 seconds: parseInt(item.waktu.seconds),
-//                 milliseconds: parseInt(item.waktu.milliseconds)
-//             }));
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+        timeoutRef.current = setTimeout(() => {
+            // Send the combined data to the API
+            updateNilaiPerkenaanBE(
+                {
+                    scores_a: scores_a[0],
+                    scores_b: scores_b[1],
+                    scores_c: scores_c[2],
+                    duration: [
+                        duration[0].minutes,
+                        duration[0].seconds,
+                        duration[0].milliseconds,
+                    ],
+                },
+                pasanganIndex + 1 // The API endpoint uses pairs' number (1-indexed)
+            );
+        }, 1000);
 
-//         if (timeoutRef.current) {
-//             clearTimeout(timeoutRef.current);
-//         }
-//         timeoutRef.current = setTimeout(() => {
-//             // Send the combined data to the API
-//             updateNilaiPerkenaanBE(
-//                 {
-//                     scores_a: scores_a[0],
-//                     scores_b: scores_b[1],
-//                     duration: [duration[0].minutes, duration[0].seconds, duration[0].milliseconds],
-//                 },
-//                 pasanganIndex + 1 // The API endpoint uses pairs' number (1-indexed)
-//             );
-//         }, 500);
-//     };
-//     // HANDLE TIME
-//     const handleWaktuChange = (
-//         e: ChangeEvent<HTMLInputElement>,
-//         index: number,
-//         field: keyof Waktu
-//     ) => {
-//         const { value } = e.target;
+        // Update state with the modified data
+        setData(updatedData);
+    };
+    // HANDLE HASIL / CHECKBOX
+    const handleCheckboxChange = (
+        e: ChangeEvent<HTMLInputElement>,
+        index: number
+    ) => {
+        const { checked } = e.target;
+        const updatedData = [...data];
+        updatedData[index].hasil = checked;
 
-//         // Prevent invalid inputs (e.g., negative values or more than allowed maximum)
-//         if (parseInt(value) < 0 || parseInt(value) > 59) {
-//             return;
-//         }
+        // Determine the corresponding index of the other item in the pair
+        const pairIndex = index % 3 === 0 ? index + 1 : index - 1;
 
-//         const updatedData = [...data];
-//         updatedData[index].waktu[field] = value;
+        // Update the hasil (checkbox) of the other item in the pair to the same value
+        updatedData[pairIndex].hasil = checked;
 
-//         // Prepare the data to be sent to the API
-//         const pasanganIndex = Math.floor(index / 2);
-//         const pasanganStartIdx = pasanganIndex * 2;
+        // Update state with the modified data
+        setData(updatedData);
 
-//         // Separate scores_a and scores_b for 'A' and 'B' items
-//         const scores_a = data
-//             .slice(pasanganStartIdx, pasanganStartIdx + 2)
-//             .map((item) => item.no.endsWith('A') ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD] : [0, 0, 0]);
+        // Generate and update checkmarks for the API
+        const newCheckmarks = generateCheckmarks(updatedData);
+        updateCheckmarksBE(newCheckmarks);
+    };
 
-//         const scores_b = data
-//             .slice(pasanganStartIdx, pasanganStartIdx + 2)
-//             .map((item) => item.no.endsWith('B') ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD] : [0, 0, 0]);
-
-//         const duration = data
-//             .slice(pasanganStartIdx, pasanganStartIdx + 2)
-//             .map((item) => ({
-//                 minutes: parseInt(item.waktu.minutes),
-//                 seconds: parseInt(item.waktu.seconds),
-//                 milliseconds: parseInt(item.waktu.milliseconds)
-//             }));
-
-//         if (timeoutRef.current) {
-//             clearTimeout(timeoutRef.current);
-//         }
-//         // Call the API function to update the nilai perkenaan and duration
-//         timeoutRef.current = setTimeout(() => {
-//             // Send the combined data to the API
-//             updateNilaiPerkenaanBE(
-//                 {
-//                     scores_a: scores_a[0],
-//                     scores_b: scores_b[1],
-//                     duration: [duration[0].minutes, duration[0].seconds, duration[0].milliseconds],
-//                 },
-//                 pasanganIndex + 1 // The API endpoint uses pairs' number (1-indexed)
-//             );
-//         }, 1000);
-
-//         // Update state with the modified data
-//         setData(updatedData);
-//     };
-//     // HANDLE HASIL / CHECKBOX
-//     const handleCheckboxChange = (
-//         e: ChangeEvent<HTMLInputElement>,
-//         index: number
-//     ) => {
-//         const { checked } = e.target;
-//         const updatedData = [...data];
-//         updatedData[index].hasil = checked;
-
-//         if (index % 2 === 0) {
-//             updatedData[index + 1].hasil = checked;
-//         } else {
-//             updatedData[index - 1].hasil = checked;
-//         }
-//         // console.log(updatedData);
-//         setData(updatedData);
-
-//         const newCheckmarks = generateCheckmarks(updatedData);
-//         console.log(newCheckmarks);
-//         updateCheckmarksBE(newCheckmarks);
-//     };
-//     return (
-//         <table>
-//             <thead>
-//                 <tr>
-//                     <th colSpan={7}>Percobaan 2</th>
-//                 </tr>
-//                 <tr>
-//                     <th rowSpan={2}>No</th>
-//                     <th colSpan={3}>Nilai Perkenaan</th>
-//                     <th rowSpan={2}>Waktu</th>
-//                     <th rowSpan={2}>Hasil</th>
-//                     <th rowSpan={2}>Aksi</th>
-//                 </tr>
-//                 <tr>
-//                     <th>A</th>
-//                     <th>C</th>
-//                     <th>D</th>
-//                 </tr>
-//             </thead>
-//             <tbody>
-//                 {data.map((item, index) => (
-//                     <tr key={index}>
-//                         <td rowSpan={1}>{item.no}</td>
-//                         <td>
-//                             <input
-//                                 type="number"
-//                                 min={0}
-//                                 max={2 - item.nilaiPerkenaanC - item.nilaiPerkenaanD}
-//                                 value={item.nilaiPerkenaanA}
-//                                 onChange={(e) =>
-//                                     handleInputChange(e, item.no, "nilaiPerkenaanA")
-//                                 }
-//                             />
-//                         </td>
-//                         <td>
-//                             <input
-//                                 type="number"
-//                                 min={0}
-//                                 max={2 - item.nilaiPerkenaanA - item.nilaiPerkenaanD}
-//                                 value={item.nilaiPerkenaanC}
-//                                 onChange={(e) =>
-//                                     handleInputChange(e, item.no, "nilaiPerkenaanC")
-//                                 }
-//                             />
-//                         </td>
-//                         <td>
-//                             <input
-//                                 type="number"
-//                                 min={0}
-//                                 max={2 - item.nilaiPerkenaanA - item.nilaiPerkenaanC}
-//                                 value={item.nilaiPerkenaanD}
-//                                 onChange={(e) =>
-//                                     handleInputChange(e, item.no, "nilaiPerkenaanD")
-//                                 }
-//                             />
-//                         </td>
-//                         {item.no !== "1B" && item.no !== "2B" && item.no !== "3B" && (
-//                             <>
-//                                 <td rowSpan={2}>
-//                                     <div className="stopwatch">
-//                                         <input
-//                                             type="number"
-//                                             name="minute"
-//                                             max="59"
-//                                             min="0"
-//                                             placeholder="menit"
-//                                             value={item.waktu.minutes}
-//                                             onChange={(e) => handleWaktuChange(e, index, "minutes")}
-//                                         />
-//                                         :
-//                                         <input
-//                                             type="number"
-//                                             name="second"
-//                                             max="59"
-//                                             min="0"
-//                                             placeholder="detik"
-//                                             value={item.waktu.seconds}
-//                                             onChange={(e) => handleWaktuChange(e, index, "seconds")}
-//                                         />
-//                                         :
-//                                         <input
-//                                             type="number"
-//                                             name="millisecond"
-//                                             max="99"
-//                                             min="0"
-//                                             placeholder="milid"
-//                                             value={item.waktu.milliseconds}
-//                                             onChange={(e) =>
-//                                                 handleWaktuChange(e, index, "milliseconds")
-//                                             }
-//                                         />
-//                                     </div>
-//                                 </td>
-//                                 <td rowSpan={2}>
-//                                     <input
-//                                         type="checkbox"
-//                                         id={`hasil-${index}`}
-//                                         name="hasil"
-//                                         checked={item.hasil}
-//                                         onChange={(e) => handleCheckboxChange(e, index)}
-//                                     />
-//                                 </td>
-//                                 <td rowSpan={2}>
-//                                     <button
-//                                         className='text-sm w-[60px] sm:w-[80px] border border-solid p-2 rounded-xl border-blue-400'
-//                                         onClick={() => handleNextNo(index)}
-//                                     >
-//                                         Next No
-//                                     </button>
-//                                 </td>
-//                             </>
-//                         )}
-//                     </tr>
-//                 ))}
-//             </tbody>
-//         </table>
-//     );
-// };
-
+    // RETURN TABLE
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <th colSpan={7}>Percobaan 2</th>
+                </tr>
+                <tr>
+                    {/* <th rowSpan={7}>Percobaan 1</th> */}
+                    <th rowSpan={2}>No</th>
+                    <th colSpan={3}>Nilai Perkenaan</th>
+                    <th rowSpan={2}>Waktu</th>
+                    <th rowSpan={2}>Hasil</th>
+                    <th rowSpan={2}>Aksi</th>
+                </tr>
+                <tr>
+                    <th>A</th>
+                    <th>C</th>
+                    <th>D</th>
+                </tr>
+            </thead>
+            <tbody>
+                {data.map((item, index) => (
+                    <tr key={index}>
+                        <td rowSpan={1}>{item.no}</td>
+                        <td>
+                            <input
+                                type="number"
+                                min={0}
+                                max={2 - item.nilaiPerkenaanC - item.nilaiPerkenaanD}
+                                value={item.nilaiPerkenaanA}
+                                onChange={(e) =>
+                                    handleInputChange(e, item.no, "nilaiPerkenaanA")
+                                }
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                min={0}
+                                max={2 - item.nilaiPerkenaanA - item.nilaiPerkenaanD}
+                                value={item.nilaiPerkenaanC}
+                                onChange={(e) =>
+                                    handleInputChange(e, item.no, "nilaiPerkenaanC")
+                                }
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                min={0}
+                                max={2 - item.nilaiPerkenaanA - item.nilaiPerkenaanC}
+                                value={item.nilaiPerkenaanD}
+                                onChange={(e) =>
+                                    handleInputChange(e, item.no, "nilaiPerkenaanD")
+                                }
+                            />
+                        </td>
+                        {
+                            item.no !== "1B" &&
+                            item.no !== "2B" &&
+                            item.no !== "3B" &&
+                            item.no !== "1C" &&
+                            item.no !== "2C" &&
+                            item.no !== "3C" && (
+                                <>
+                                    <td rowSpan={3}>
+                                        <div className="stopwatch">
+                                            <input
+                                                type="number"
+                                                name="minute"
+                                                max="59"
+                                                min="0"
+                                                placeholder="menit"
+                                                value={item.waktu.minutes}
+                                                onChange={(e) => handleWaktuChange(e, index, "minutes")}
+                                            />
+                                            :
+                                            <input
+                                                type="number"
+                                                name="second"
+                                                max="59"
+                                                min="0"
+                                                placeholder="detik"
+                                                value={item.waktu.seconds}
+                                                onChange={(e) => handleWaktuChange(e, index, "seconds")}
+                                            />
+                                            :
+                                            <input
+                                                type="number"
+                                                name="millisecond"
+                                                max="99"
+                                                min="0"
+                                                placeholder="milid"
+                                                value={item.waktu.milliseconds}
+                                                onChange={(e) =>
+                                                    handleWaktuChange(e, index, "milliseconds")
+                                                }
+                                            />
+                                        </div>
+                                    </td>
+                                    <td rowSpan={3}>
+                                        <input
+                                            type="checkbox"
+                                            id={`hasil-${index}`}
+                                            name="hasil"
+                                            checked={item.hasil}
+                                            onChange={(e) => handleCheckboxChange(e, index)}
+                                        />
+                                    </td>
+                                    <td rowSpan={3}>
+                                        <button
+                                            className='text-sm w-[60px] sm:w-[80px] border border-solid p-2 rounded-xl border-blue-400'
+                                            onClick={() => handleNextNo(index)}
+                                        >
+                                            Next No
+                                        </button>
+                                    </td>
+                                </>
+                            )}
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
+};
 
 // Define the type for the try_1 data
 interface Try1Data {
@@ -1165,9 +1223,9 @@ const Stage5 = () => {
                     <button onClick={() => { finishPercobaan1() }} className='items-center text-white sm:w-[40%] px-2 py-4 bg-blue-400 rounded-xl'>Buat Percobaan 2</button>
                 </div>
             ) : null}
-            {/* {try2Status && 'try_2' in stage5Data ? (
+            {try2Status && 'try_2' in stage5Data ? (
                 <Percobaan2 apiData={stage5Data.try_2} shooterid={shooterid} />
-            ) : <p>Tabel Percobaan 2 Belum Dibuat</p>} */}
+            ) : <p>Tabel Percobaan 2 Belum Dibuat</p>}
         </Styles>
     );
 };
