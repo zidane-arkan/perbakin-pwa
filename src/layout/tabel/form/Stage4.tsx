@@ -283,7 +283,9 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         }
     };
 
-
+    // Define types for scores_a, scores_b, and duration
+    type Scores = [number, number, number];
+    type Duration = { minutes: number; seconds: number; milliseconds: number };
     // INPUT HANDLE
     // HANDLE NILAI PERKENAAN (A, C, D) CHANGE
     const handleInputChange = (
