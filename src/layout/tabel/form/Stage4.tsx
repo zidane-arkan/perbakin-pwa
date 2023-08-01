@@ -168,8 +168,6 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         });
         return dataArray;
     });
-    // Define a state to keep track of the changed pair index
-    const [changedPairIndex, setChangedPairIndex] = useState<number | null>(null);
     // Create a ref to store the timeout ID
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     // STATUS INPUT
@@ -179,33 +177,35 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         const num = parseInt(no) + 1;
         return status !== 0 && num !== status;
     };
+
+
     // API HANDLE
     // NILAI
     const updateNilaiPerkenaanBE = async (updatedData: any, noBaris: number) => {
         console.log(updatedData)
-        // try {
-        //     const response = await api.put(
-        //         `/scorer/shooter/${shooterid}/result/stage4/1/no/${noBaris}`,
-        //         {
-        //             "scores_a": updatedData.scores_a,
-        //             "scores_b": updatedData.scores_b,
-        //             "duration": updatedData.duration,
-        //         }
-        //     );
+        try {
+            const response = await api.put(
+                `/scorer/shooter/${shooterid}/result/stage4/1/no/${noBaris}`,
+                {
+                    "scores_a": updatedData.scores_a,
+                    "scores_b": updatedData.scores_b,
+                    "duration": updatedData.duration,
+                }
+            );
 
-        //     console.log(response.data);
-        //     return {
-        //         message: "Data updated successfully",
-        //         error: false,
-        //         response: response,
-        //     };
-        // } catch (error) {
-        //     console.error(error);
-        //     return {
-        //         message: "Error updating data",
-        //         error: true,
-        //     };
-        // }
+            console.log(response.data);
+            return {
+                message: "Data updated successfully",
+                error: false,
+                response: response,
+            };
+        } catch (error) {
+            console.error(error);
+            return {
+                message: "Error updating data",
+                error: true,
+            };
+        }
     };
     // CHECKMARKS
     interface UpdateHasilResponse {
@@ -282,6 +282,7 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         }
     };
 
+
     // INPUT HANDLE
     // HANDLE NILAI PERKENAAN (A, C, D) CHANGE
     const handleInputChange = (
@@ -327,52 +328,82 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         const duration = data
             .slice(pasanganStartIdx, pasanganStartIdx + 2)
             .map((item) => ({
-                minutes: item.waktu.minutes,
-                seconds: item.waktu.seconds,
-                milliseconds: item.waktu.milliseconds
-            }));
-        
-        // Call the API function to update the nilai perkenaan
-        updateNilaiPerkenaanBE(
-            {
-                scores_a: scores_a[0],
-                scores_b: scores_b[1],
-                duration : duration[0],
-            },
-            pasanganIndex + 1 // The API endpoint uses pairs' number (1-indexed)
-        );
-    };
-
-    // HANDLE TIME
-
-    // Use the 'changedPairIndex' state to determine which pair to update in the API call
-    useEffect(() => {
-        if (changedPairIndex !== null) {
-            const startIdx = changedPairIndex * 2;
-            const endIdx = startIdx + 2;
-
-            // Prepare the data to be sent to the API
-            const scores_a = data.slice(startIdx, endIdx).filter((item) => item.no.endsWith('A')).map((item) => item.nilaiPerkenaanA);
-            const scores_b = data.slice(startIdx, endIdx).filter((item) => item.no.endsWith('B')).map((item) => item.nilaiPerkenaanA);
-            const duration = data.slice(startIdx, endIdx).map((item) => ({
-                minutes: item.waktu.minutes,
-                seconds: item.waktu.seconds,
-                milliseconds: item.waktu.milliseconds
+                minutes: parseInt(item.waktu.minutes),
+                seconds: parseInt(item.waktu.seconds),
+                milliseconds: parseInt(item.waktu.milliseconds)
             }));
 
-            // Call the API function to update the nilai perkenaan
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+        timeoutRef.current = setTimeout(() => {
+            // Send the combined data to the API
             updateNilaiPerkenaanBE(
                 {
-                    scores_a,
-                    scores_b,
-                    duration,
+                    scores_a: scores_a[0],
+                    scores_b: scores_b[1],
+                    duration: [duration[0].minutes, duration[0].seconds, duration[0].milliseconds],
                 },
-                changedPairIndex + 1 // The API endpoint uses pairs' number (1-indexed)
+                pasanganIndex + 1 // The API endpoint uses pairs' number (1-indexed)
             );
-        }
-    }, [changedPairIndex, data]);
+        }, 500);
+    };
+    // HANDLE TIME
+    const handleWaktuChange = (
+        e: ChangeEvent<HTMLInputElement>,
+        index: number,
+        field: keyof Waktu
+    ) => {
+        const { value } = e.target;
 
-    
+        // Prevent invalid inputs (e.g., negative values or more than allowed maximum)
+        if (parseInt(value) < 0 || parseInt(value) > 59) {
+            return;
+        }
+
+        const updatedData = [...data];
+        updatedData[index].waktu[field] = value;
+
+        // Prepare the data to be sent to the API
+        const pasanganIndex = Math.floor(index / 2);
+        const pasanganStartIdx = pasanganIndex * 2;
+
+        // Separate scores_a and scores_b for 'A' and 'B' items
+        const scores_a = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 2)
+            .map((item) => item.no.endsWith('A') ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD] : [0, 0, 0]);
+
+        const scores_b = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 2)
+            .map((item) => item.no.endsWith('B') ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD] : [0, 0, 0]);
+
+        const duration = data
+            .slice(pasanganStartIdx, pasanganStartIdx + 2)
+            .map((item) => ({
+                minutes: parseInt(item.waktu.minutes),
+                seconds: parseInt(item.waktu.seconds),
+                milliseconds: parseInt(item.waktu.milliseconds)
+            }));
+
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+        // Call the API function to update the nilai perkenaan and duration
+        timeoutRef.current = setTimeout(() => {
+            // Send the combined data to the API
+            updateNilaiPerkenaanBE(
+                {
+                    scores_a: scores_a[0],
+                    scores_b: scores_b[1],
+                    duration: [duration[0].minutes, duration[0].seconds, duration[0].milliseconds],
+                },
+                pasanganIndex + 1 // The API endpoint uses pairs' number (1-indexed)
+            );
+        }, 1000);
+
+        // Update state with the modified data
+        setData(updatedData);
+    };
     // HANDLE HASIL / CHECKBOX
     const handleCheckboxChange = (
         e: ChangeEvent<HTMLInputElement>,
@@ -395,6 +426,33 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         updateCheckmarksBE(newCheckmarks);
     };
 
+    // JUST Comment
+    // Use the 'changedPairIndex' state to determine which pair to update in the API call
+    // useEffect(() => {
+    //     if (changedPairIndex !== null) {
+    //         const startIdx = changedPairIndex * 2;
+    //         const endIdx = startIdx + 2;
+
+    //         // Prepare the data to be sent to the API
+    //         const scores_a = data.slice(startIdx, endIdx).filter((item) => item.no.endsWith('A')).map((item) => item.nilaiPerkenaanA);
+    //         const scores_b = data.slice(startIdx, endIdx).filter((item) => item.no.endsWith('B')).map((item) => item.nilaiPerkenaanA);
+    //         const duration = data.slice(startIdx, endIdx).map((item) => ({
+    //             minutes: item.waktu.minutes,
+    //             seconds: item.waktu.seconds,
+    //             milliseconds: item.waktu.milliseconds
+    //         }));
+
+    //         // Call the API function to update the nilai perkenaan
+    //         updateNilaiPerkenaanBE(
+    //             {
+    //                 scores_a,
+    //                 scores_b,
+    //                 duration,
+    //             },
+    //             changedPairIndex + 1 // The API endpoint uses pairs' number (1-indexed)
+    //         );
+    //     }
+    // }, [changedPairIndex, data]);
     return (
         <table>
             <thead>
