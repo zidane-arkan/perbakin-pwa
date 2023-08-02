@@ -11,6 +11,18 @@ import { Link } from 'react-router-dom';
 import user1 from "../../app-assets/userbig1.png";
 
 const SelesaiPengujian = (props: any) => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const LoadingModal = () => {
+        return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white p-6 rounded-md shadow-lg">
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-[#036BB0]"></div>
+                </div>
+            </div>
+        );
+    };
+
     const sigCanvasPenguji = useRef<SignaturePad>(null);
     const sigCanvasPeserta = useRef<SignaturePad>(null);
     const [stageStatus, setStageStatus] = useState<any>(false);
@@ -22,10 +34,18 @@ const SelesaiPengujian = (props: any) => {
     console.log(props.stage)
 
     const handleSuccessButton = () => {
+        setIsLoading(true);
         setStageStatus(true);
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
     };
     const handleGagalButton = () => {
+        setIsLoading(true);
         setStageStatus(false);
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
     };
     // RESET TANDA TANGAN
     const resetSigPenguji = () => {
@@ -51,6 +71,7 @@ const SelesaiPengujian = (props: any) => {
         return new Blob([u8arr], { type: mime });
     };
     const savePenguji = () => {
+        setIsLoading(true);
         if (sigCanvasPenguji.current) {
             const trimmedCanvas = sigCanvasPenguji.current.getTrimmedCanvas();
             if (trimmedCanvas) {
@@ -64,14 +85,21 @@ const SelesaiPengujian = (props: any) => {
                 console.log(blob);
             }
         }
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
     }
     const savePeserta = () => {
+        setIsLoading(true);
         if (sigCanvasPeserta.current) {
             const trimmedCanvas = sigCanvasPeserta.current.getTrimmedCanvas();
             if (trimmedCanvas) {
                 setImageURLPeserta(trimmedCanvas.toDataURL('image/png'));
             }
         }
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
     }
     // API PATCH
     const sendFinishData = async () => {
@@ -112,6 +140,7 @@ const SelesaiPengujian = (props: any) => {
     };
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pb-8 pt-[10%]'}>
+            {isLoading && <LoadingModal />}
             <HeaderBlueCustom typeIcon='close' title="Selesai Pengujian" />
             <LayoutChild>
                 <section className='w-full flex flex-row items-center justify-between gap-4'>
