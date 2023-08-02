@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import TandaTangan from '../../pages/TandaTangan'
+import SelesaiPengujian from '../../pages/SelesaiPengujian';
 import { useParams } from 'react-router-dom';
 import api from '../../../api/api';
 
@@ -64,7 +65,7 @@ const Stage6 = () => {
     }
     return (
         // <TandaTangan title='Stage 6' link={'/penguji/selesai_pengujian'} />
-        <TandaTangan stage={`stage6/${try2Status}`} title='Stage 6' link={`/penguji/selesai_pengujian/${shooterid}`} />
+        <SelesaiPengujian stageStatus='6' stage={`stage6/${try2Status}`} title='Stage 6' link={`/penguji/selesai_pengujian/${shooterid}`} />
     )
 }
 

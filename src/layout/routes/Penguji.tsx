@@ -66,7 +66,7 @@ const Penguji = () => {
                 <Route path='/stage5_konfirmasi/:shooterid' element={<Stage5Konfirmasi />} />
                 <Route path='/stage6_konfirmasi/:shooterid' element={<Stage6Konfirmasi />} />
                 {/* Route Selesai */}
-                <Route path='/selesai_pengujian' element={<SelesaiPengujian />} />
+                <Route path='/selesai_pengujian/:shooterid' element={<SelesaiPengujian />} />
             </Routes>
         </>
     )

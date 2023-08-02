@@ -19,12 +19,11 @@ const TandaTangan = (props: any) => {
     const navigate = useNavigate();
     const { shooterid } = useParams();
 
-    // console.log(props.stage)
+    console.log(props.stageStatus)
 
     const handleSuccessButton = () => {
         setStageStatus(true);
     };
-
     const handleGagalButton = () => {
         setStageStatus(false);
     };
@@ -112,6 +111,41 @@ const TandaTangan = (props: any) => {
             };
         }
     };
+    // IF STAGE 6
+    const finishingShooter = async () => {
+
+        try {
+            const formData = new FormData();
+            formData.append("success", stageStatus.toString())
+            if (imageURL) {
+                const bloPenguji = dataURLtoBlob(imageURL);
+                formData.append("scorer_sign", bloPenguji);
+            }
+            if (imageURLPeserta) {
+                const bloPenembak = dataURLtoBlob(imageURLPeserta);
+                formData.append("shooter_sign", bloPenembak);
+            }
+
+            const endpoint = `/scorer/shooter/${shooterid}/result/${props.stage}/finish`
+            const response = await api.patch(endpoint, formData);
+            console.log(response.data);
+            navigate(`/penguji/selesai_pengujian/${shooterid}`)
+            return {
+                message: response.data.message,
+                error: false,
+                response: response,
+            };
+
+        } catch (error) {
+            const err = error as AxiosError<any>;
+            console.error(err);
+            return {
+                message:
+                    "Error: " + err.response?.status + ": " + err.response?.data.message,
+                error: true,
+            };
+        }
+    };
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pb-8 sm:pb-4 pt-[10%] sm:pt-[7%]'}>
             <HeaderBlueCustom typeIcon='close' title={props.title} />
@@ -157,9 +191,18 @@ const TandaTangan = (props: any) => {
                 </section>
                 <CardText>
                     {/* <Link to={`${props.link}`} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>Selesai Pengujian</Link> */}
-                    <button onClick={sendFinishData} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>
-                        Selesai Pengujian
-                    </button>
+                    {/* <button onClick={sendFinishData} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>
+                        Selesai Pengujian {props.title}
+                    </button> */}
+                    {
+                        props.stageStatus === '6' ?
+                            <button onClick={finishingShooter} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>
+                                Selesai Pengujian
+                            </button> :
+                            <button onClick={sendFinishData} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>
+                                Selesai Pengujian {props.title}
+                            </button>
+                    }
                 </CardText>
 
             </LayoutChild>
@@ -170,7 +213,9 @@ const TandaTangan = (props: any) => {
 export default TandaTangan
 
 
-{/* {
+{
+    /*
+{
                     imageURL && (
                         <>
                             <img src={imageURL} alt="signature" className="signature" />
@@ -183,4 +228,6 @@ export default TandaTangan
                             <img src={imageURLPeserta} alt="signature" className="signature" />
                         </>
                     )
-                } */}
+} 
+*/
+}

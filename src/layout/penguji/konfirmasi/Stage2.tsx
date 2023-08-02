@@ -64,7 +64,7 @@ const Stage2 = () => {
     }
 
     return (
-        <TandaTangan stage={`stage2/${try2Status}`} title='Stage 2' link={`/penguji/stage3_aturan/${shooterid}`} />
+        <TandaTangan stageStatus='2' stage={`stage2/${try2Status}`} title='Stage 2' link={`/penguji/stage3_aturan/${shooterid}`} />
     )
 }
 

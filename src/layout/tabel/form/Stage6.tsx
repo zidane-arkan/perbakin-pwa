@@ -357,7 +357,7 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         const { value } = e.target;
 
         // Prevent invalid inputs (e.g., negative values or more than allowed maximum)
-        if (parseInt(value) < 0 || parseInt(value) > 59) {
+        if (parseInt(value) < 0 || parseInt(value) > 99) {
             return;
         }
 
@@ -810,7 +810,7 @@ const Percobaan2 = ({ apiData, shooterid }: any) => {
         const { value } = e.target;
 
         // Prevent invalid inputs (e.g., negative values or more than allowed maximum)
-        if (parseInt(value) < 0 || parseInt(value) > 59) {
+        if (parseInt(value) < 0 || parseInt(value) > 99) {
             return;
         }
 
