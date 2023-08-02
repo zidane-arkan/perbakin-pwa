@@ -72,17 +72,18 @@ const Styles = styled.div`
   }
 `;
 
+interface Waktu {
+    minutes: string;
+    seconds: string;
+    milliseconds: string;
+}
 
 interface DataItem {
     no: string;
     nilaiPerkenaanA: number;
     nilaiPerkenaanC: number;
     nilaiPerkenaanD: number;
-    waktu: {
-        minutes: string;
-        seconds: string;
-        milliseconds: string;
-    };
+    waktu: Waktu;
     hasil: boolean;
 }
 
@@ -315,7 +316,7 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         const index = data.findIndex((item) => item.no === no);
         if (index === -1) return;
 
-        const updatedData = [...data];
+        const updatedData: any = [...data];
         updatedData[index][field] = parseInt(value);
 
         // If it's an 'A' item, update only the 'A' value of the corresponding 'A' item
@@ -796,7 +797,7 @@ const Percobaan2 = ({ apiData, shooterid }: any) => {
         const index = data.findIndex((item) => item.no === no);
         if (index === -1) return;
 
-        const updatedData = [...data];
+        const updatedData: DataItem[] | any = [...data];
         updatedData[index][field] = parseInt(value);
 
         // If it's an 'A' item, update only the 'A' value of the corresponding 'A' item

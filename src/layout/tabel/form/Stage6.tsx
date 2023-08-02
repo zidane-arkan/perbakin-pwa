@@ -72,16 +72,18 @@ const Styles = styled.div`
   }
 `;
 
+interface Waktu {
+    minutes: string;
+    seconds: string;
+    milliseconds: string;
+}
+
 interface DataItem {
-    no: string;
+    no: string; // Explicitly define the type for 'no';
     nilaiPerkenaanA: number;
     nilaiPerkenaanC: number;
     nilaiPerkenaanD: number;
-    waktu: {
-        minutes: string;
-        seconds: string;
-        milliseconds: string;
-    };
+    waktu: Waktu;
     hasil: boolean;
 }
 
@@ -254,7 +256,7 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
 
             try {
                 const response = await api.patch(endpoint);
-                console.log(`Berhasil melanjutkan no Stage 6 Percobaan 1 ke no ${nextRowIndex}`);
+                console.log(`Berhasil melanjutkan no Stage 6 Percobaan 1 ke no ${nextRowIndex + 1}`);
 
                 // Set status to the next number and trigger data refresh
                 setStatus(nextRowIndex);
@@ -295,7 +297,7 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         const index = data.findIndex((item) => item.no === no);
         if (index === -1) return;
 
-        const updatedData = [...data];
+        const updatedData: DataItem[] | any = [...data];
         updatedData[index][field] = parseInt(value);
 
         // If it's an 'A' item, update only the 'A' value of the corresponding 'A' item
@@ -570,6 +572,7 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         </table>
     );
 };
+
 // PERCOBAAN 2
 const Percobaan2 = ({ apiData, shooterid }: any) => {
     // CHANGE API DATA TO TABLE DATA
@@ -747,7 +750,7 @@ const Percobaan2 = ({ apiData, shooterid }: any) => {
         const index = data.findIndex((item) => item.no === no);
         if (index === -1) return;
 
-        const updatedData = [...data];
+        const updatedData: DataItem[] | any = [...data];
         updatedData[index][field] = parseInt(value);
 
         // If it's an 'A' item, update only the 'A' value of the corresponding 'A' item
