@@ -1,16 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import api from '../../api/api';
+import { AxiosError } from 'axios';
 import { HeaderWhiteCustom } from '../../components/Header'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { CardText } from '../../components/ui/Card';
 import { Link } from 'react-router-dom';
 import Kualifikasi from '../tabel/form/Kualifikasi';
+import { ResponseData } from '../../context/response';
 import Stage1 from '../tabel/form/Stage1';
 import Stage2 from '../tabel/form/Stage2';
 import Stage3 from '../tabel/form/Stage3';
 import Stage4 from '../tabel/form/Stage4';
 import Stage5 from '../tabel/form/Stage5';
 import Stage6 from '../tabel/form/Stage6';
+import { useParams } from 'react-router-dom';
 
+type Penembak = {
+    scorer_id: string;
+    id: string;
+    name: string;
+    stage: string;
+    club: string;
+    province: string;
+    scorer: string;
+}
 type PropsForm = {
     ujian?: string
 };
@@ -55,12 +68,41 @@ const FormTable = (props: PropsForm) => {
     );
 }
 const Form = (props: any) => {
+    const { shooterid } = useParams();
+    const [loading, setLoading] = useState(true);
+    const [shooter, setShooter] = useState<Penembak>();
+
+    const classname = `${props.classname} rounded-3xl`;
+
+    useEffect(() => {
+        const fetchInitialShooters = async () => {
+            try {
+                const response = await api.get(`/scorer/shooter/${shooterid}`);
+                const shooter = response.data.data.shooter;
+                setShooter(shooter);
+                // setInitialFetchDone(true);
+            } catch (error) {
+                const err = error as AxiosError<ResponseData<null>>;
+                console.error("Error:", err);
+            }
+            setLoading(false);
+        };
+
+        fetchInitialShooters();
+    }, []);
+
     return (
         <Layout className={'rounded-3xl h-auto gap-8 mt-28 pb-10 pt-[2%] justify-evenly overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='close' title={props.title} />
             <LayoutChild className='flex-col gap-0'>
                 <h6 className='text-black/60'>Nama Penembak</h6>
-                <h4>Abdiansyah CS</h4>
+
+                {!loading ? (
+                    <h4>{shooter?.name}</h4>
+
+                ) : (
+                    <div className="flex mt-2 p-4 text-[.8rem] font-bold w-auto sm:w-[35%] animate-pulse  bg-gray-200 rounded-md">Loading Nama Penembak...</div>
+                )}
             </LayoutChild>
             <LayoutChild className='flex-col h-full gap-4 justify-between'>
                 <div className='flex-col gap-4'>

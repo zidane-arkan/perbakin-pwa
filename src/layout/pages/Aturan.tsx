@@ -70,7 +70,7 @@ const Aturan = (props: Props) => {
                         {props.children}
                     </ol>
                 </CardText>
-                <CardText>
+                <CardText className="pt-[5%] sm:pt-[10%]" >
                     <Link to={`/penguji/${props.link}`} className='w-full px-4 py-4 text-center text-white bg-[#036BB0] rounded-lg' type='button'>Mulai Pengujian</Link>
                 </CardText>
             </LayoutChild>
