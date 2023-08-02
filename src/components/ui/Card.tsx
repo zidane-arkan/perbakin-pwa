@@ -230,6 +230,7 @@ export const CardPenembak = (props: any) => {
     }
     const parsedStage = parseInt(props.stage);
     const stageWithText = isNaN(parsedStage) ? props.stage : `Stage ${parsedStage}`;
+    // console.log(stageWithText)
     // if (!props.stage) {
     //     return (
     //         <section className="flex max-w-md overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 sm:max-w-full sm:w-full shadow-custom">
@@ -280,7 +281,12 @@ export const CardPenembak = (props: any) => {
                     </div>
                 </div>
                 <span className="flex items-center w-1/6">
-                    <button onClick={shownCardHandler} className="px-2 py-1 sm:px-2 sm:py-1 text-4xl sm:text-[2.5rem] text-[#036BB0]">{'>'}</button>
+                    {
+                        stageWithText === 'Stage 7' ?
+                            <p>Ujian Selesai</p> :
+                            <button onClick={shownCardHandler} className="px-2 py-1 sm:px-2 sm:py-1 text-4xl sm:text-[2.5rem] text-[#036BB0]">{'>'}</button>
+                    }
+
                 </span>
             </section>
         </>
