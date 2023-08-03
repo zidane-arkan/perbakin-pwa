@@ -51,6 +51,7 @@ export const Penembak = (props: any) => {
 
     useEffect(() => {
         console.log('initial Fect Done!')
+        console.log(shooters)
         if (initialFetchDone) {
             const fetchShooters = async () => {
                 try {
@@ -67,6 +68,28 @@ export const Penembak = (props: any) => {
             return () => clearInterval(interval);
         }
     }, [initialFetchDone]);
+
+    useEffect(() => {
+        // useEffect ketiga untuk fetch data lain setelah kedua useEffect sebelumnya selesai
+        if (shooters.length > 0) {
+            const fetchShooterResults = async (shooterId : string) => {
+                try {
+                    const response = await api.get(`/scorer/shooter/${shooterId}/result`);
+                    const shooterResults = response.data.data.results;
+                    // Lakukan apa pun yang ingin Anda lakukan dengan data hasil shooter (shooterResults)
+                } catch (error) {
+                    console.error(`Error fetching results for shooter with ID ${shooterId}:`, error);
+                }
+            };
+
+            // Loop melalui setiap shooter dalam array shooters dan panggil fetchShooterResults untuk masing-masing
+            shooters.forEach((shooter) => {
+                const { id: shooterId } = shooter; // Destructuring to get the shooter_id
+                fetchShooterResults(shooterId);
+            });
+        }
+    }, [shooters]);
+
 
     if (loading) {
         return (
@@ -106,7 +129,7 @@ export const Penembak = (props: any) => {
                             penembak={shooter.name}
                             scorerId={shooter.scorer_id}
                             klub={shooter.club}
-                            stage={shooter.stage}
+                            stage={shooter.stage || 0}
                             pengprov={shooter.province}
                             penguji={shooter.scorer}
                         />

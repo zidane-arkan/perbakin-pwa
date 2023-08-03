@@ -146,7 +146,7 @@ const TabelHasilUjian = () => {
             const examId = superAdminCtx?.getExamId(); // Memanggil fungsi getExamId untuk mendapatkan examId
             const response = await api.get<ApiResponse>(`/super/exam/${examId}/result`);
             const apiData = response.data;
-            const resultData = apiData.data.results.slice(0, 6);;
+            const resultData = apiData.data.results.slice(0, 6);
             console.log(resultData);
             setResultData(resultData);
             setIsLoading(false); // Set isLoading to false after data is fetched and set to state
