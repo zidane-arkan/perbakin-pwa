@@ -130,7 +130,7 @@ import { Link } from 'react-router-dom';
 //         header: () => <span>Status</span>,
 //     }),
 // ];
-const TabelHasilUjian = () => {
+const TabelHasilUjianAll = () => {
     return (
         <section className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100 ">
@@ -246,7 +246,7 @@ const HasilUjian = () => {
                         <img src={arrowdown} alt='arrow-down' />
                     </button>
                 </form>
-                <TabelHasilUjian />
+                <TabelHasilUjianAll />
                 <section className='flex w-full justify-between items-start'>
                     <div className='flex flex-col gap-4 items-start sm:items-center'>
                         <span className=' flex gap-2 text-[#62DE5F] sm:text-base sm:items-center'>

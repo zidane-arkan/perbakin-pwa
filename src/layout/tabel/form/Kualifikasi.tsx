@@ -149,7 +149,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
 
   // API UPDATE
   const updateNilaiPerkeneaanBE = async (
-    updatedData: ApiData,
+    updatedData: ApiData | any,
     noBaris: number,
     stageKey: string
   ) => {
@@ -221,7 +221,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
   ) => {
     const { value } = e.target;
     setTableData((prevData: ApiData) => {
-      const updatedData: ApiData = { ...prevData };
+      const updatedData: ApiData | any = { ...prevData };
       const scoresData: number[] | undefined = updatedData?.[stageKey]?.[seriesKey];
 
       if (!scoresData) {

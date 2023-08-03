@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import api from '../../api/api'
+import { AuthContext } from '../../context/AuthContext'
 import { CardPenembakPengujiAdmin, CardPenembakAdminBiasa } from '../../components/ui/Card'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { HeaderWhiteCustom } from '../../components/Header'
@@ -20,6 +21,7 @@ interface PenembakAdminProps {
     shooters: string[];
 }
 const DetailPenguji = (props: any) => {
+    const superAdminCtx = useContext(AuthContext);
     const [shooters, setShooters] = useState<Penembak[]>([]);
     const [loading, setLoading] = useState(true);
     const getExamId = async (): Promise<string | null> => {
@@ -49,7 +51,8 @@ const DetailPenguji = (props: any) => {
     useEffect(() => {
         const fetchShooters = async () => {
             try {
-                const examId = await getExamId();
+                const examId = superAdminCtx?.getExamId();
+                console.log(examId)
                 const response = await api.get(`/super/exam/${examId}/scorer/${id}/shooter`);
                 const responseScorer = await api.get(`/super/exam/${examId}/scorer`);
                 const scorers = responseScorer.data.data.scorers;

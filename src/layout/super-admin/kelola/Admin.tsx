@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { AuthContext } from '../../../context/AuthContext'
 import { NavLink } from 'react-router-dom'
 import { Layout, LayoutAdmin, LayoutChild } from '../../../components/Layout'
 import { HeaderWhiteCustom } from '../../../components/Header'
@@ -16,7 +17,7 @@ type Admin = {
 
 
 const SuperAdmin: React.FC = () => {
-
+    const superAdminCtx = useContext(AuthContext);
     const [admins, setAdmins] = useState<Admin[]>([]);
     const [loading, setLoading] = useState(true);
     const getExamId = async (): Promise<string | null> => {
@@ -41,7 +42,7 @@ const SuperAdmin: React.FC = () => {
     useEffect(() => {
         const fetchAdmins = async () => {
             try {
-                const examId = await getExamId();
+                const examId = superAdminCtx?.getExamId();
                 const response = await api.get(`/super/exam/${examId}/admin`);
                 console.log(response)
                 const admins = response.data.data.admins;
