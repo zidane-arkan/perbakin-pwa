@@ -201,6 +201,8 @@ const SuperAdmin = (props: any) => {
         begin: '',
         finish: ''
     });
+    
+    // PERCOBAAN 1
 
     // const getExamId = async (): Promise<string | null> => {
     //     const query =
@@ -226,30 +228,31 @@ const SuperAdmin = (props: any) => {
     //             setResponse(errorResponse);
     //         });
     // };
-    const getExamId = async (): Promise<string | null> => {
-        try {
-            let latestExamId: string | null = null;
-            const response = await api.get("/super/exam");
-            const exams = response.data.data.exams;
-            if (exams.length > 0) {
-                const lastExam = exams[exams.length - 1];
-                latestExamId = lastExam.id;
-            }
 
-            if (superAdminCtx?.getExamId) {
-                const examId = await superAdminCtx.getExamId(null);
-                return examId ?? latestExamId;
-            } else {
-                return latestExamId;
-            }
-        } catch (error) {
-            const err = error as AxiosError<ResponseData<null>>;
-            console.error("Error:", err);
+    // PERCOBAAN 2
+    // const getExamId = async (): Promise<string | null> => {
+    //     try {
+    //         let latestExamId: string | null = null;
+    //         const response = await api.get("/super/exam");
+    //         const exams = response.data.data.exams;
+    //         if (exams.length > 0) {
+    //             const lastExam = exams[exams.length - 1];
+    //             latestExamId = lastExam.id;
+    //         }
+    //         if (superAdminCtx?.getExamId) {
+    //             const examId = superAdminCtx.getExamId;
+    //             console.log(examId)
+    //             return examId ?? latestExamId;
+    //         } else {
+    //             return latestExamId;
+    //         }
+    //     } catch (error) {
+    //         const err = error as AxiosError<ResponseData<null>>;
+    //         console.error("Error:", err);
 
-            return null;
-        }
-    };
-
+    //         return null;
+    //     }
+    // };
 
     const currentYear = new Date().getFullYear();
     const formatDate = (dateRange: string) => {
@@ -258,7 +261,8 @@ const SuperAdmin = (props: any) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const examId = await getExamId(); // Memanggil fungsi getExamId untuk mendapatkan examId
+                // console.log(superAdminCtx?.getExamId())
+                const examId = superAdminCtx?.getExamId(); // Memanggil fungsi getExamId untuk mendapatkan examId
                 console.log(examId);
                 if (examId) {
                     const response = await api.get(`/super/exam/${examId}`);

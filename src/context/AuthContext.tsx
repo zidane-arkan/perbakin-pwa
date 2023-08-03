@@ -33,6 +33,7 @@ type UserData = {
 interface authContextInterface {
   userData: UserData | null;
   login: ({ username, password, role }: LoginRequest) => Promise<HandlerResponse>;
+  selectExam: (examId?: string | null) => Promise<string | null>;
   getExamId: (examId?: string | null) => Promise<string | null>;
   createExam: (examData: CreateExamRequest) => Promise<HandlerResponse>;
   updateExam: (examData: UpdateExamRequest) => Promise<HandlerResponse>;
@@ -59,7 +60,7 @@ export const AuthContext = createContext<authContextInterface | null>(null);
 
 function AuthProvider(props: { children: JSX.Element }) {
   const [userData, setUserData] = useState<UserData | null>(null);
-
+  const [selectedExamId, setSelectedExamId] : any = useState("");
 
 
   const login = async ({ username, password, role }: LoginRequest): Promise<HandlerResponse> => {
@@ -151,7 +152,7 @@ function AuthProvider(props: { children: JSX.Element }) {
     }
   };
 
-  const getExamId = async (examId: string | null = null): Promise<string | null> => {
+  const selectExam = async (examId: string | null = null): Promise<string | null | any> => {
     try {
       let latestExamId: string | null = null;
       const response = await api.get("/super/exam");
@@ -160,12 +161,13 @@ function AuthProvider(props: { children: JSX.Element }) {
         const lastExam = exams[exams.length - 1];
         latestExamId = lastExam.id;
       }
-
+      console.log(examId)
       if (examId) {
-        console.log(examId)
-        return examId;
+        console.log('1')
+        setSelectedExamId(examId);
       } else {
-        return latestExamId;
+        console.log('2')
+        setSelectedExamId(latestExamId);
       }
     } catch (error) {
       const err = error as AxiosError<ResponseData<null>>;
@@ -173,6 +175,11 @@ function AuthProvider(props: { children: JSX.Element }) {
 
       return null;
     }
+  };
+
+  const getExamId = () => {
+    console.log(selectedExamId)
+    return selectedExamId;
   };
 
 
@@ -443,6 +450,7 @@ function AuthProvider(props: { children: JSX.Element }) {
       value={{
         userData,
         login,
+        selectExam,
         getExamId,
         createExam,
         updateExam,

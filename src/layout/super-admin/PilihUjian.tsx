@@ -22,7 +22,7 @@ const PilihUjian = () => {
 
     const [examList, setExamList] = useState<any[]>([]);
     const [selectedExamId, setSelectedExamId] = useState("");
-
+    console.log(selectedExamId)
 
     const handleClose = () => {
         setShowError(false);
@@ -58,11 +58,12 @@ const PilihUjian = () => {
 
         // const elements = e.currentTarget.elements;
         // const examId = await getExamList();
-        console.log(typeof selectedExamId)
+        // console.log(typeof selectedExamId)
+        // console.log(selectedExamId)
         setFormState([false, ""])
         const query =
             superAdminCtx &&
-            superAdminCtx.getExamId(selectedExamId);
+            superAdminCtx.selectExam(selectedExamId);
         query
             ?.then((res) => {
                 const response: HandlerResponse = {
