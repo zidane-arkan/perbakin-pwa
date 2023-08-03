@@ -387,7 +387,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
 const Kualifikasi = () => {
   const { shooterid } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [kualifikasiData, setKualifikasiData] = useState<TableData | undefined>();
+  const [kualifikasiData, setKualifikasiData] = useState<TableData | any>();
   useEffect(() => {
     const fetchTableData = async () => {
       try {
