@@ -201,7 +201,7 @@ const SuperAdmin = (props: any) => {
         begin: '',
         finish: ''
     });
-    
+
     // PERCOBAAN 1
 
     // const getExamId = async (): Promise<string | null> => {
@@ -258,25 +258,25 @@ const SuperAdmin = (props: any) => {
     const formatDate = (dateRange: string) => {
         return dayjs(dateRange).locale('id').format('D MMMM');
     };
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // console.log(superAdminCtx?.getExamId())
-                const examId = superAdminCtx?.getExamId(); // Memanggil fungsi getExamId untuk mendapatkan examId
-                console.log(examId);
-                if (examId) {
-                    const response = await api.get(`/super/exam/${examId}`);
-                    const { location, begin, finish } = response.data.data.exam;
-                    setLocation(location);
-                    setTime({
-                        begin: formatDate(begin),
-                        finish: formatDate(finish),
-                    });
-                }
-            } catch (error) {
-                console.error('Error:', error);
+    const fetchData = async () => {
+        try {
+            // console.log(superAdminCtx?.getExamId())
+            const examId = superAdminCtx?.getExamId(); // Memanggil fungsi getExamId untuk mendapatkan examId
+            console.log(examId);
+            if (examId) {
+                const response = await api.get(`/super/exam/${examId}`);
+                const { location, begin, finish } = response.data.data.exam;
+                setLocation(location);
+                setTime({
+                    begin: formatDate(begin),
+                    finish: formatDate(finish),
+                });
             }
-        };
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+    useEffect(() => {
         fetchData();
     }, []);
 

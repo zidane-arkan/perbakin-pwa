@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import api from "../api/api";
 
+const SELECTED_EXAM_STORAGE_KEY = "selectedExamId";
+
 import {
   ResponseData,
   Role,
@@ -60,8 +62,16 @@ export const AuthContext = createContext<authContextInterface | null>(null);
 
 function AuthProvider(props: { children: JSX.Element }) {
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [selectedExamId, setSelectedExamId] : any = useState("");
+  const [selectedExamId, setSelectedExamId]: any = useState("");
 
+  useEffect(() => {
+    // Load the selected exam ID from local storage during component initialization
+    const storedExamId = localStorage.getItem(SELECTED_EXAM_STORAGE_KEY);
+    console.log(storedExamId)
+    if (storedExamId) {
+      setSelectedExamId(storedExamId);
+    }
+  }, []);
 
   const login = async ({ username, password, role }: LoginRequest): Promise<HandlerResponse> => {
     let response;
@@ -161,13 +171,13 @@ function AuthProvider(props: { children: JSX.Element }) {
         const lastExam = exams[exams.length - 1];
         latestExamId = lastExam.id;
       }
-      console.log(examId)
+
       if (examId) {
-        console.log('1')
         setSelectedExamId(examId);
+        localStorage.setItem(SELECTED_EXAM_STORAGE_KEY, examId); // Save the selected exam ID to local storage
       } else {
-        console.log('2')
-        setSelectedExamId(latestExamId);
+        setSelectedExamId(latestExamId || "");
+        localStorage.setItem(SELECTED_EXAM_STORAGE_KEY, latestExamId || ""); // Save the latest exam ID to local storage
       }
     } catch (error) {
       const err = error as AxiosError<ResponseData<null>>;
