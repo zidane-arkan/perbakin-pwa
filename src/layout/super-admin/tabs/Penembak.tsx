@@ -5,8 +5,29 @@ import api from '../../../api/api'
 import { AxiosError } from 'axios'
 import { ResponseData } from '../../../context/response'
 
+interface Shooter {
+    id: string;
+    scorer_id: string;
+    scorer: string;
+    name: string;
+    image_path: string;
+    province: string;
+    club: string;
+    stage?: string; // Add stage as an optional property
+}
+
+interface Stage {
+    id: string | any;
+    name: string;
+    province: string;
+    club: string;
+    failed: boolean;
+    stage: string;
+}
+
 const Penembak = () => {
-    const [shooters, setShooters] = useState<string[]>([]);
+    const [shooters, setShooters] = useState<string[] | any>([]);
+    const [initialFetchDone, setInitialFetchDone] = useState(false);
     const [loading, setLoading] = useState(true);
     const superAdminCtx = useContext(AuthContext);
     const getExamId = async (): Promise<string | null> => {
@@ -35,11 +56,12 @@ const Penembak = () => {
     useEffect(() => {
         const fetchShooters = async () => {
             try {
-                const examId = await getExamId();
+                const examId = superAdminCtx?.getExamId();
                 const response = await api.get(`/super/exam/${examId}/shooter`);
                 const shooters = response.data.data.shooters;
-                console.log(shooters)
+                // console.log(shooters)
                 setShooters(shooters);
+                setInitialFetchDone(true);
             } catch (error) {
                 const err = error as AxiosError<ResponseData<null>>;
                 console.error("Error:", err);
@@ -49,6 +71,37 @@ const Penembak = () => {
 
         fetchShooters();
     }, []);
+
+    useEffect(() => {
+        console.log('initial Fect Done!')
+        console.log(initialFetchDone)
+        if (initialFetchDone) {
+            const fetchShooters = async () => {
+                try {
+                    const examId = superAdminCtx?.getExamId();
+                    const response = await api.get(`/super/exam/${examId}/result`);
+                    const shootersStage: Stage[] = response.data.data.results;
+                    
+                    const updatedShooters = shooters.map((shooter: Shooter) => {
+                        const matchingStage = shootersStage.find(stage => stage.id === shooter.id);
+                        return {
+                            ...shooter,
+                            stage: matchingStage ? matchingStage.stage : 'N/A'
+                        };
+                    });
+
+                    setShooters(updatedShooters);
+                } catch (error) {
+                    const err = error as AxiosError<ResponseData<null>>;
+                    console.error("Error:", err);
+                }
+            };
+            // fetchShooters();
+            const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
+
+            return () => clearInterval(interval);
+        }
+    }, [initialFetchDone]);
 
     if (loading) {
         return (

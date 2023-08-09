@@ -69,27 +69,30 @@ export const Penembak = (props: any) => {
         }
     }, [initialFetchDone]);
 
-    // useEffect(() => {
-    //     // useEffect ketiga untuk fetch data lain setelah kedua useEffect sebelumnya selesai
-    //     if (shooters.length > 0) {
-    //         const fetchShooterResults = async (shooterId : string) => {
-    //             try {
-    //                 const response = await api.get(`/scorer/shooter/${shooterId}/result`);
-    //                 const shooterResults = response.data.data.results;
-    //                 // Lakukan apa pun yang ingin Anda lakukan dengan data hasil shooter (shooterResults)
-    //             } catch (error) {
-    //                 console.error(`Error fetching results for shooter with ID ${shooterId}:`, error);
-    //             }
-    //         };
 
-    //         // Loop melalui setiap shooter dalam array shooters dan panggil fetchShooterResults untuk masing-masing
-    //         shooters.forEach((shooter) => {
-    //             const { id: shooterId } = shooter; // Destructuring to get the shooter_id
-    //             fetchShooterResults(shooterId);
-    //         });
-    //     }
-    // }, [shooters]);
+    // useEffect for stage
+    {
+        // useEffect(() => {
+        //     // useEffect ketiga untuk fetch data lain setelah kedua useEffect sebelumnya selesai
+        //     if (shooters.length > 0) {
+        //         const fetchShooterResults = async (shooterId : string) => {
+        //             try {
+        //                 const response = await api.get(`/scorer/shooter/${shooterId}/result`);
+        //                 const shooterResults = response.data.data.results;
+        //                 // Lakukan apa pun yang ingin Anda lakukan dengan data hasil shooter (shooterResults)
+        //             } catch (error) {
+        //                 console.error(`Error fetching results for shooter with ID ${shooterId}:`, error);
+        //             }
+        //         };
 
+        //         // Loop melalui setiap shooter dalam array shooters dan panggil fetchShooterResults untuk masing-masing
+        //         shooters.forEach((shooter) => {
+        //             const { id: shooterId } = shooter; // Destructuring to get the shooter_id
+        //             fetchShooterResults(shooterId);
+        //         });
+        //     }
+        // }, [shooters]);
+    }
 
     if (loading) {
         return (
@@ -180,7 +183,7 @@ export const PenembakAdmin: React.FC<PenembakAdminProps> = (props: any) => {
 
 export const PenembakSuperAdmin: React.FC<PenembakAdminProps> = (props: any) => {
     const classname = `${props.classname} rounded-3xl`;
-    console.log(props)
+    // console.log(props)
     return (
         <>
             <Layout className={classname}>
@@ -197,7 +200,7 @@ export const PenembakSuperAdmin: React.FC<PenembakAdminProps> = (props: any) => 
                                 key={index}
                                 penembak={shooter.name}
                                 klub={shooter.club}
-                                stage={'Stage #1'}
+                                stage={shooter.stage ? `Stage ${shooter.stage}` : 'Loading...'}
                                 pengprov={shooter.province}
                                 penguji={shooter.scorer}
                             />
