@@ -18,6 +18,7 @@ import {
   CreateExamResponse,
   CreateAdminResponse,
   UpdateAdminResponse,
+  PutAdminResponse,
   HandlerResponse,
   CreateScorerRequest,
   UpdateScorerResponse,
@@ -56,6 +57,7 @@ interface authContextInterface {
   createScorerAdmin: (scorerData: CreateScorerRequest) => Promise<HandlerResponse>;
   createShooterAdmin: (shooterData: CreateShooterResponse) => Promise<HandlerResponse>;
   updateShooterAdmin: (shooterData: UpdateShooterAdminReq) => Promise<HandlerResponse>;
+  putAdmin: (adminData: PutAdminResponse) => Promise<HandlerResponse>;
 }
 
 export const AuthContext = createContext<authContextInterface | null>(null);
@@ -269,6 +271,27 @@ function AuthProvider(props: { children: JSX.Element }) {
       };
     }
   }
+  const putAdmin = async (adminData: PutAdminResponse): Promise<HandlerResponse> => {
+    console.log(adminData);
+    const formData = {
+      username: adminData.username,
+      name: adminData.name,
+      password: adminData.password
+    };
+
+    try {
+      const response = await api.put<ResponseData<UpdateAdminResponse>>(`/admin/exam/${adminData.examId}/admin/${adminData.admin_id}`, formData);
+      console.log(response);
+      return { message: response.data.message, error: false, response: response };
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+
+      return {
+        message: "error " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  }
 
   // SCORER
   const createScorer = async (scorerData: CreateScorerRequest): Promise<HandlerResponse> => {
@@ -466,6 +489,7 @@ function AuthProvider(props: { children: JSX.Element }) {
         updateExam,
         createAdmin,
         updateAdmin,
+        putAdmin,
         createScorer,
         updateScorer,
         createShooter,

@@ -132,7 +132,15 @@ export interface CreateAdminResponse {
 export interface UpdateAdminResponse {
   id?: string;
   admin_id?: string | null;
-  examId?: string | null;
+  examId?: string | null | any;
+  username: string;
+  name: string;
+  password: string;
+}
+export interface PutAdminResponse {
+  id?: string;
+  admin_id?: string | null;
+  examId?: string | null | any;
   username: string;
   name: string;
   password: string;

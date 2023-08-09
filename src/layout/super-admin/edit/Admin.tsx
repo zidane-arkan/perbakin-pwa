@@ -52,7 +52,7 @@ const Admin = () => {
         setFormState([true, "Loading..."])
 
         const elements = e.currentTarget.elements as PostAdminlements;
-        const examId = await getExamId();
+        const examId = adminCtx?.getExamId();
 
         const query =
             adminCtx &&
@@ -83,7 +83,6 @@ const Admin = () => {
             <HeaderWhiteEdit title='Edit Admin' typeIcon='returnblack' />
             <LayoutChild className='justify-between'>
                 <form onSubmit={updateAdminHandler} className='flex flex-col w-full h-auto justify-between gap-8'>
-
                     <section>
                         <div className="mb-6">
                             <label htmlFor="username" className="block mb-2 text-sm font-bold text-gray-900">Username</label>
