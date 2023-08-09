@@ -81,7 +81,7 @@ const Penembak = () => {
                     const examId = superAdminCtx?.getExamId();
                     const response = await api.get(`/super/exam/${examId}/result`);
                     const shootersStage: Stage[] = response.data.data.results;
-                    
+
                     const updatedShooters = shooters.map((shooter: Shooter) => {
                         const matchingStage = shootersStage.find(stage => stage.id === shooter.id);
                         return {
@@ -96,10 +96,10 @@ const Penembak = () => {
                     console.error("Error:", err);
                 }
             };
-            // fetchShooters();
-            const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
+            fetchShooters();
+            // const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
 
-            return () => clearInterval(interval);
+            // return () => clearInterval(interval);
         }
     }, [initialFetchDone]);
 
