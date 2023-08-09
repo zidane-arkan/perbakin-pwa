@@ -23,11 +23,11 @@ const KetentuanUmum = (props: any) => {
                     <div className='flex flex-col gap-2'>
                         <span>
                             <h4>Nama Lengkap</h4>
-                            <h5>{props.penembak}ak 1</h5>
+                            <h5>{props.penembak}</h5>
                         </span>
                         <span>
                             <h4>PengProv</h4>
-                            <h5>{props.pengprov}ak 1</h5>
+                            <h5>{props.pengprov}</h5>
                         </span>
                         <span>
                             <h4>Klub Menembak</h4>
