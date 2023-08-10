@@ -53,7 +53,7 @@ export const CardPenguji2 = (props: any) => {
         <>
             <section className="flex items-center max-w-md sm:max-w-full sm:w-full overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 shadow-custom">
                 <div className="flex items-center w-1/6">
-                    <img className='min-w-[65px] sm:min-w-[80px]' src={user1} />
+                    <img className='min-w-[65px] sm:min-w-[80px]' src={imageUrl} />
                 </div>
                 <div className="inline-block w-4/6 pl-6 md:p-4">
                     <h1 className="text-base sm:text-lg font-bold text-gray-800">{props.penguji}</h1>
