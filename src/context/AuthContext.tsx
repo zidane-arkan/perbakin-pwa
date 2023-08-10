@@ -280,7 +280,7 @@ function AuthProvider(props: { children: JSX.Element }) {
     };
 
     try {
-      const response = await api.put<ResponseData<UpdateAdminResponse>>(`/admin/exam/${adminData.examId}/admin/${adminData.admin_id}`, formData);
+      const response = await api.put<ResponseData<UpdateAdminResponse>>(`/admin`, formData);
       console.log(response);
       return { message: response.data.message, error: false, response: response };
     } catch (error) {

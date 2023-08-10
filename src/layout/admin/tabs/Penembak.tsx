@@ -7,29 +7,29 @@ import { ResponseData } from '../../../context/response'
 const Penembak = () => {
     const [shooters, setShooters] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
-    const getExamId = async (): Promise<string | null> => {
-        try {
-            const response = await api.get("/admin/exam");
-            const exams = response.data.data.exams;
-            if (exams.length > 0) {
-                const lastExam = exams[exams.length - 1];
-                const lastExamId = lastExam.id;
+    // const getExamId = async (): Promise<string | null> => {
+    //     try {
+    //         const response = await api.get("/admin/exam");
+    //         const exams = response.data.data.exams;
+    //         if (exams.length > 0) {
+    //             const lastExam = exams[exams.length - 1];
+    //             const lastExamId = lastExam.id;
 
-                return lastExamId;
-            } else {
-                return null;
-            }
-        } catch (error) {
-            const err = error as AxiosError<ResponseData<null>>;
-            console.error("Error:", err);
+    //             return lastExamId;
+    //         } else {
+    //             return null;
+    //         }
+    //     } catch (error) {
+    //         const err = error as AxiosError<ResponseData<null>>;
+    //         console.error("Error:", err);
 
-            return null;
-        }
-    };
+    //         return null;
+    //     }
+    // };
     useEffect(() => {
         const fetchShooters = async () => {
             try {
-                const examId = await getExamId();
+                // const examId = await getExamId();
                 const response = await api.get(`/admin/shooter`);
                 const shooters = response.data.data.shooters;
                 setShooters(shooters);

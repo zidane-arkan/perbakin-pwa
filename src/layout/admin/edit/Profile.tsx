@@ -21,32 +21,32 @@ const Profile = () => {
     const [response, setResponse] = useState<HandlerResponse>({ message: '', error: false });
     const [showError, setShowError] = useState<boolean>(true);
 
-    const data = useLocation();
-    const { id: adminId } = useParams();
+    // const data = useLocation();
+    // const { id: adminId } = useParams();
 
     const handleClose = () => {
         setShowError(false);
     };
 
-    const getExamId = async (): Promise<string | null> => {
-        try {
-            const response = await api.get("/admin/exam");
-            const exams = response.data.data.exams;
-            if (exams.length > 0) {
-                const lastExam = exams[exams.length - 1];
-                const lastExamId = lastExam.id;
+    // const getExamId = async (): Promise<string | null> => {
+    //     try {
+    //         const response = await api.get("/admin/exam");
+    //         const exams = response.data.data.exams;
+    //         if (exams.length > 0) {
+    //             const lastExam = exams[exams.length - 1];
+    //             const lastExamId = lastExam.id;
 
-                return lastExamId;
-            } else {
-                return null;
-            }
-        } catch (error) {
-            const err = error as AxiosError<ResponseData<null>>;
-            console.error("Error:", err);
+    //             return lastExamId;
+    //         } else {
+    //             return null;
+    //         }
+    //     } catch (error) {
+    //         const err = error as AxiosError<ResponseData<null>>;
+    //         console.error("Error:", err);
 
-            return null;
-        }
-    };
+    //         return null;
+    //     }
+    // };
     const putAdminHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setResponse({ message: "", error: false })
@@ -54,39 +54,35 @@ const Profile = () => {
         // setFormState([true, "Loading..."])
 
         const elements = e.currentTarget.elements as PutAdminlements;
-        const examId = await getExamId();
+        // const examId = await getExamId();
 
         console.log({
-            examId: examId,
-            admin_id: adminId,
             username: elements.username.value,
             name: elements.name.value,
             password: elements.password.value,
         })
 
-        // const query =
-        //     adminCtx &&
-        //     adminCtx.putAdmin({
-        //         examId: examId,
-        //         admin_id: adminId,
-        //         username: elements.username.value,
-        //         name: elements.name.value,
-        //         password: elements.password.value,
-        //     });
+        const query =
+            adminCtx &&
+            adminCtx.putAdmin({
+                username: elements.username.value,
+                name: elements.name.value,
+                password: elements.password.value,
+            });
 
-        // query
-        //     ?.then((res) => {
-        //         console.log(res);
-        //         setResponse(res);
-        //         setFormState([false, ""]);
-        //         if (!res.error) {
-        //             navigate(-1);
-        //         }
-        //     })
-        //     .catch((err) => {
-        //         setResponse(err);
-        //         setFormState([false, ""]);
-        //     });
+        query
+            ?.then((res) => {
+                console.log(res);
+                setResponse(res);
+                setFormState([false, ""]);
+                if (!res.error) {
+                    navigate(-1);
+                }
+            })
+            .catch((err) => {
+                setResponse(err);
+                setFormState([false, ""]);
+            });
     }
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%] overflow-hidden'}>
