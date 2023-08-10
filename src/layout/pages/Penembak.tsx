@@ -151,7 +151,6 @@ export const Penembak = (props: any) => {
 
 export const PenembakAdmin: React.FC<PenembakAdminProps> = (props: any) => {
     const classname = `${props.classname} rounded-3xl`;
-
     return (
         <>
             <Layout className={classname}>
@@ -161,13 +160,14 @@ export const PenembakAdmin: React.FC<PenembakAdminProps> = (props: any) => {
                     </span>
                     {/* <CardPenembakAdmin penembak="Testing 1" klub="Asal Klub 1" stage={'Stage #2'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} /> */}
                     {props.shooters.map((shooter: Penembak, index: string) => (
+
                         <CardPenembakAdminBiasa
                             id={shooter.id}
                             key={index}
                             penembak={shooter.name}
                             scorerId={shooter.scorer_id}
                             klub={shooter.club}
-                            stage={'Stage #2'}
+                            stage={shooter.stage === '0' ? 'Ujian Kualifikasi' : (shooter.stage !== undefined && shooter.stage !== null ? `Stage ${shooter.stage}` : 'Loading...')}
                             pengprov={shooter.province}
                             penguji={shooter.scorer}
                         />
