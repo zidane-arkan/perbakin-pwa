@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import user1 from '../../app-assets/user1.png';
+// import user12 from '{{VITE_API_URL}}/media/{properti image di data json penguji}}';
 import { Link } from 'react-router-dom'
 import { Detail, DetailPenembakAdmin, DetailSuperAdmin, DetailPenembakAdminBiasa } from '../overlay/Detail';
 type Props = {
@@ -46,7 +47,8 @@ export const CardPenguji = (props: any) => {
 }
 
 export const CardPenguji2 = (props: any) => {
-
+    const imageUrl = `${import.meta.env.VITE_API_URL}/media/${props.image_path}`;
+    console.log(imageUrl)
     return (
         <>
             <section className="flex items-center max-w-md sm:max-w-full sm:w-full overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 shadow-custom">

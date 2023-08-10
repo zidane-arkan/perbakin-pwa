@@ -9,6 +9,7 @@ type Props = {
 
 type Scorer = {
     name: string;
+    image_path: string;
     id: string;
 }
 interface PengujiAdminProps {
@@ -100,6 +101,7 @@ export const PengujiAdmin2: React.FC<PengujiAdminProps> = (props: any) => {
                     {props.scorers.map((scorer: Scorer, index: string) => (
                         <CardPenguji2
                             key={index}
+                            image_path={scorer.image_path}
                             id={scorer.id}
                             penguji={scorer.name}
                         />
