@@ -38,6 +38,7 @@ const Penguji: React.FC<PengujiAdminProps> = (props: any) => {
                         props.scorers.map((scorer: Scorer, index: string) => (
                             <CardPenguji
                                 key={index}
+                                image_path={scorer.image_path}
                                 id={scorer.id}
                                 penguji={scorer.name}
                             />

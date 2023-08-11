@@ -28,17 +28,18 @@ export const CardText = (props: Props) => {
 }
 
 export const CardPenguji = (props: any) => {
-
+    const imageUrl = `${import.meta.env.VITE_API_URL}/media/${props.image_path}`;
+    console.log(imageUrl)
     return (
         <>
             <section className="flex items-center max-w-md sm:max-w-full sm:w-full overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 shadow-custom">
                 <div className="flex items-center w-1/6">
-                    <img className='min-w-[65px] sm:min-w-[80px]' src={user1} />
+                    <img className='rounded-lg min-w-[65px] sm:min-w-[80px] w-[65px] h-[65px] sm:w-[80px] sm:h-[80px]' src={imageUrl} />
                 </div>
                 <div className="inline-block w-4/6 pl-6 md:p-4">
                     <h1 className="text-base sm:text-lg font-bold text-gray-800">{props.penguji}</h1>
                 </div>
-                <Link to={`detailpenguji/${props.id}`} state={props.penguji} className="flex items-center w-1/6">
+                <Link to={`detailpenguji/${props.id}`} state={[props.penguji, imageUrl]} className="flex items-center w-1/6">
                     <button className="px-2 py-1 sm:px-4 sm:py-2 text-4xl text-[#036BB0]">{'>'}</button>
                 </Link>
             </section>
@@ -48,7 +49,7 @@ export const CardPenguji = (props: any) => {
 
 export const CardPenguji2 = (props: any) => {
     const imageUrl = `${import.meta.env.VITE_API_URL}/media/${props.image_path}`;
-    console.log(imageUrl)
+    // console.log(imageUrl)
     return (
         <>
             <section className="flex items-center max-w-md sm:max-w-full sm:w-full overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 shadow-custom">

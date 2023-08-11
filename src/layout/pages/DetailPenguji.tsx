@@ -13,6 +13,7 @@ import user2 from '../../app-assets/user2.png';
 type Penembak = {
     id: string;
     name: string;
+    stage?: string; // Add stage as an optional property
     club: string;
     province: string;
     scorer: string;
@@ -43,32 +44,33 @@ interface Stage {
 
 const DetailPenguji = (props: any) => {
     const superAdminCtx = useContext(AuthContext);
-    const [shooters, setShooters] = useState<Penembak[]>([]);
+    const [shooters, setShooters] = useState<Penembak[] | any>([]);
+    const [initialFetchDone, setInitialFetchDone] = useState(false);
     const [loading, setLoading] = useState(true);
-    const getExamId = async (): Promise<string | null> => {
-        try {
-            const response = await api.get("/super/exam");
-            const exams = response.data.data.exams;
-            if (exams.length > 0) {
-                const lastExam = exams[exams.length - 1];
-                const lastExamId = lastExam.id;
+    // const getExamId = async (): Promise<string | null> => {
+    //     try {
+    //         const response = await api.get("/super/exam");
+    //         const exams = response.data.data.exams;
+    //         if (exams.length > 0) {
+    //             const lastExam = exams[exams.length - 1];
+    //             const lastExamId = lastExam.id;
 
-                return lastExamId;
-            } else {
-                return null;
-            }
-        } catch (error) {
-            const err = error as AxiosError<ResponseData<null>>;
-            console.error("Error:", err);
+    //             return lastExamId;
+    //         } else {
+    //             return null;
+    //         }
+    //     } catch (error) {
+    //         const err = error as AxiosError<ResponseData<null>>;
+    //         console.error("Error:", err);
 
-            return null;
-        }
-    };
+    //         return null;
+    //     }
+    // };
 
     const data = useLocation();
     // console.log(data)
     const { id } = useParams();
-    console.log(id)
+
     useEffect(() => {
         const fetchShooters = async () => {
             try {
@@ -84,9 +86,10 @@ const DetailPenguji = (props: any) => {
 
                     return { ...shooter, scorer: scorerName };
                 });
-                console.log(response)
+                // console.log(response)
 
                 setShooters(shooters);
+                setInitialFetchDone(true);
             } catch (error) {
                 const err = error as AxiosError<ResponseData<null>>;
                 console.error("Error:", err);
@@ -96,18 +99,52 @@ const DetailPenguji = (props: any) => {
 
         fetchShooters();
     }, []);
+    useEffect(() => {
+        console.log('initial Fect Done!')
+        console.log(initialFetchDone)
+        if (initialFetchDone) {
+            const fetchShooters = async () => {
+                try {
+                    const examId = superAdminCtx?.getExamId();
+                    // const examId = superAdminCtx?.getExamId();
+                    const response = await api.get(`/super/exam/${examId}/result`);
+                    const shootersStage: Stage[] = response.data.data.results;
 
+                    const updatedShooters = shooters.map((shooter: Shooter) => {
+                        const matchingStage = shootersStage.find(stage => stage.id === shooter.id);
+                        return {
+                            ...shooter,
+                            stage: matchingStage ? matchingStage.stage : 'N/A'
+                        };
+                    });
+
+                    setShooters(updatedShooters);
+                } catch (error) {
+                    const err = error as AxiosError<ResponseData<null>>;
+                    console.error("Error:", err);
+                }
+            };
+            fetchShooters();
+            // const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
+
+            // return () => clearInterval(interval);
+        }
+    }, [initialFetchDone]);
     return (
         <Layout className={'rounded-3xl mt-28 pt-[2%] overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='returnblack' title='Detail Penguji' />
             <LayoutChild>
                 <section className="flex w-full items-center gap-4 ">
                     <div className="flex shadow-md sm:shadow-sm rounded-xl items-center w-1/6">
-                        <img className='min-w-[65px] sm:min-w-[80px] ' src={user2} />
+                        <img
+                            className='rounded-lg min-w-[65px] sm:min-w-[80px] w-[65px] h-[65px] sm:w-[100px] sm:h-[100px]'
+                            src={data.state[1]}
+                            title='Profile picture'
+                        />
                     </div>
                     <div className="flex flex-col w-4/6 gap-1 pl-6 md:p-4">
                         <h1 className="text-base font-bold text-gray-800">Nama Lengkap</h1>
-                        <p className="text-sm text-gray-600 ">{data.state}</p>
+                        <p className="text-sm text-gray-600 ">{data.state[0]}</p>
                     </div>
                 </section>
             </LayoutChild>
@@ -138,7 +175,7 @@ const DetailPenguji = (props: any) => {
                             key={index}
                             penembak={shooter.name}
                             klub={shooter.club}
-                            stage={'Stage #1'}
+                            stage={shooter.stage === '0' ? 'Ujian Kualifikasi' : (shooter.stage !== undefined && shooter.stage !== null ? `Stage ${shooter.stage}` : 'Loading...')}
                             pengprov={shooter.province}
                             penguji={shooter.scorer}
                         />
