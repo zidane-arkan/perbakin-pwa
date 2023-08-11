@@ -30,38 +30,52 @@ const Penembak = () => {
     const [initialFetchDone, setInitialFetchDone] = useState(false);
     const [loading, setLoading] = useState(true);
     const superAdminCtx = useContext(AuthContext);
-    const getExamId = async (): Promise<string | null> => {
-        try {
-            let latestExamId: string | null = null;
-            const response = await api.get("/super/exam");
-            const exams = response.data.data.exams;
-            if (exams.length > 0) {
-                const lastExam = exams[exams.length - 1];
-                latestExamId = lastExam.id;
-            }
+    // const getExamId = async (): Promise<string | null> => {
+    //     try {
+    //         let latestExamId: string | null = null;
+    //         const response = await api.get("/super/exam");
+    //         const exams = response.data.data.exams;
+    //         if (exams.length > 0) {
+    //             const lastExam = exams[exams.length - 1];
+    //             latestExamId = lastExam.id;
+    //         }
 
-            if (superAdminCtx?.getExamId) {
-                const examId = await superAdminCtx.getExamId(null);
-                return examId ?? latestExamId;
-            } else {
-                return latestExamId;
-            }
-        } catch (error) {
-            const err = error as AxiosError<ResponseData<null>>;
-            console.error("Error:", err);
+    //         if (superAdminCtx?.getExamId) {
+    //             const examId = await superAdminCtx.getExamId(null);
+    //             return examId ?? latestExamId;
+    //         } else {
+    //             return latestExamId;
+    //         }
+    //     } catch (error) {
+    //         const err = error as AxiosError<ResponseData<null>>;
+    //         console.error("Error:", err);
 
-            return null;
-        }
-    };
+    //         return null;
+    //     }
+    // };
     useEffect(() => {
-        const fetchShooters = async () => {
+        const fetchData = async () => {
             try {
                 const examId = superAdminCtx?.getExamId();
-                const response = await api.get(`/super/exam/${examId}/shooter`);
-                const shooters = response.data.data.shooters;
-                // console.log(shooters)
-                setShooters(shooters);
-                setInitialFetchDone(true);
+
+                // Fetch shooters
+                const shootersResponse = await api.get(`/super/exam/${examId}/shooter`);
+                const shootersData = shootersResponse.data.data.shooters;
+                setShooters(shootersData);
+
+                // Fetch stages
+                const stagesResponse = await api.get(`/super/exam/${examId}/result`);
+                const stagesData: Stage[] = stagesResponse.data.data.results;
+
+                const updatedShooters = shootersData.map((shooter: Shooter) => {
+                    const matchingStage = stagesData.find(stage => stage.id === shooter.id);
+                    return {
+                        ...shooter,
+                        stage: matchingStage ? matchingStage.stage : 'N/A1'
+                    };
+                });
+
+                setShooters(updatedShooters);
             } catch (error) {
                 const err = error as AxiosError<ResponseData<null>>;
                 console.error("Error:", err);
@@ -69,39 +83,8 @@ const Penembak = () => {
             setLoading(false);
         };
 
-        fetchShooters();
-    }, []);
-
-    useEffect(() => {
-        console.log('initial Fect Done!')
-        console.log(initialFetchDone)
-        if (initialFetchDone) {
-            const fetchShooters = async () => {
-                try {
-                    const examId = superAdminCtx?.getExamId();
-                    const response = await api.get(`/super/exam/${examId}/result`);
-                    const shootersStage: Stage[] = response.data.data.results;
-
-                    const updatedShooters = shooters.map((shooter: Shooter) => {
-                        const matchingStage = shootersStage.find(stage => stage.id === shooter.id);
-                        return {
-                            ...shooter,
-                            stage: matchingStage ? matchingStage.stage : 'N/A'
-                        };
-                    });
-
-                    setShooters(updatedShooters);
-                } catch (error) {
-                    const err = error as AxiosError<ResponseData<null>>;
-                    console.error("Error:", err);
-                }
-            };
-            fetchShooters();
-            // const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
-
-            // return () => clearInterval(interval);
-        }
-    }, [initialFetchDone]);
+        fetchData();
+    }, [superAdminCtx]);
 
     if (loading) {
         return (
