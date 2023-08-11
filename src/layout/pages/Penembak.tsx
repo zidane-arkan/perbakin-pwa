@@ -18,6 +18,7 @@ type Penembak = {
     id: string;
     name: string;
     stage: string;
+    image_path: string;
     club: string;
     province: string;
     scorer: string;
@@ -198,6 +199,7 @@ export const PenembakSuperAdmin: React.FC<PenembakAdminProps> = (props: any) => 
                                 id={shooter.id}
                                 scorerId={shooter.scorer_id}
                                 key={index}
+                                image_path={shooter.image_path}
                                 penembak={shooter.name}
                                 klub={shooter.club}
                                 stage={shooter.stage ? `Stage ${shooter.stage}` : 'Loading...'}
