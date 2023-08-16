@@ -115,6 +115,7 @@ export const CardPenembakAdmin = (props: any) => {
                     scorer_id={props.scorerId}
                     id={props.id}
                     shownCardHandler={shownCardHandler}
+                    image_path={props.image_path}
                     penembak={props.penembak}
                     klub={props.klub}
                     stage={props.stage}
