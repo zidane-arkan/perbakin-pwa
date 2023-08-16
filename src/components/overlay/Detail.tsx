@@ -92,12 +92,13 @@ export const DetailAdmin = (props: any) => {
 }
 
 export const DetailPenembakAdminBiasa = (props: any) => {
+    const imageUrl = `${import.meta.env.VITE_API_URL}/media/${props.image_path}`;
     const navigate = useNavigate();
     return (
         <Modal shownCardHandler={props.shownCardHandler}>
             <section className='flex flex-col w-full sm:max-w-md h-auto'>
                 <div className='flex relative w-full h-[198px]'>
-                    <img src={imgDetail1} className='w-full h-full rounded-xl z-[-1]' />
+                    <img src={imageUrl} className='w-full h-full rounded-xl z-[-1]' />
                     <button onClick={props.shownCardHandler} className='absolute z-10 top-4 right-4'>
                         <img src={close} />
                     </button>

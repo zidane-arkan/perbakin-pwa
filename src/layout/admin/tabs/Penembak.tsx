@@ -29,32 +29,74 @@ const Penembak = () => {
     const [shooters, setShooters] = useState<string[] | any>([]);
     const [loading, setLoading] = useState(true);
     const [initialFetchDone, setInitialFetchDone] = useState(false);
-    // const getExamId = async (): Promise<string | null> => {
-    //     try {
-    //         const response = await api.get("/admin/exam");
-    //         const exams = response.data.data.exams;
-    //         if (exams.length > 0) {
-    //             const lastExam = exams[exams.length - 1];
-    //             const lastExamId = lastExam.id;
 
-    //             return lastExamId;
-    //         } else {
-    //             return null;
+    // useEffect(() => {
+    //     const fetchShooters = async () => {
+    //         try {
+    //             // const examId = await getExamId();
+    //             const response = await api.get(`/admin/shooter`);
+    //             const shooters = response.data.data.shooters;
+    //             setShooters(shooters);
+    //             setInitialFetchDone(true);
+    //         } catch (error) {
+    //             const err = error as AxiosError<ResponseData<null>>;
+    //             console.error("Error:", err);
     //         }
-    //     } catch (error) {
-    //         const err = error as AxiosError<ResponseData<null>>;
-    //         console.error("Error:", err);
+    //         setLoading(false);
+    //     };
 
-    //         return null;
+    //     fetchShooters();
+    // }, []);
+
+    // useEffect(() => {
+    //     console.log('initial Fect Done!')
+    //     console.log(initialFetchDone)
+    //     if (initialFetchDone) {
+    //         const fetchShooters = async () => {
+    //             try {
+    //                 // const examId = superAdminCtx?.getExamId();
+    //                 const response = await api.get(`/admin/result`);
+    //                 const shootersStage: Stage[] = response.data.data.results;
+
+    //                 const updatedShooters = shooters.map((shooter: Shooter) => {
+    //                     const matchingStage = shootersStage.find(stage => stage.id === shooter.id);
+    //                     return {
+    //                         ...shooter,
+    //                         stage: matchingStage ? matchingStage.stage : 'N/A'
+    //                     };
+    //                 });
+
+    //                 setShooters(updatedShooters);
+    //             } catch (error) {
+    //                 const err = error as AxiosError<ResponseData<null>>;
+    //                 console.error("Error:", err);
+    //             }
+    //         };
+    //         fetchShooters();
+    //         // const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
+
+    //         // return () => clearInterval(interval);
     //     }
-    // };
+    // }, [initialFetchDone]);
+
     useEffect(() => {
-        const fetchShooters = async () => {
+        const fetchData = async () => {
             try {
-                // const examId = await getExamId();
-                const response = await api.get(`/admin/shooter`);
-                const shooters = response.data.data.shooters;
-                setShooters(shooters);
+                const responseShooters = await api.get(`/admin/shooter`);
+                const shootersData = responseShooters.data.data.shooters;
+
+                const responseResults = await api.get(`/admin/result`);
+                const shootersStage: Stage[] = responseResults.data.data.results;
+
+                const updatedShooters = shootersData.map((shooter: Shooter) => {
+                    const matchingStage = shootersStage.find(stage => stage.id === shooter.id);
+                    return {
+                        ...shooter,
+                        stage: matchingStage ? matchingStage.stage : 'N/A'
+                    };
+                });
+
+                setShooters(updatedShooters);
                 setInitialFetchDone(true);
             } catch (error) {
                 const err = error as AxiosError<ResponseData<null>>;
@@ -63,39 +105,8 @@ const Penembak = () => {
             setLoading(false);
         };
 
-        fetchShooters();
+        fetchData();
     }, []);
-
-    useEffect(() => {
-        console.log('initial Fect Done!')
-        console.log(initialFetchDone)
-        if (initialFetchDone) {
-            const fetchShooters = async () => {
-                try {
-                    // const examId = superAdminCtx?.getExamId();
-                    const response = await api.get(`/admin/result`);
-                    const shootersStage: Stage[] = response.data.data.results;
-
-                    const updatedShooters = shooters.map((shooter: Shooter) => {
-                        const matchingStage = shootersStage.find(stage => stage.id === shooter.id);
-                        return {
-                            ...shooter,
-                            stage: matchingStage ? matchingStage.stage : 'N/A'
-                        };
-                    });
-
-                    setShooters(updatedShooters);
-                } catch (error) {
-                    const err = error as AxiosError<ResponseData<null>>;
-                    console.error("Error:", err);
-                }
-            };
-            fetchShooters();
-            // const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
-
-            // return () => clearInterval(interval);
-        }
-    }, [initialFetchDone]);
 
     if (loading) {
         return (
@@ -117,3 +128,23 @@ const Penembak = () => {
 }
 
 export default Penembak
+
+ // const getExamId = async (): Promise<string | null> => {
+    //     try {
+    //         const response = await api.get("/admin/exam");
+    //         const exams = response.data.data.exams;
+    //         if (exams.length > 0) {
+    //             const lastExam = exams[exams.length - 1];
+    //             const lastExamId = lastExam.id;
+
+    //             return lastExamId;
+    //         } else {
+    //             return null;
+    //         }
+    //     } catch (error) {
+    //         const err = error as AxiosError<ResponseData<null>>;
+    //         console.error("Error:", err);
+
+    //         return null;
+    //     }
+    // };

@@ -166,6 +166,7 @@ export const PenembakAdmin: React.FC<PenembakAdminProps> = (props: any) => {
                             key={index}
                             penembak={shooter.name}
                             scorerId={shooter.scorer_id}
+                            image_path={shooter.image_path}
                             klub={shooter.club}
                             stage={shooter.stage === '0' ? 'Ujian Kualifikasi' : (shooter.stage !== undefined && shooter.stage !== null ? `Stage ${shooter.stage}` : 'Loading...')}
                             pengprov={shooter.province}
