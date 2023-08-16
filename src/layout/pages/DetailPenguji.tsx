@@ -14,6 +14,7 @@ type Penembak = {
     id: string;
     name: string;
     stage?: string; // Add stage as an optional property
+    image_path?: string;
     club: string;
     province: string;
     scorer: string;
@@ -47,48 +48,97 @@ const DetailPenguji = (props: any) => {
     const [shooters, setShooters] = useState<Penembak[] | any>([]);
     const [initialFetchDone, setInitialFetchDone] = useState(false);
     const [loading, setLoading] = useState(true);
-    // const getExamId = async (): Promise<string | null> => {
-    //     try {
-    //         const response = await api.get("/super/exam");
-    //         const exams = response.data.data.exams;
-    //         if (exams.length > 0) {
-    //             const lastExam = exams[exams.length - 1];
-    //             const lastExamId = lastExam.id;
-
-    //             return lastExamId;
-    //         } else {
-    //             return null;
-    //         }
-    //     } catch (error) {
-    //         const err = error as AxiosError<ResponseData<null>>;
-    //         console.error("Error:", err);
-
-    //         return null;
-    //     }
-    // };
-
     const data = useLocation();
     // console.log(data)
     const { id } = useParams();
 
+    // useEffect(() => {
+    //     const fetchShooters = async () => {
+    //         try {
+    //             const examId = superAdminCtx?.getExamId();
+    //             console.log(examId)
+    //             const response = await api.get(`/super/exam/${examId}/scorer/${id}/shooter`);
+    //             const responseScorer = await api.get(`/super/exam/${examId}/scorer`);
+    //             const scorers = responseScorer.data.data.scorers;
+
+    //             const shooters = response.data.data.shooters.map((shooter: Penembak) => {
+    //                 const scorer = scorers.find((s: any) => s.id === id);
+    //                 const scorerName = scorer ? scorer.name : '';
+
+    //                 return { ...shooter, scorer: scorerName };
+    //             });
+    //             // console.log(response)
+
+    //             setShooters(shooters);
+    //             setInitialFetchDone(true);
+    //         } catch (error) {
+    //             const err = error as AxiosError<ResponseData<null>>;
+    //             console.error("Error:", err);
+    //         }
+    //         setLoading(false);
+    //     };
+
+    //     fetchShooters();
+    // }, []);
+    // useEffect(() => {
+    //     console.log('initial Fect Done!')
+    //     console.log(initialFetchDone)
+    //     if (initialFetchDone) {
+    //         const fetchShooters = async () => {
+    //             try {
+    //                 const examId = superAdminCtx?.getExamId();
+    //                 // const examId = superAdminCtx?.getExamId();
+    //                 const response = await api.get(`/super/exam/${examId}/result`);
+    //                 const shootersStage: Stage[] = response.data.data.results;
+
+    //                 const updatedShooters = shooters.map((shooter: Shooter) => {
+    //                     const matchingStage = shootersStage.find(stage => stage.id === shooter.id);
+    //                     return {
+    //                         ...shooter,
+    //                         stage: matchingStage ? matchingStage.stage : 'N/A'
+    //                     };
+    //                 });
+    //                 // console.log(updatedShooters.image_path)
+    //                 setShooters(updatedShooters);
+    //             } catch (error) {
+    //                 const err = error as AxiosError<ResponseData<null>>;
+    //                 console.error("Error:", err);
+    //             }
+    //         };
+    //         fetchShooters();
+    //         // const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
+
+    //         // return () => clearInterval(interval);
+    //     }
+    // }, [initialFetchDone]);
     useEffect(() => {
-        const fetchShooters = async () => {
+        const fetchData = async () => {
             try {
                 const examId = superAdminCtx?.getExamId();
-                console.log(examId)
-                const response = await api.get(`/super/exam/${examId}/scorer/${id}/shooter`);
+
+                const responseShooters = await api.get(`/super/exam/${examId}/scorer/${id}/shooter`);
                 const responseScorer = await api.get(`/super/exam/${examId}/scorer`);
                 const scorers = responseScorer.data.data.scorers;
 
-                const shooters = response.data.data.shooters.map((shooter: Penembak) => {
+                const shooters = responseShooters.data.data.shooters.map((shooter: Penembak) => {
                     const scorer = scorers.find((s: any) => s.id === id);
                     const scorerName = scorer ? scorer.name : '';
 
                     return { ...shooter, scorer: scorerName };
                 });
-                // console.log(response)
 
-                setShooters(shooters);
+                const responseResults = await api.get(`/super/exam/${examId}/result`);
+                const shootersStage: Stage[] = responseResults.data.data.results;
+
+                const updatedShooters = shooters.map((shooter: Shooter) => {
+                    const matchingStage = shootersStage.find(stage => stage.id === shooter.id);
+                    return {
+                        ...shooter,
+                        stage: matchingStage ? matchingStage.stage : 'N/A'
+                    };
+                });
+
+                setShooters(updatedShooters);
                 setInitialFetchDone(true);
             } catch (error) {
                 const err = error as AxiosError<ResponseData<null>>;
@@ -97,39 +147,9 @@ const DetailPenguji = (props: any) => {
             setLoading(false);
         };
 
-        fetchShooters();
-    }, []);
-    useEffect(() => {
-        console.log('initial Fect Done!')
-        console.log(initialFetchDone)
-        if (initialFetchDone) {
-            const fetchShooters = async () => {
-                try {
-                    const examId = superAdminCtx?.getExamId();
-                    // const examId = superAdminCtx?.getExamId();
-                    const response = await api.get(`/super/exam/${examId}/result`);
-                    const shootersStage: Stage[] = response.data.data.results;
+        fetchData();
+    }, [superAdminCtx, id]);
 
-                    const updatedShooters = shooters.map((shooter: Shooter) => {
-                        const matchingStage = shootersStage.find(stage => stage.id === shooter.id);
-                        return {
-                            ...shooter,
-                            stage: matchingStage ? matchingStage.stage : 'N/A'
-                        };
-                    });
-
-                    setShooters(updatedShooters);
-                } catch (error) {
-                    const err = error as AxiosError<ResponseData<null>>;
-                    console.error("Error:", err);
-                }
-            };
-            fetchShooters();
-            // const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
-
-            // return () => clearInterval(interval);
-        }
-    }, [initialFetchDone]);
     return (
         <Layout className={'rounded-3xl mt-28 pt-[2%] overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='returnblack' title='Detail Penguji' />
@@ -173,6 +193,7 @@ const DetailPenguji = (props: any) => {
                             id={id}
                             scorerId={shooter.id}
                             key={index}
+                            image_path={shooter.image_path}
                             penembak={shooter.name}
                             klub={shooter.club}
                             stage={shooter.stage === '0' ? 'Ujian Kualifikasi' : (shooter.stage !== undefined && shooter.stage !== null ? `Stage ${shooter.stage}` : 'Loading...')}

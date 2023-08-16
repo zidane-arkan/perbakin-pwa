@@ -161,12 +161,21 @@ export interface UpdateShooterRequest {
   id?: string;
   examId?: string | null;
   oriScorerId?: string | null;
+  image?: string | null;
   scorer_id?: string | null;
   shooterId?: string | null;
   name: string;
   province: string;
   club: string;
   image_path?: string | null;
+}
+
+export interface UpdateShooterImgRequest { 
+  id?: string;
+  examId?: string | null;
+  oriScorerId?: string | null;
+  shooterId?: string | null;
+  image?: string | null;
 }
 
 // ADMIN SHOOTER

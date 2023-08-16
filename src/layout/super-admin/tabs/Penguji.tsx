@@ -59,6 +59,7 @@ const Penguji = () => {
                 const examId = await getExamId();
                 const response = await api.get(`/super/exam/${examId}/scorer`);
                 const scorers = response.data.data.scorers;
+                // console.log(scorers)
                 setScorers(scorers);
             } catch (error) {
                 const err = error as AxiosError<ResponseData<null>>;

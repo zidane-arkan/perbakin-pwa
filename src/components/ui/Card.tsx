@@ -187,6 +187,8 @@ export const CardPenembakAdminBiasa = (props: any) => {
 
 
 export const CardPenembakPengujiAdmin = (props: any) => {
+    const imageUrl = `${import.meta.env.VITE_API_URL}/media/${props.image_path}`;
+    // console.log(imageUrl)
     const [isCartShown, setIsCardShown] = useState(false);
 
     const shownCardHandler = () => {
@@ -208,7 +210,7 @@ export const CardPenembakPengujiAdmin = (props: any) => {
             }
             <section className="flex max-w-md overflow-hidden bg-[#F3FAFF] sm:max-w-full sm:w-full rounded-xl px-3 py-4 gap-4 shadow-custom">
                 <div className="flex items-center w-1/6">
-                    <img className='min-w-[65px] sm:min-w-[80px]' src={user1} />
+                    <img className='rounded-lg min-w-[65px] sm:min-w-[80px] w-[65px] h-[65px] sm:w-[100px] sm:h-[100px]' src={imageUrl} />
                 </div>
                 <div className="flex flex-col w-4/6 gap-1 pl-6 md:p-4">
                     <h1 className="text-base sm:text-lg font-bold text-gray-800">{props.penembak}</h1>

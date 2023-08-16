@@ -15,7 +15,7 @@ type Scorer = {
 interface PengujiAdminProps {
     scorers: string[];
 }
-
+// PENGUJI SUPER ADMIN
 const Penguji: React.FC<PengujiAdminProps> = (props: any) => {
     const classname = `${props.classname} rounded-3xl`;
     return (

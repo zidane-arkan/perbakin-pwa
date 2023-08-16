@@ -24,6 +24,7 @@ import {
   UpdateScorerResponse,
   CreateShooterResponse,
   UpdateShooterRequest,
+  UpdateShooterImgRequest,
   UpdateShooterAdminReq
 } from "./response";
 
@@ -53,6 +54,7 @@ interface authContextInterface {
   // SHOOTER
   createShooter: (shooterData: CreateShooterResponse) => Promise<HandlerResponse>;
   updateShooter: (shooterData: UpdateShooterRequest) => Promise<HandlerResponse>;
+  updateShooterImage: (shooterData: UpdateShooterImgRequest) => Promise<HandlerResponse>;
   // ADMIN AUTH
   createScorerAdmin: (scorerData: CreateScorerRequest) => Promise<HandlerResponse>;
   createShooterAdmin: (shooterData: CreateShooterResponse) => Promise<HandlerResponse>;
@@ -367,7 +369,34 @@ function AuthProvider(props: { children: JSX.Element }) {
       };
     }
   }
+  // UPDATE SHOOTER SUPER ADMIN IMAGE
+  const updateShooterImage = async (shooterData: UpdateShooterImgRequest): Promise<HandlerResponse> => {
+    // const formData = {
+    //   scorer_id: shooterData.scorer_id,
+    //   name: shooterData.name,
+    //   province: shooterData.province,
+    //   club: shooterData.club
+    // };
+    const formDataImg = new FormData;
+    if (shooterData.image) {
+      formDataImg.append("image", shooterData.image);
+    }
+    console.log(formDataImg)
+    try {
+      const response = await api.put<ResponseData<UpdateShooterImgRequest>>(`/super/exam/${shooterData.examId}/scorer/${shooterData.oriScorerId}/shooter/${shooterData.shooterId}/image`, formDataImg);
+      console.log(response);
+      return { message: response.data.message, error: false, response: response };
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
 
+      return {
+        message: "error " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  }
+
+  // UPDATE SHOOTER SUPER ADMIN
   const updateShooter = async (shooterData: UpdateShooterRequest): Promise<HandlerResponse> => {
     console.log(shooterData);
     const formData = {
@@ -494,6 +523,7 @@ function AuthProvider(props: { children: JSX.Element }) {
         updateScorer,
         createShooter,
         updateShooter,
+        updateShooterImage,
         createScorerAdmin,
         createShooterAdmin,
         updateShooterAdmin
