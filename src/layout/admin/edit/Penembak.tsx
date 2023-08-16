@@ -65,6 +65,33 @@ const Penembak = () => {
     useEffect(() => {
         getPengujiList();
     }, []);
+
+    const updateShooterImgHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setResponse({ message: "", error: false })
+        setFormState([true, "Loading..."])
+
+        // const elements = e.currentTarget.elements as PostShooterElements;
+
+        const query =
+            penembakCtx &&
+            penembakCtx.updateShooterAdminImg({
+                oriScorerId: pengujiId,
+                shooterId: penembakId,
+                image: selectedImage
+                // scorer_id: selectedPengujiId,
+            });
+
+        query
+            ?.then((res) => {
+                setResponse(res);
+                setFormState([false, ""]);
+            })
+            .catch((err) => {
+                setResponse(err);
+                setFormState([false, ""]);
+            });
+    }
     const updateShooterAdminHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setResponse({ message: "", error: false })
@@ -116,8 +143,8 @@ const Penembak = () => {
                 }
 
             </BgHeaderProfile>
-            <LayoutChild className='justify-between'>
-                <form onSubmit={updateShooterAdminHandler} className='flex flex-col w-full h-auto justify-between gap-8'>
+            <LayoutChild className='flex flex-col gap-4 justify-between'>
+                <form onSubmit={updateShooterImgHandler} className='flex flex-col w-full h-auto justify-between gap-8'>
                     <section>
                         <div className="mb-6">
                             <label htmlFor="image" className="block mb-2 text-sm font-bold text-gray-900">Upload Gambar</label>
@@ -130,6 +157,18 @@ const Penembak = () => {
                                 onChange={handleImageChange}
                             />
                         </div>
+                        <div className='flex flex-col gap-4'>
+                            {formState[1] && (
+                                <div className="bg-gray-50 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                    {formState[1]}
+                                </div>
+                            )}
+                            <button type="submit" className="text-white rounded-lg text-base font-bold w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Simpan Gambar</button>
+                        </div>
+                    </section>
+                </form>
+                <form onSubmit={updateShooterAdminHandler} className='flex flex-col w-full h-auto justify-between gap-8'>
+                    <section>
                         <div className="mb-6">
                             <label htmlFor="penguji" className="block mb-2 text-sm font-bold text-gray-900">Pilih Penguji</label>
                             <select

@@ -25,7 +25,8 @@ import {
   CreateShooterResponse,
   UpdateShooterRequest,
   UpdateShooterImgRequest,
-  UpdateShooterAdminReq
+  UpdateShooterAdminReq,
+  UpdateShooterAdminImgReq
 } from "./response";
 
 type UserData = {
@@ -48,10 +49,10 @@ interface authContextInterface {
     password: string;
   }) => Promise<HandlerResponse>;
   updateAdmin: (adminData: UpdateAdminResponse) => Promise<HandlerResponse>;
-  // SCORER
+  // SUPER ADMIN SCORER
   createScorer: (scorerData: CreateScorerRequest) => Promise<HandlerResponse>;
   updateScorer: (scorerData: UpdateScorerResponse) => Promise<HandlerResponse>;
-  // SHOOTER
+  // SUPER ADMIN SHOOTER
   createShooter: (shooterData: CreateShooterResponse) => Promise<HandlerResponse>;
   updateShooter: (shooterData: UpdateShooterRequest) => Promise<HandlerResponse>;
   updateShooterImage: (shooterData: UpdateShooterImgRequest) => Promise<HandlerResponse>;
@@ -59,6 +60,7 @@ interface authContextInterface {
   createScorerAdmin: (scorerData: CreateScorerRequest) => Promise<HandlerResponse>;
   createShooterAdmin: (shooterData: CreateShooterResponse) => Promise<HandlerResponse>;
   updateShooterAdmin: (shooterData: UpdateShooterAdminReq) => Promise<HandlerResponse>;
+  updateShooterAdminImg: (shooterData: UpdateShooterAdminImgReq) => Promise<HandlerResponse>;
   putAdmin: (adminData: PutAdminResponse) => Promise<HandlerResponse>;
 }
 
@@ -405,14 +407,6 @@ function AuthProvider(props: { children: JSX.Element }) {
       province: shooterData.province,
       club: shooterData.club
     };
-    // const formData = new FormData;
-    // console.log(formData)
-    // if (shooterData.scorer_id) {
-    //   formData.append("scorer_id", shooterData.scorer_id);
-    // }
-    // formData.append("name", shooterData.name);
-    // formData.append("province", shooterData.province);
-    // formData.append("club", shooterData.club);
     try {
       const response = await api.put<ResponseData<UpdateShooterRequest>>(`/super/exam/${shooterData.examId}/scorer/${shooterData.oriScorerId}/shooter/${shooterData.shooterId}`, formData);
       console.log(response);
@@ -506,6 +500,26 @@ function AuthProvider(props: { children: JSX.Element }) {
       };
     }
   }
+  // UPDATE SHOOTER ADMIN IMAGE
+  const updateShooterAdminImg = async (shooterData: UpdateShooterAdminImgReq): Promise<HandlerResponse> => {
+    const formDataImg = new FormData;
+    if (shooterData.image) {
+      formDataImg.append("image", shooterData.image);
+    }
+    console.log(formDataImg)
+    try {
+      const response = await api.put<ResponseData<UpdateShooterAdminImgReq>>(`/admin/scorer/${shooterData.oriScorerId}/shooter/${shooterData.shooterId}/image`, formDataImg);
+      console.log(response);
+      return { message: response.data.message, error: false, response: response };
+    } catch (error) {
+      const err = error as AxiosError<ResponseData<null>>;
+
+      return {
+        message: "error " + err.response?.status + ": " + err.response?.data.message,
+        error: true,
+      };
+    }
+  }
 
   return (
     <AuthContext.Provider
@@ -526,7 +540,8 @@ function AuthProvider(props: { children: JSX.Element }) {
         updateShooterImage,
         createScorerAdmin,
         createShooterAdmin,
-        updateShooterAdmin
+        updateShooterAdmin,
+        updateShooterAdminImg
       }}
     >
       {props.children}

@@ -189,3 +189,11 @@ export interface UpdateShooterAdminReq {
   club: string;
   image_path?: string | null;
 }
+
+export interface UpdateShooterAdminImgReq { 
+  // examId?: string | null;
+  id?: string;
+  oriScorerId?: string | null;
+  shooterId?: string | null;
+  image?: string | null;
+}
