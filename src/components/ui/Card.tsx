@@ -59,7 +59,7 @@ export const CardPenguji2 = (props: any) => {
                 <div className="inline-block w-4/6 pl-6 md:p-4">
                     <h1 className="text-base sm:text-lg font-bold text-gray-800">{props.penguji}</h1>
                 </div>
-                <Link to={`detailpenguji2/${props.id}`} state={props.penguji} className="flex items-center w-1/6">
+                <Link to={`detailpenguji2/${props.id}`} state={[props.penguji, imageUrl]} className="flex items-center w-1/6">
                     <button className="px-2 py-1 text-4xl sm:px-4 sm:py-2 text-[#036BB0]">{'>'}</button>
                 </Link>
             </section>
