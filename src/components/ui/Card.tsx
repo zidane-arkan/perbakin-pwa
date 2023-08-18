@@ -239,6 +239,7 @@ export const CardPenembak = (props: any) => {
     const shownCardHandler = () => {
         return setIsCardShown(!isCartShown);
     }
+    console.log(props.statusPenembak)
     const parsedStage = parseInt(props.stage);
     const stageWithText = isNaN(parsedStage) ? props.stage : `Stage ${parsedStage}`;
     // console.log(stageWithText)
@@ -293,7 +294,7 @@ export const CardPenembak = (props: any) => {
                 </div>
                 <span className="flex items-center w-1/6">
                     {
-                        stageWithText === 'Stage 7' ?
+                        stageWithText === 'Stage 7' || props.statusPenembak ?
                             <p>Ujian Selesai</p> :
                             <button onClick={shownCardHandler} className="px-2 py-1 sm:px-2 sm:py-1 text-4xl sm:text-[2.5rem] text-[#036BB0]">{'>'}</button>
                     }

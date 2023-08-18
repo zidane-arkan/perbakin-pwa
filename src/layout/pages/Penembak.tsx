@@ -19,6 +19,7 @@ type Penembak = {
     name: string;
     stage: string;
     image_path: string;
+    failed?: boolean;
     club: string;
     province: string;
     scorer: string;
@@ -73,6 +74,7 @@ export const Penembak = (props: any) => {
 
     // useEffect Untuk POST User
     useEffect(() => {
+        console.log(shooters)
         // useEffect ketiga untuk fetch data lain setelah kedua useEffect sebelumnya selesai
         if (shooters.length > 0) {
             const fetchShooterResults = async (shooterId: string) => {
@@ -133,6 +135,7 @@ export const Penembak = (props: any) => {
                             scorerId={shooter.scorer_id}
                             klub={shooter.club}
                             stage={shooter.stage || 0}
+                            statusPenembak={shooter.failed}
                             pengprov={shooter.province}
                             penguji={shooter.scorer}
                         />
