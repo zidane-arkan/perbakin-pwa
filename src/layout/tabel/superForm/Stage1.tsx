@@ -669,25 +669,44 @@ const Percobaan2: React.FC<Percobaan1Props> = (props: any) => {
 
 const Stage1 = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isErrorOverlay, setIsErrorOverlay] = useState(false);
   const [stageTry1, setStageTry1] = useState();
   const [stageTry2, setStageTry2] = useState();
   const [try2Status, setTry2Status] = useState(false);
 
   const { examid, scorerid, shooterid } = useParams();
   // HANLDE DATA
+  console.log(stageTry1)
   // BACKEND HANDLER
   const handleUpdateValues = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setIsSaving(true); // Start loading
+
+      const stagesData: {
+        try_1?: any;
+        try_2?: any;
+      } = {};
+
+      if (stageTry1) {
+        stagesData.try_1 = stageTry1;
+      }
+
+      // Only include try_2 if try2Status is true
+      if (try2Status && stageTry2 !== undefined) {
+        stagesData.try_2 = stageTry2;
+      }
       const response = await api.put(
         `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage1`,
-        { "try_1": stageTry1, "try_2": stageTry2 }
+        stagesData
       );
       // const response2 = await api.patch(
       //   `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage1`
       // );
 
       console.log(response.data);
+      setIsSaving(false); // Stop loading
       return {
         message: response.data.message,
         error: false,
@@ -696,7 +715,13 @@ const Stage1 = () => {
     } catch (error) {
       const err = error as AxiosError<any>;
       console.error(err);
+      setIsSaving(false); // Stop loading
+      // Show error overlay for 422 status
+      if (err.response?.status === 422) {
+        setIsErrorOverlay(true);
+      }
     }
+
   };
 
   const fetchTry1Data = async () => {
@@ -786,6 +811,24 @@ const Stage1 = () => {
   // Jika data masih kosong, tampilkan pesan bahwa data belum tersedia
   return (
     <section className='flex flex-col gap-8'>
+      {isSaving ? (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-[#1B79B8]"></div>
+        </div>
+      ) : null}
+      {isErrorOverlay ? (
+        <div className="fixed inset-0 bg-red-500 bg-opacity-75 flex flex-col items-center justify-center z-50">
+          <p className="text-white font-semibold text-lg">
+            Tolong Pastikan Try 1 atau Try 2 Sudah diupdate
+          </p>
+          <button
+            className="mt-4 py-2 px-4 text-white bg-red-600 rounded-lg hover:bg-red-700"
+            onClick={() => setIsErrorOverlay(false)}
+          >
+            Tutup
+          </button>
+        </div>
+      ) : null}
       <Styles>
         <Percobaan1 setStageTry1={setStageTry1} shooterid={shooterid} />
         {!try2Status ?
@@ -801,8 +844,12 @@ const Stage1 = () => {
         }
       </Styles>
       <form onSubmit={handleUpdateValues}>
-        <button className='w-full py-4 text-[#1B79B8] border text-center bg-[#fff] border-[#036BB0] rounded-lg' type='submit' >
-          Simpan Stage 1
+        <button
+          className={`w-full py-4 text-[#1B79B8] border text-center bg-[#fff] border-[#036BB0] rounded-lg ${isSaving || stageTry1 === undefined ? 'cursor-not-allowed opacity-60' : ''}`}
+          type='submit'
+          disabled={isSaving || stageTry1 === undefined}
+        >
+          {isSaving ? 'Menyimpan...' : 'Simpan Stage 1'}
         </button>
       </form>
     </section>
