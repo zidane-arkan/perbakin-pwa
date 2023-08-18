@@ -22,7 +22,7 @@ const PilihUjian = () => {
 
     const [examList, setExamList] = useState<any[]>([]);
     const [selectedExamId, setSelectedExamId] = useState("");
-    console.log(selectedExamId)
+    // console.log(selectedExamId)
 
     const handleClose = () => {
         setShowError(false);

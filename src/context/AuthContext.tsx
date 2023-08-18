@@ -194,7 +194,7 @@ function AuthProvider(props: { children: JSX.Element }) {
   };
 
   const getExamId = () => {
-    console.log(selectedExamId)
+    // console.log(selectedExamId)
     return selectedExamId;
   };
 

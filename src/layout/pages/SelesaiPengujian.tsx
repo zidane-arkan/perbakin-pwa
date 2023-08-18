@@ -371,8 +371,14 @@ export const SelesaiPengujianSuper = (props: any) => {
                     </div>
                 </section>
             </LayoutChild>
+            <LayoutChild className='justify-between'>
+                {/* <button onClick={handleSuccessButton} >Edit Hasil Ujian</button> */}
+                <Link to={`/superadmin/tabs/admindashboard/`} className='text-[#fff] font-medium text-center py-4 w-full sm:w-full sm:rounded-2xl rounded-xl bg-[#036BB0]' type='button'>
+                    Edit Hasil Ujian
+                </Link>
+            </LayoutChild>
             <LayoutChild className='justify-between gap-6'>
-                <button onClick={handleSuccessButton} className='py-2 h-[48px] w-[165px] sm:w-1/2 sm:h-[50px] sm:rounded-2xl rounded-xl bg-[#62DE5F]'>Berhasil</button>
+                <button onClick={handleSuccessButton} className='text-[#fff] py-2 h-[48px] w-[165px] sm:w-1/2 sm:h-[50px] sm:rounded-2xl rounded-xl bg-[#62DE5F]'>Berhasil</button>
                 <button onClick={handleGagalButton} className='button-gagal py-2 rounded-xl h-[48px] w-[165px] sm:rounded-2xl sm:w-1/2 sm:h-[50px]'>Gagal</button>
             </LayoutChild>
             <LayoutChild className='flex-col gap-12'>
@@ -411,7 +417,7 @@ export const SelesaiPengujianSuper = (props: any) => {
                 <CardText>
                     {/* <Link to={'/penguji/'} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>Selesai Pengujian</Link> */}
                     <button onClick={sendFinishData} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>
-                        Selesai Pengujian
+                        Simpan Hasil
                     </button>
                 </CardText>
             </LayoutChild>
