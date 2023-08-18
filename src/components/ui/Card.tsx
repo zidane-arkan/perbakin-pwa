@@ -107,7 +107,7 @@ export const CardPenembakAdmin = (props: any) => {
     const shownCardHandler = () => {
         return setIsCardShown(!isCartShown);
     }
-    console.log(props)
+    // console.log(props)
     return (
         <>
             {(isCartShown && true) &&

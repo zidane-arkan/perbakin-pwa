@@ -17,7 +17,8 @@ import EditProfile from '../super-admin/edit/Profile';
 import EditUjian from '../super-admin/edit/Ujian';
 import EditPenembak from '../super-admin/edit/Penembak';
 import EditAdmin from '../super-admin/edit/Admin';
-import EditPenguji from '../super-admin/edit/Penguji'
+import EditPenguji from '../super-admin/edit/Penguji';
+import { Stage6Super as EditHasilUjian  } from '../super-admin/konfirmasi/Stage6Super';
 // Route Hasil Ujian
 import HasilUjian from '../super-admin/HasilUjian';
 import DetailPenguji from '../pages/DetailPenguji';
@@ -54,6 +55,7 @@ const SuperAdmin = () => {
                 <Route path='tabs/admindashboard/editpenembak/:id/:scorer_id' element={<EditPenembak />} />
                 <Route path='tabs/admindashboard/editadmin/:id' element={<EditAdmin />} />
                 <Route path='tabs/admindashboard/editpenguji/:id' element={<EditPenguji />} />
+                <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid' element={<EditHasilUjian />} />
                 {/* Route Hasil Ujian */}
                 <Route path='tabs/admindashboard/hasilujian' element={<HasilUjian />} />
                 {/* Route Kelola */}
