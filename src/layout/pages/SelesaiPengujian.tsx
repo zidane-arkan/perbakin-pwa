@@ -234,7 +234,7 @@ export const SelesaiPengujianSuper = (props: any) => {
     const [imageURL, setImageURL] = useState<String | null>(null);
     const [imageURLPeserta, setImageURLPeserta] = useState<String | null>(null);
     const navigate = useNavigate();
-    const { shooterid } = useParams();
+    const { examid, scorerid, shooterid } = useParams();
 
     console.log(props.stage)
 
@@ -323,9 +323,9 @@ export const SelesaiPengujianSuper = (props: any) => {
             // for (const [key, value] of formData.entries()) {
             //     console.log(key, value);
             // }
-            const endpoint = `/super/exam/scorer/{scorerid}/shooter/${shooterid}/result/${props.stage}`
+            const endpoint = `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/${props.stage}`
             const response = await api.patch(endpoint, formData);
-            console.log(response.data);
+            // console.log(response.data);
             navigate('/penguji')
             return {
                 message: response.data.message,
@@ -353,17 +353,17 @@ export const SelesaiPengujianSuper = (props: any) => {
                         <span>
                             <h4>Nama Lengkap</h4>
                             {/* <h5>{props.penembak}</h5> */}
-                            <h5>Abdiansyah CS</h5>
+                            <h5>{props.shooterData.name}</h5>
                         </span>
                         <span>
                             <h4>PengProv</h4>
                             {/* <h5>{props.pengprov}</h5> */}
-                            <h5>Sumatera Selatan</h5>
+                            <h5>{props.shooterData.province}</h5>
                         </span>
                         <span>
                             <h4>Klub Menembak</h4>
                             {/* <h5>{props.klub}</h5> */}
-                            <h5>PSS</h5>
+                            <h5>{props.shooterData.club}</h5>
                         </span>
                     </div>
                     <div>

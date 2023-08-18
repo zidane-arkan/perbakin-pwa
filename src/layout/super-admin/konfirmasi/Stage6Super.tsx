@@ -5,21 +5,17 @@ import { useParams } from 'react-router-dom';
 import api from '../../../api/api';
 
 export const Stage6Super = () => {
-    const { shooterid } = useParams();
+    const { examid, scorerid, shooterid } = useParams();
     const [isLoading, setIsLoading] = useState(true);
-    // const [stage5Data, setStage1Data] = useState();
-    const [try2Status, setTry2Status] = useState('1');
+    const [shooterData, setShooterData] = useState();
+    // const [try2Status, setTry2Status] = useState('1');
     const fetchTry1Data = async () => {
         try {
-            const response = await api.get(`/scorer/shooter/${shooterid}/result/stage5`);
+            const response = await api.get(`/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}`);
             const apiData = response.data;
-            const stage5Data = apiData.data.stage_5;
-            // setStage1Data(stage5Data);
-            if (stage5Data.is_try_2) {
-                setTry2Status('2');
-            } else {
-                setTry2Status('1');
-            }
+            const shooterData = apiData.data.shooter;
+            // console.log(shooterData)
+            setShooterData(shooterData);
             setIsLoading(false);
         } catch (error) {
             console.error(error);
@@ -32,12 +28,12 @@ export const Stage6Super = () => {
     }, []);
 
     // useEffect untuk mendeteksi perubahan pada try2Status
-    useEffect(() => {
-        // Lakukan sesuatu ketika try2Status berubah
-        console.log('1 oi')
-        // Misalnya, panggil fungsi fetchTry1Data untuk memperbarui data dari server
-        fetchTry1Data();
-    }, [try2Status]);
+    // useEffect(() => {
+    //     // Lakukan sesuatu ketika try2Status berubah
+    //     console.log('1 oi')
+    //     // Misalnya, panggil fungsi fetchTry1Data untuk memperbarui data dari server
+    //     fetchTry1Data();
+    // }, [try2Status]);
 
     // Jika isLoading masih true, tampilkan pesan pemuatan atau animasi pemuatan
     if (isLoading) {
@@ -65,7 +61,7 @@ export const Stage6Super = () => {
     }
     return (
         // <TandaTangan title='Stage 6' link={'/penguji/selesai_pengujian'} />
-        <SelesaiPengujianSuper stageStatus='6' stage={`stage6`} title='Stage 6' />
+        <SelesaiPengujianSuper shooterData={shooterData} stageStatus='6' stage={`stage6`} title='Stage 6' />
     )
 }
 // link = {`/penguji/selesai_pengujian/${shooterid}`}

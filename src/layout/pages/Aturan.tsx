@@ -7,6 +7,7 @@ import close from '../../app-assets/close.png';
 import jarak from '../../app-assets/jarak.png';
 import { Link } from 'react-router-dom';
 type Props = {
+    name?: string;
     children?: string | JSX.Element | React.ReactNode;
     posisiAwal?: string | JSX.Element | React.ReactNode;
     className?: string;
@@ -22,6 +23,7 @@ type Props = {
 }
 
 const Aturan = (props: Props) => {
+    const sasaran = props.name === 'kualifikasi' ? 'buah Ring Target Pistol' : 'buah Sasaran IPSC';
     return (
         <Layout className={'rounded-3xl mt-28 mb-[5%] pt-[10%]'}>
             <HeaderBlueCustom typeIcon='close' title={props.title} />
@@ -49,7 +51,7 @@ const Aturan = (props: Props) => {
                             <img className='mt-1 w-[20px] h-[20px]' src={jarak} />
                             <div>
                                 <h6 className='sm:text-base'>Sasaran</h6>
-                                <p className='text-[12px] sm:text-base'>{props.sasaran} Buah Sasaran IPSC</p>
+                                <p className='text-[12px] sm:text-base'>{props.sasaran} {sasaran} </p>
                             </div>
                         </Card>
                         <Card className='w-[180px] sm:w-[50%] pr-2 pl-2 py-4 gap-4 rounded-xl items-start shadow-custom  bg-[#F3FAFF]'>

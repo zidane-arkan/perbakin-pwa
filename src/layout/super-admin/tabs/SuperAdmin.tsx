@@ -184,6 +184,7 @@ const TabelHasilUjian = (props: any) => {
                                     {item.failed ? "Gagal" : "Lulus"} / Stage {item.stage}
                                 </td>
                                 <td className="px-6 py-4">
+                                    {/* EditHasilUjian Or Stage6Super (/konfirmasi/stage6super) */}
                                     <Link to={`/superadmin/tabs/admindashboard/edithasiujian/${item.examid}/${item.scorerid}/${item.shooterid}`} className="font-medium text-green-400 hover:underline" type='button'>
                                         Edit Hasil
                                     </Link>

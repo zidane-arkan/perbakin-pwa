@@ -17,7 +17,7 @@ const Stage3 = () => {
             <li>Cabut senjata dan tembak 2 kali, kemudian kunci dan sarungkan.</li>
             <li>Lakukan sebanyak 6 kali.</li>
             <li>Tembakan yang tidak mengenai sasaran (MISS) berarti gagal dalam seri tersebut.</li>
-            <li>Pelanggaran keamanan/safety akan <b>didiskualifikasi</b> dan dinyatakan <b>TIDAK LULUS</b> dari Ujian Sertifikasi dan tidak dapat mengulang pada ujian kali ini.</li>
+            <li>Pelanggaran keamanan/safety akan <b className='text-gray-600'>didiskualifikasi</b> dan dinyatakan <b className='text-gray-600'>TIDAK LULUS</b> dari Ujian Sertifikasi dan tidak dapat mengulang pada ujian kali ini.</li>
         </Aturan>
     )
 }
