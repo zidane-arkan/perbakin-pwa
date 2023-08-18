@@ -5,7 +5,7 @@
 //   useReactTable,
 // } from '@tanstack/react-table';
 // import { useTable, useGroupBy } from 'react-table';
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, Dispatch, SetStateAction } from 'react'
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AxiosError } from 'axios';
@@ -83,6 +83,8 @@ interface Percobaan1Props {
   //     checkmarks: boolean[];
   //   }
   // },
+  setStageTry1?: Dispatch<SetStateAction<any>>;
+  setStageTry2?: Dispatch<SetStateAction<any>>;
   shooterid: string | undefined;
 }
 
@@ -100,7 +102,8 @@ interface TableDataItem {
 }
 
 // PERCOBAAN 1
-const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
+const Percobaan1: React.FC<Percobaan1Props> = (props: any) => {
+  const { examid, scorerid, shooterid } = useParams();
   const [tableData, setTableData] = useState<TableDataItem[]>([]);
   // const [isTimeoutCleared, setIsTimeoutCleared] = useState(true);
   // STATUS INPUT
@@ -111,9 +114,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
   useEffect(() => {
     const fetchTry1Data = async () => {
       try {
-        const response = await api.get(
-          `/scorer/shooter/${shooterid}/result/stage1`
-        );
+        const response = await api.get(`/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage1`);
         const apiData = response.data;
         const stage1Data = apiData.data.stage_1.try_1;
         setStatus(parseInt(stage1Data.status, 10));
@@ -156,147 +157,49 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
     fetchTry1Data();
   }, [shooterid]);
 
-  // useEffect(() => {
-  //   // console.log(stage1Data.status);
-
-  //   if (stage1Data && Object.keys(stage1Data).length > 0) {
-  //     // Convert the status to a number before setting it in the state
-  //     setStatus(parseInt(stage1Data.status, 10));
-  //     const updatedTableData = Object.keys(stage1Data).map((key) => {
-  //       if (key.startsWith("no_")) {
-  //         const rowData = stage1Data[key];
-  //         const { scores, duration } = rowData;
-  //         const id = parseInt(key.split("_")[1]);
-
-  //         if (scores && duration) {
-  //           const updatedScores = scores || [0, 0, 0];
-  //           const updatedDuration = duration || [0, 0, 0];
-
-  //           return {
-  //             id,
-  //             nilaiPerkenaanA: updatedScores[0] || 0,
-  //             nilaiPerkenaanC: updatedScores[1] || 0,
-  //             nilaiPerkenaanD: updatedScores[2] || 0,
-  //             waktu: {
-  //               minute: updatedDuration[0]?.toString().padStart(2, "0") || "00",
-  //               second: updatedDuration[1]?.toString().padStart(2, "0") || "00",
-  //               millisecond: updatedDuration[2]?.toString().padStart(2, "0") || "00",
-  //             },
-  //             hasil: stage1Data.checkmarks[id - 1] || false, // Get the corresponding checkmark value
-  //           };
-  //         }
-  //       }
-  //       return null; // Skip other keys like "checkmarks"
-  //     }).filter(Boolean);
-
-  //     setTableData(updatedTableData);
-  //   }
-  // }, [stage1Data]);
-
   const isReadOnly = (id: number) => {
     return status !== 0 && id !== status;
   };
 
   // BACKEND HANDLER
-  const updateNilaiPerkeneaanBE = async (updatedData: TableDataItem, noBaris: number) => {
-    console.log(updatedData);
+  const handleUpdateValues = (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const response = await api.put(
-        `/scorer/shooter/${shooterid}/result/stage1/1/no/${noBaris}`,
-        {
+      const updatedData: any = {
+        status: '2',
+        checkmarks: tableData.map(data => data.hasil),
+      };
+
+      for (let i = 1; i <= tableData.length; i++) {
+        const key = `no_${i}`;
+        updatedData[key] = {
           scores: [
-            updatedData.nilaiPerkenaanA,
-            updatedData.nilaiPerkenaanC,
-            updatedData.nilaiPerkenaanD
+            tableData[i - 1].nilaiPerkenaanA,
+            tableData[i - 1].nilaiPerkenaanC,
+            tableData[i - 1].nilaiPerkenaanD,
           ],
           duration: [
-            parseInt(updatedData.waktu.minute),
-            parseInt(updatedData.waktu.second),
-            parseInt(updatedData.waktu.millisecond)
-          ]
-        }
-      );
-      console.log(response.data);
-      return {
-        message: response.data.message,
-        error: false,
-        response: response
-      };
-    } catch (error) {
-      const err = error as AxiosError<any>;
-      console.error(err);
-      return {
-        message:
-          "Error: " + err.response?.status + ": " + err.response?.data.message,
-        error: true
-      };
-    }
-  };
-  // CHECKMARS
-  interface UpdateHasilResponse {
-    message: string;
-    error: boolean;
-    response?: any;
-  }
-  const updateCheckmarksBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
-    try {
-      const checkmarks = updatedCheckmarks;
-      console.log(checkmarks);
-      const response = await api.put(
-        `/scorer/shooter/${shooterid}/result/stage1/1/checkmarks`,
-        {
-          checkmarks: checkmarks,
-        }
-      );
-      console.log(response.data);
-      return {
-        message: response.data.message,
-        error: false,
-        response: response,
-      };
-    } catch (error) {
-      const err = error as AxiosError<any>;
-      console.error(err);
-      return {
-        message:
-          "Error: " + err.response?.status + ": " + err.response?.data.message,
-        error: true,
-      };
-    }
-  };
-  // GANTI KE NO SELANJUTNYA
-  const handleNextNo = async (currentNo: number) => {
-    const nextNo = currentNo + 1;
-
-    // Show confirmation dialog
-    const confirmMessage = `Apakah anda yakin ingin pindah nomor ke ${nextNo}?`;
-    const confirmed = window.confirm(confirmMessage);
-
-    if (confirmed) {
-      console.log(nextNo);
-      const endpoint = `/scorer/shooter/${shooterid}/result/stage1/1/next`;
-
-      try {
-        const response = await api.patch(endpoint);
-        console.log(`Berhasil melanjutkan no stage 1 percobaan 1 ke no ${nextNo}`)
-        // Set status to the next number and trigger data refresh
-        setStatus(nextNo);
-        return {
-          message: response.data.message,
-          status: 200,
-          data: null,
-        };
-      } catch (error: any) {
-        console.error(error);
-        return {
-          message: "Error: " + error.message,
-          status: error.response?.status,
-          data: null,
+            parseInt(tableData[i - 1].waktu.minute),
+            parseInt(tableData[i - 1].waktu.second),
+            parseInt(tableData[i - 1].waktu.millisecond),
+          ],
         };
       }
+
+      props.setStageTry1(updatedData);
+      // Now you can send updatedData to the API
+      // const response = await api.put(
+      //   `/your-api-endpoint-here`,
+      //   {
+      //     tableData: updatedData
+      //   }
+      // );
+      // console.log(response.data);
+    } catch (error) {
+      const err = error as AxiosError<any>;
+      console.error(err);
     }
   };
-
 
   // HANDLE DATA
   const handleInputChange = <K extends keyof TableDataItem>(e: React.ChangeEvent<HTMLInputElement>, id: number, field: K) => {
@@ -307,17 +210,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
 
     if (updatedRow) {
       updatedRow[field] = +value as TableDataItem[K];
-
-      const updatedDuration = updatedTableData.map((data) => [
-        parseInt(data.waktu.minute, 10),
-        parseInt(data.waktu.second, 10),
-        parseInt(data.waktu.millisecond, 10)
-      ]);
-
       setTableData(updatedTableData);
-      // WAIT UNTIL USER FINISH
-      // setIsTimeoutCleared(true);
-      updateNilaiPerkeneaanBE(updatedRow, id);
     }
   };
 
@@ -346,22 +239,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
     });
 
     setTableData(updatedTableData);
-
-    const updatedData = updatedTableData.find((data) => data.id === id);
-    if (updatedData) {
-      const { id, nilaiPerkenaanA, nilaiPerkenaanC, nilaiPerkenaanD, waktu, hasil } = updatedData;
-      updateNilaiPerkeneaanBE(
-        {
-          id,
-          nilaiPerkenaanA,
-          nilaiPerkenaanC,
-          nilaiPerkenaanD,
-          waktu,
-          hasil,
-        },
-        id
-      );
-    }
   };
 
   const handleCheckboxChange = (
@@ -381,13 +258,10 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
     });
 
     setTableData(updatedTableData);
-
-    const updatedCheckmarks = updatedTableData.map((data) => data.hasil);
-    updateCheckmarksBE(updatedCheckmarks);
   };
 
   return (
-    <section>
+    <section className='flex flex-col gap-4'>
       <table>
         <thead>
           <tr>
@@ -398,7 +272,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
             <th colSpan={3}>Nilai Perkenaan</th>
             <th rowSpan={2}>Waktu</th>
             <th rowSpan={2}>Hasil</th>
-            <th rowSpan={2}>Aksi</th>
           </tr>
           <tr>
             <th>A</th>
@@ -419,7 +292,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                   onChange={(e) =>
                     handleInputChange(e, data.id, "nilaiPerkenaanA")
                   }
-                  readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                 />
               </td>
               <td>
@@ -431,7 +303,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                   onChange={(e) =>
                     handleInputChange(e, data.id, "nilaiPerkenaanC")
                   }
-                  readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                 />
               </td>
               <td>
@@ -443,7 +314,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                   onChange={(e) =>
                     handleInputChange(e, data.id, "nilaiPerkenaanD")
                   }
-                  readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                 />
               </td>
               <td rowSpan={2}>
@@ -457,7 +327,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                     placeholder="mm"
                     value={data.waktu.minute}
                     onChange={(e) => handleTimeChange(e, data.id, "minute")}
-                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                   />
                   :
                   <input
@@ -469,7 +338,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                     placeholder="ss"
                     value={data.waktu.second}
                     onChange={(e) => handleTimeChange(e, data.id, "second")}
-                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                   />
                   :
                   <input
@@ -481,7 +349,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                     placeholder="SS"
                     value={data.waktu.millisecond}
                     onChange={(e) => handleTimeChange(e, data.id, "millisecond")}
-                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                   />
                 </div>
               </td>
@@ -495,187 +362,127 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                   onChange={(e) => handleCheckboxChange(e, data.id)}
                 />
               </td>
-              <td rowSpan={2}>
+              {/* <td rowSpan={2}>
                 <button
                   className='text-sm w-[60px] sm:w-[80px] border border-solid p-2 rounded-xl border-blue-400'
                   onClick={() => handleNextNo(data.id)}
                 >
                   Next No
                 </button>
-              </td>
+              </td> */}
             </tr>
             <tr></tr>
           </tbody>
         ))}
       </table>
-
+      <form onSubmit={handleUpdateValues}>
+        <button className='w-full py-4 text-[#1B79B8] border text-center bg-[#fff] border-[#036BB0] rounded-lg' type='submit' >
+          Update Try 1
+        </button>
+      </form>
     </section>
   );
 };
 
 // PERCOBAAN 2
-const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
+const Percobaan2: React.FC<Percobaan1Props> = (props: any) => {
+  const { examid, scorerid, shooterid } = useParams();
   const [tableData, setTableData] = useState<TableDataItem[]>([]);
-
+  // const [isTimeoutCleared, setIsTimeoutCleared] = useState(true);
   // STATUS INPUT
   const [status, setStatus] = useState<number>(0);
 
   // CONVERT DATA FROM API TO TABLE DATA
   // Fetch data from API and update tableData
-  const fetchTry2Data = async () => {
-    try {
-      const response = await api.get(
-        `/scorer/shooter/${shooterid}/result/stage1`
-      );
-      const apiData = response.data;
-      const stage1Data = apiData.data.stage_1.try_2;
-      setStatus(parseInt(stage1Data.status, 10));
+  useEffect(() => {
+    const fetchTry1Data = async () => {
+      try {
+        const response = await api.get(`/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage1`);
+        const apiData = response.data;
+        const stage1Data = apiData.data.stage_1.try_2;
+        setStatus(parseInt(stage1Data.status, 10));
 
-      const updatedTableData = Object.keys(stage1Data).map((key) => {
-        if (key.startsWith("no_")) {
-          const rowData = stage1Data[key];
-          const { scores, duration } = rowData;
-          const id = parseInt(key.split("_")[1]);
+        const updatedTableData = Object.keys(stage1Data).map((key) => {
+          if (key.startsWith("no_")) {
+            const rowData = stage1Data[key];
+            const { scores, duration } = rowData;
+            const id = parseInt(key.split("_")[1]);
 
-          if (scores && duration) {
-            const updatedScores = scores || [0, 0, 0];
-            const updatedDuration = duration || [0, 0, 0];
+            if (scores && duration) {
+              const updatedScores = scores || [0, 0, 0];
+              const updatedDuration = duration || [0, 0, 0];
 
-            return {
-              id,
-              nilaiPerkenaanA: updatedScores[0] || 0,
-              nilaiPerkenaanC: updatedScores[1] || 0,
-              nilaiPerkenaanD: updatedScores[2] || 0,
-              waktu: {
-                minute: updatedDuration[0]?.toString().padStart(2, "0") || "00",
-                second: updatedDuration[1]?.toString().padStart(2, "0") || "00",
-                millisecond: updatedDuration[2]?.toString().padStart(2, "0") || "00",
-              },
-              hasil: stage1Data.checkmarks[id - 1] || false,
-            };
+              return {
+                id,
+                nilaiPerkenaanA: updatedScores[0] || 0,
+                nilaiPerkenaanC: updatedScores[1] || 0,
+                nilaiPerkenaanD: updatedScores[2] || 0,
+                waktu: {
+                  minute: updatedDuration[0]?.toString().padStart(2, "0") || "00",
+                  second: updatedDuration[1]?.toString().padStart(2, "0") || "00",
+                  millisecond: updatedDuration[2]?.toString().padStart(2, "0") || "00",
+                },
+                hasil: stage1Data.checkmarks[id - 1] || false,
+              };
+            }
           }
-        }
-        return null;
-      }).filter(Boolean) as TableDataItem[];
+          return null;
+        }).filter(Boolean) as TableDataItem[];
 
-      setTableData(updatedTableData);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+        setTableData(updatedTableData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  // Cleanup function to reset tableData before fetching new data
-  useEffect(() => {
+    // Cleanup function to reset tableData before fetching new data
     setTableData([]); // Clear existing tableData
-    fetchTry2Data();
+    fetchTry1Data();
   }, [shooterid]);
-
-  useEffect(() => {
-    fetchTry2Data();
-  }, [shooterid, status]);
 
   const isReadOnly = (id: number) => {
     return status !== 0 && id !== status;
   };
 
   // BACKEND HANDLER
-  const updateNilaiPerkeneaanBE = async (updatedData: TableDataItem, noBaris: number) => {
-    console.log(updatedData);
+  const handleUpdateValues = (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const response = await api.put(
-        `/scorer/shooter/${shooterid}/result/stage1/2/no/${noBaris}`,
-        {
+      const updatedData: any = {
+        status: '2',
+        checkmarks: tableData.map(data => data.hasil),
+      };
+
+      for (let i = 1; i <= tableData.length; i++) {
+        const key = `no_${i}`;
+        updatedData[key] = {
           scores: [
-            updatedData.nilaiPerkenaanA,
-            updatedData.nilaiPerkenaanC,
-            updatedData.nilaiPerkenaanD
+            tableData[i - 1].nilaiPerkenaanA,
+            tableData[i - 1].nilaiPerkenaanC,
+            tableData[i - 1].nilaiPerkenaanD,
           ],
           duration: [
-            parseInt(updatedData.waktu.minute),
-            parseInt(updatedData.waktu.second),
-            parseInt(updatedData.waktu.millisecond)
-          ]
-        }
-      );
-      console.log(response.data);
-      return {
-        message: response.data.message,
-        error: false,
-        response: response
-      };
-    } catch (error) {
-      const err = error as AxiosError<any>;
-      console.error(err);
-      return {
-        message:
-          "Error: " + err.response?.status + ": " + err.response?.data.message,
-        error: true
-      };
-    }
-  };
-  // CHECKMARS
-  interface UpdateHasilResponse {
-    message: string;
-    error: boolean;
-    response?: any;
-  }
-  const updateCheckmarksBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
-    try {
-      const checkmarks = updatedCheckmarks;
-      console.log(checkmarks);
-      const response = await api.put(
-        `/scorer/shooter/${shooterid}/result/stage1/2/checkmarks`,
-        {
-          checkmarks: checkmarks,
-        }
-      );
-      console.log(response.data);
-      return {
-        message: response.data.message,
-        error: false,
-        response: response,
-      };
-    } catch (error) {
-      const err = error as AxiosError<any>;
-      console.error(err);
-      return {
-        message:
-          "Error: " + err.response?.status + ": " + err.response?.data.message,
-        error: true,
-      };
-    }
-  };
-  // GANTI KE NO SELANJUTNYA
-  const handleNextNo = async (currentNo: number) => {
-    const nextNo = currentNo + 1;
-
-    // Show confirmation dialog
-    const confirmMessage = `Apakah anda yakin ingin pindah nomor ke ${nextNo}?`;
-    const confirmed = window.confirm(confirmMessage);
-
-    if (confirmed) {
-      console.log(nextNo);
-      const endpoint = `/scorer/shooter/${shooterid}/result/stage1/2/next`;
-
-      try {
-        const response = await api.patch(endpoint);
-        console.log(`Berhasil melanjutkan no stage 1 percobaan 2 ke no ${nextNo}`)
-        return {
-          message: response.data.message,
-          status: 200,
-          data: null,
-        };
-      } catch (error: any) {
-        console.error(error);
-        return {
-          message: "Error: " + error.message,
-          status: error.response?.status,
-          data: null,
+            parseInt(tableData[i - 1].waktu.minute),
+            parseInt(tableData[i - 1].waktu.second),
+            parseInt(tableData[i - 1].waktu.millisecond),
+          ],
         };
       }
+
+      props.setStageTry2(updatedData);
+      // Now you can send updatedData to the API
+      // const response = await api.put(
+      //   `/your-api-endpoint-here`,
+      //   {
+      //     tableData: updatedData
+      //   }
+      // );
+      // console.log(response.data);
+    } catch (error) {
+      const err = error as AxiosError<any>;
+      console.error(err);
     }
   };
-
 
   // HANDLE DATA
   const handleInputChange = <K extends keyof TableDataItem>(e: React.ChangeEvent<HTMLInputElement>, id: number, field: K) => {
@@ -686,16 +493,7 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
 
     if (updatedRow) {
       updatedRow[field] = +value as TableDataItem[K];
-
-      const updatedDuration = updatedTableData.map((data) => [
-        parseInt(data.waktu.minute, 10),
-        parseInt(data.waktu.second, 10),
-        parseInt(data.waktu.millisecond, 10)
-      ]);
-
       setTableData(updatedTableData);
-      // WAIT UNTIL USER FINISH
-      updateNilaiPerkeneaanBE(updatedRow, id);
     }
   };
 
@@ -724,22 +522,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
     });
 
     setTableData(updatedTableData);
-
-    const updatedData = updatedTableData.find((data) => data.id === id);
-    if (updatedData) {
-      const { id, nilaiPerkenaanA, nilaiPerkenaanC, nilaiPerkenaanD, waktu, hasil } = updatedData;
-      updateNilaiPerkeneaanBE(
-        {
-          id,
-          nilaiPerkenaanA,
-          nilaiPerkenaanC,
-          nilaiPerkenaanD,
-          waktu,
-          hasil,
-        },
-        id
-      );
-    }
   };
 
   const handleCheckboxChange = (
@@ -759,13 +541,10 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
     });
 
     setTableData(updatedTableData);
-
-    const updatedCheckmarks = updatedTableData.map((data) => data.hasil);
-    updateCheckmarksBE(updatedCheckmarks);
   };
 
   return (
-    <section>
+    <section className='flex flex-col gap-4'>
       <table>
         <thead>
           <tr>
@@ -776,7 +555,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
             <th colSpan={3}>Nilai Perkenaan</th>
             <th rowSpan={2}>Waktu</th>
             <th rowSpan={2}>Hasil</th>
-            <th rowSpan={2}>Aksi</th>
           </tr>
           <tr>
             <th>A</th>
@@ -867,34 +645,63 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                   onChange={(e) => handleCheckboxChange(e, data.id)}
                 />
               </td>
-              <td rowSpan={2}>
+              {/* <td rowSpan={2}>
                 <button
                   className='text-sm w-[60px] sm:w-[80px] border border-solid p-2 rounded-xl border-blue-400'
                   onClick={() => handleNextNo(data.id)}
                 >
                   Next No
                 </button>
-              </td>
+              </td> */}
             </tr>
             <tr></tr>
           </tbody>
         ))}
       </table>
-
+      <form onSubmit={handleUpdateValues}>
+        <button className='w-full py-4 text-[#1B79B8] border text-center bg-[#fff] border-[#036BB0] rounded-lg' type='submit' >
+          Update Try 2
+        </button>
+      </form>
     </section>
   );
 };
 
 const Stage1 = () => {
   const [isLoading, setIsLoading] = useState(true);
-  // const [stage1Data, setStage1Data] = useState();
+  const [stageTry1, setStageTry1] = useState();
+  const [stageTry2, setStageTry2] = useState();
   const [try2Status, setTry2Status] = useState(false);
 
-  const { shooterid } = useParams();
+  const { examid, scorerid, shooterid } = useParams();
+  // HANLDE DATA
+  // BACKEND HANDLER
+  const handleUpdateValues = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await api.put(
+        `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage1`,
+        { "try_1": stageTry1, "try_2": stageTry2 }
+      );
+      // const response2 = await api.patch(
+      //   `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage1`
+      // );
+
+      console.log(response.data);
+      return {
+        message: response.data.message,
+        error: false,
+        response: [response],
+      };
+    } catch (error) {
+      const err = error as AxiosError<any>;
+      console.error(err);
+    }
+  };
 
   const fetchTry1Data = async () => {
     try {
-      const response = await api.get(`/scorer/shooter/${shooterid}/result/stage1`);
+      const response = await api.get(`/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage1`);
       const apiData = response.data;
       const stage1Data = apiData.data.stage_1;
       // setStage1Data(stage1Data);
@@ -978,16 +785,27 @@ const Stage1 = () => {
 
   // Jika data masih kosong, tampilkan pesan bahwa data belum tersedia
   return (
-    <Styles>
-      <Percobaan1 shooterid={shooterid} />
-      <div className='flex items-center justify-center'>
-        <button onClick={() => { finishPercobaan1() }} className='items-center text-white sm:w-[40%] px-2 py-4 bg-blue-400 rounded-xl'>Buat Percobaan 2</button>
-      </div>
-      {try2Status ?
-        <Percobaan2 shooterid={shooterid} /> :
-        <p>Tabel Percobaan 2 Belum Dibuat</p>
-      }
-    </Styles>
+    <section className='flex flex-col gap-8'>
+      <Styles>
+        <Percobaan1 setStageTry1={setStageTry1} shooterid={shooterid} />
+        {!try2Status ?
+          <div className='flex items-center justify-center'>
+            <button onClick={() => { finishPercobaan1() }} className='items-center text-white sm:w-[40%] px-2 py-4 bg-blue-400 rounded-xl'>Buat Percobaan 2</button>
+          </div> :
+          null
+        }
+
+        {try2Status ?
+          <Percobaan2 setStageTry2={setStageTry2} shooterid={shooterid} /> :
+          <p>Tabel Percobaan 2 Belum Dibuat</p>
+        }
+      </Styles>
+      <form onSubmit={handleUpdateValues}>
+        <button className='w-full py-4 text-[#1B79B8] border text-center bg-[#fff] border-[#036BB0] rounded-lg' type='submit' >
+          Simpan Stage 1
+        </button>
+      </form>
+    </section>
   );
 };
 

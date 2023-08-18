@@ -153,11 +153,15 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
         `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage0`,
         { ...updatedData.stage_0, "status": "6", }
       );
+      const response2 = await api.patch(
+        `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage0`
+      );
+
       console.log(response.data);
       return {
         message: response.data.message,
         error: false,
-        response: response,
+        response: [response, response2],
       };
     } catch (error) {
       const err = error as AxiosError<any>;
@@ -172,7 +176,8 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
 
 
   // INPUT HANDLE
-  const handleUpdateValues = () => {
+  const handleUpdateValues = (e : any) => {
+    e.preventDefault();
     setTableData((prevData: TableData | any) => {
       const updatedData: TableData | any = { ...prevData };
 
@@ -195,15 +200,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
 
       // console.log(updatedData);
       // Now you can send updatedData to the API
-      if (isTimeoutCleared) {
-        setIsTimeoutCleared(false);
-        setTimeout(async () => {
-          setIsTimeoutCleared(true);
-          // Convert noBaris to the corresponding series number (1-5)
-          // Call the API to update the data
-          await updateNilaiPerkeneaanBE(updatedData);
-        }, 1000);
-      }
+      updateNilaiPerkeneaanBE(updatedData);
       return updatedData;
     });
   };
@@ -227,18 +224,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
       const total = calculateTotal(scoresData.slice(0, 11));
       scoresData[11] = total;
 
-      // console.log("Updated scores:", scoresData); // Add this line to see the scores before sending to the API
-
-      // if (isTimeoutCleared) {
-      //   setIsTimeoutCleared(false);
-      //   setTimeout(async () => {
-      //     setIsTimeoutCleared(true);
-      //     // Convert noBaris to the corresponding series number (1-5)
-      //     const seriesNumber = parseInt(seriesKey.split("_")[1]);
-      //     // Call the API to update the data
-      //     // await updateNilaiPerkeneaanBE(updatedData, seriesNumber, stageKey);
-      //   }, 1000);
-      // }
 
       return updatedData;
     });
@@ -342,9 +327,11 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
           <tbody>{renderSeries("stage_0")}</tbody>
         </table>
       </Styles>
-      <button className='w-full py-5 text-[#1B79B8] border text-center bg-[#fff] border-[#036BB0] rounded-lg' type='submit' onClick={handleUpdateValues}>
-        Simpan
-      </button>
+      <form onSubmit={handleUpdateValues}>
+        <button className='w-full py-5 text-[#1B79B8] border text-center bg-[#fff] border-[#036BB0] rounded-lg' type='submit' >
+          Simpan
+        </button>
+      </form>
     </section>
   );
 };

@@ -7,7 +7,7 @@ const Kualifikasi = () => {
 
     console.log(shooterid); // Output: nilai ID dari URL
     return (
-        <FormSuper ujian='kualifikasi' title='Ujian Kualifikasi 20 Meter' />
+        <FormSuper ujian='kualifikasi' title='Ujian Kualifikasi 20 Meter' link={`stage1form`} />
         // <h1>Hai</h1>
     )
 }
