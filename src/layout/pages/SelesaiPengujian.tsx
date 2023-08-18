@@ -373,7 +373,7 @@ export const SelesaiPengujianSuper = (props: any) => {
             </LayoutChild>
             <LayoutChild className='justify-between'>
                 {/* <button onClick={handleSuccessButton} >Edit Hasil Ujian</button> */}
-                <Link to={`/superadmin/tabs/admindashboard/`} className='text-[#fff] font-medium text-center py-4 w-full sm:w-full sm:rounded-2xl rounded-xl bg-[#036BB0]' type='button'>
+                <Link to={`kualifikasiform`} className='text-[#fff] font-medium text-center py-4 w-full sm:w-full sm:rounded-2xl rounded-xl bg-[#036BB0]' type='button'>
                     Edit Hasil Ujian
                 </Link>
             </LayoutChild>

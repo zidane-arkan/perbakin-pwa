@@ -168,7 +168,7 @@ const FormTableSuper = (props: PropsForm) => {
     );
 }
 export const FormSuper = (props: any) => {
-    const { shooterid } = useParams();
+    const { examid, scorerid, shooterid } = useParams();
     const [loading, setLoading] = useState(true);
     const [shooter, setShooter] = useState<Penembak>();
 
@@ -177,7 +177,7 @@ export const FormSuper = (props: any) => {
     useEffect(() => {
         const fetchInitialShooters = async () => {
             try {
-                const response = await api.get(`/scorer/shooter/${shooterid}`);
+                const response = await api.get(`/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}`);
                 const shooter = response.data.data.shooter;
                 setShooter(shooter);
                 // setInitialFetchDone(true);

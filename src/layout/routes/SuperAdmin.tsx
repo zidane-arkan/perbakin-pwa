@@ -18,7 +18,15 @@ import EditUjian from '../super-admin/edit/Ujian';
 import EditPenembak from '../super-admin/edit/Penembak';
 import EditAdmin from '../super-admin/edit/Admin';
 import EditPenguji from '../super-admin/edit/Penguji';
-import { Stage6Super as EditHasilUjian  } from '../super-admin/konfirmasi/Stage6Super';
+import { Stage6Super as EditHasilUjian } from '../super-admin/konfirmasi/Stage6Super';
+// Form Super
+import KualifikasiForm from '../super-admin/form-super/Kualifikasi'
+import Stage1Form from '../super-admin/form-super/Stage1';
+import Stage2Form from '../super-admin/form-super/Stage2';
+import Stage3Form from '../super-admin/form-super/Stage3';
+import Stage4Form from '../super-admin/form-super/Stage4';
+import Stage5Form from '../super-admin/form-super/Stage5';
+import Stage6Form from '../super-admin/form-super/Stage6';
 // Route Hasil Ujian
 import HasilUjian from '../super-admin/HasilUjian';
 import DetailPenguji from '../pages/DetailPenguji';
@@ -56,6 +64,14 @@ const SuperAdmin = () => {
                 <Route path='tabs/admindashboard/editadmin/:id' element={<EditAdmin />} />
                 <Route path='tabs/admindashboard/editpenguji/:id' element={<EditPenguji />} />
                 <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid' element={<EditHasilUjian />} />
+                {/* ROUTE STAGE EDIT SUPER */}
+                <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid/kualifikasiform' element={<KualifikasiForm />} />
+                <Route path='/stage1_form/:shooterid' element={<Stage1Form />} />
+                <Route path='/stage2_form/:shooterid' element={<Stage2Form />} />
+                <Route path='/stage3_form/:shooterid' element={<Stage3Form />} />
+                <Route path='/stage4_form/:shooterid' element={<Stage4Form />} />
+                <Route path='/stage5_form/:shooterid' element={<Stage5Form />} />
+                <Route path='/stage6_form/:shooterid' element={<Stage6Form />} />
                 {/* Route Hasil Ujian */}
                 <Route path='tabs/admindashboard/hasilujian' element={<HasilUjian />} />
                 {/* Route Kelola */}
