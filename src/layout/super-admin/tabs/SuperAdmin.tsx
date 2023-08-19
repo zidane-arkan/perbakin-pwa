@@ -234,8 +234,6 @@ const SuperAdmin = (props: any) => {
         fetchData();
     }, []);
 
-
-
     return (
         <>
             <LayoutChild className='flex-col gap-8'>
