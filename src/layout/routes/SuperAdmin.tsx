@@ -71,7 +71,7 @@ const SuperAdmin = () => {
                 <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid/kualifikasiform/stage1form/stage2form/stage3form' element={<Stage3Form />} />
                 <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid/kualifikasiform/stage1form/stage2form/stage3form/stage4form' element={<Stage4Form />} />
                 <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid/kualifikasiform/stage1form/stage2form/stage3form/stage4form/stage5form' element={<Stage5Form />} />
-                <Route path='/stage6_form/:shooterid' element={<Stage6Form />} />
+                <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid/kualifikasiform/stage1form/stage2form/stage3form/stage4form/stage5form/stage6form' element={<Stage6Form />} />
                 {/* Route Hasil Ujian */}
                 <Route path='tabs/admindashboard/hasilujian' element={<HasilUjian />} />
                 {/* Route Kelola */}
