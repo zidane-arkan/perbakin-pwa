@@ -53,7 +53,7 @@ export const Penembak = (props: any) => {
 
     useEffect(() => {
         console.log('initial Fect Done!')
-        console.log(shooters)
+        // console.log(shooters)
         if (initialFetchDone) {
             const fetchShooters = async () => {
                 try {

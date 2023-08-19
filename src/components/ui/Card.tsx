@@ -239,7 +239,7 @@ export const CardPenembak = (props: any) => {
     const shownCardHandler = () => {
         return setIsCardShown(!isCartShown);
     }
-    console.log(props.statusPenembak)
+    // console.log(props.statusPenembak)
     const parsedStage = parseInt(props.stage);
     const stageWithText = isNaN(parsedStage) ? props.stage : `Stage ${parsedStage}`;
     // console.log(stageWithText)

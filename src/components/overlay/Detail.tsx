@@ -8,6 +8,7 @@ import { LayoutChild } from '../Layout';
 
 export const Detail = (props: any) => {
     const shooterId = props.id;
+    // console.log(props)
     const parsedStage = parseInt(props.stage);
     const stageWithText = isNaN(parsedStage) ? props.stage : `Stage ${parsedStage}`;
     return (
@@ -39,7 +40,7 @@ export const Detail = (props: any) => {
                         <span className='max-w-full px-2 py-1 text-xs font-bold text-white uppercase transition-colors duration-300 transform bg-[#62DE5F] rounded'>
                             {stageWithText}
                         </span>
-                        <Link to={`kualifikasi_ketentuan/${shooterId}`} className='w-full items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Mulai Ujian</Link>
+                        {props.stage === '0' ? <Link to={`kualifikasi_ketentuan/${shooterId}`} className='w-full items-center text-center px-4 py-3 text-white bg-[#036BB0] rounded-lg' >Mulai Ujian</Link> : null}
                         <Link to={`/penguji/stage${props.stage}_aturan/${shooterId}`} className='w-full items-center text-center px-4 py-3 border-2 border-solid text-gray-900 bg-transparent rounded-lg' >Lanjut Ujian</Link>
                     </div>
                 </LayoutChild>
