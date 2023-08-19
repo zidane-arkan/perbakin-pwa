@@ -181,7 +181,7 @@ const Percobaan1 = ({ apiData, shooterid, setStageTry1 }: any) => {
         return status !== 0 && num !== status;
     };
     // API HANDLE
-    const handleUpdateValuesNew = (e): void => {
+    const handleUpdateValuesNew = (e : React.FormEvent): void => {
         e.preventDefault();
         try {
             const updatedData: any = {
@@ -231,21 +231,6 @@ const Percobaan1 = ({ apiData, shooterid, setStageTry1 }: any) => {
             console.error(error);
         }
     };
-    // NILAI
-    // const updateNilaiPerkenaanBE = async (updatedData: any, noBaris: number) => {
-    //     console.log(updatedData)
-    // };
-    // CHECKMARKS
-    // interface UpdateHasilResponse {
-    //     message: string;
-    //     error: boolean;
-    //     response?: any;
-    // }
-    // const updateCheckmarksBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
-    //     const checkmarks = updatedCheckmarks;
-    //     console.log(checkmarks);
-    // };
-
     // Define types for scores_a, scores_b, and duration
     type Scores = [number, number, number];
     type Duration = { minutes: number; seconds: number; milliseconds: number };
@@ -328,44 +313,6 @@ const Percobaan1 = ({ apiData, shooterid, setStageTry1 }: any) => {
 
         const updatedData = [...data];
         updatedData[index].waktu[field] = value;
-
-        // Prepare the data to be sent to the API
-        // const pasanganIndex = Math.floor(index / 2);
-        // const pasanganStartIdx = pasanganIndex * 2;
-
-        // Separate scores_a and scores_b for 'A' and 'B' items
-        // const scores_a = data
-        //     .slice(pasanganStartIdx, pasanganStartIdx + 2)
-        //     .map((item) => item.no.endsWith('A') ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD] : [0, 0, 0]);
-
-        // const scores_b = data
-        //     .slice(pasanganStartIdx, pasanganStartIdx + 2)
-        //     .map((item) => item.no.endsWith('B') ? [item.nilaiPerkenaanA, item.nilaiPerkenaanC, item.nilaiPerkenaanD] : [0, 0, 0]);
-
-        // const duration = data
-        //     .slice(pasanganStartIdx, pasanganStartIdx + 2)
-        //     .map((item) => ({
-        //         minutes: parseInt(item.waktu.minutes),
-        //         seconds: parseInt(item.waktu.seconds),
-        //         milliseconds: parseInt(item.waktu.milliseconds)
-        //     }));
-
-        // if (timeoutRef.current) {
-        //     clearTimeout(timeoutRef.current);
-        // }
-        // // Call the API function to update the nilai perkenaan and duration
-        // timeoutRef.current = setTimeout(() => {
-        //     // Send the combined data to the API
-        //     updateNilaiPerkenaanBE(
-        //         {
-        //             scores_a: scores_a[0],
-        //             scores_b: scores_b[1],
-        //             duration: [duration[0].minutes, duration[0].seconds, duration[0].milliseconds],
-        //         },
-        //         pasanganIndex + 1 // The API endpoint uses pairs' number (1-indexed)
-        //     );
-        // }, 1000);
-
         // Update state with the modified data
         setData(updatedData);
     };
@@ -385,10 +332,6 @@ const Percobaan1 = ({ apiData, shooterid, setStageTry1 }: any) => {
         }
         // console.log(updatedData);
         setData(updatedData);
-
-        // const newCheckmarks = generateCheckmarks(updatedData);
-        // // console.log(newCheckmarks);
-        // updateCheckmarksBE(newCheckmarks);
     };
     return (
         <section className="flex flex-col gap-4">
@@ -570,7 +513,7 @@ const Percobaan2 = ({ apiData, shooterid, setStageTry2 }: any) => {
     });
     // STATUS INPUT
     // API HANDLE
-    const handleUpdateValuesNew = (e): void => {
+    const handleUpdateValuesNew = (e: React.FormEvent): void => {
         e.preventDefault();
         try {
             const updatedData: any = {
@@ -945,7 +888,7 @@ const Stage4 = () => {
         const confirmed = window.confirm(confirmMessage);
 
         if (confirmed) {
-            const endpoint = `/scorer/shooter/${shooterid}/result/stage4/2`;
+            const endpoint = `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage4/2`;
             setIsLoading(true);
             try {
                 const response = await api.post(endpoint);
