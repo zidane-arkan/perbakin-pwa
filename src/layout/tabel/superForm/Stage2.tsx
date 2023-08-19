@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, Dispatch, SetStateAction } from 'react'
 import { useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import api from '../../../api/api';
@@ -73,7 +73,7 @@ input[type='number']{
   }
 `
 
-interface Percobaan1Props {
+interface PercobaanStage2Props {
     // stage2Data: {
     //   [key: string]: {
     //     scores: number[];
@@ -82,6 +82,8 @@ interface Percobaan1Props {
     //     checkmarks: boolean[];
     //   }
     // },
+    setStageTry1?: Dispatch<SetStateAction<any>>;
+    setStageTry2?: Dispatch<SetStateAction<any>>;
     shooterid: string | undefined;
 }
 
@@ -99,20 +101,17 @@ interface TableDataItem {
 }
 
 // PERCOBAAN 1
-const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
+const Percobaan1: React.FC<PercobaanStage2Props> = (props: any) => {
     const [tableData, setTableData] = useState<TableDataItem[]>([]);
     // const [isTimeoutCleared, setIsTimeoutCleared] = useState(true);
     // STATUS INPUT
     const [status, setStatus] = useState<number>(0);
-
-    // CONVERT DATA FROM API TO TABLE DATA
+    const { examid, scorerid, shooterid } = useParams();
     // Fetch data from API and update tableData
     useEffect(() => {
         const fetchTry1Data = async () => {
             try {
-                const response = await api.get(
-                    `/scorer/shooter/${shooterid}/result/stage2`
-                );
+                const response = await api.get(`/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage2`);
                 const apiData = response.data;
                 const stage2Data = apiData.data.stage_2.try_1;
                 setStatus(parseInt(stage2Data.status, 10));
@@ -155,114 +154,41 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
         fetchTry1Data();
     }, [shooterid]);
 
-    const isReadOnly = (id: number) => {
-        return status !== 0 && id !== status;
-    };
-
     // Create a ref to store the timeout ID
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    // const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     // BACKEND HANDLER
-    // NILAI
-    const updateNilaiPerkeneaanBE = async (updatedData: TableDataItem, noBaris: number) => {
-        console.log(updatedData);
+    const handleUpdateValues = (e: React.FormEvent) => {
+        e.preventDefault();
         try {
-            const response = await api.put(
-                `/scorer/shooter/${shooterid}/result/stage2/1/no/${noBaris}`,
-                {
+            const updatedData: any = {
+                status: '2',
+                checkmarks: tableData.map(data => data.hasil),
+            };
+
+            for (let i = 1; i <= tableData.length; i++) {
+                const key = `no_${i}`;
+                updatedData[key] = {
                     scores: [
-                        updatedData.nilaiPerkenaanA,
-                        updatedData.nilaiPerkenaanC,
-                        updatedData.nilaiPerkenaanD
+                        tableData[i - 1].nilaiPerkenaanA,
+                        tableData[i - 1].nilaiPerkenaanC,
+                        tableData[i - 1].nilaiPerkenaanD,
                     ],
                     duration: [
-                        parseInt(updatedData.waktu.minute),
-                        parseInt(updatedData.waktu.second),
-                        parseInt(updatedData.waktu.millisecond)
-                    ]
-                }
-            );
-            console.log(response.data);
-            return {
-                message: response.data.message,
-                error: false,
-                response: response
-            };
-        } catch (error) {
-            const err = error as AxiosError<any>;
-            console.error(err);
-            return {
-                message:
-                    "Error: " + err.response?.status + ": " + err.response?.data.message,
-                error: true
-            };
-        }
-    };
-    // CHECKMARS
-    interface UpdateHasilResponse {
-        message: string;
-        error: boolean;
-        response?: any;
-    }
-    const updateCheckmarksBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
-        try {
-            const checkmarks = updatedCheckmarks;
-            console.log(checkmarks);
-            const response = await api.put(
-                `/scorer/shooter/${shooterid}/result/stage2/1/checkmarks`,
-                {
-                    checkmarks: checkmarks,
-                }
-            );
-            console.log(response.data);
-            return {
-                message: response.data.message,
-                error: false,
-                response: response,
-            };
-        } catch (error) {
-            const err = error as AxiosError<any>;
-            console.error(err);
-            return {
-                message:
-                    "Error: " + err.response?.status + ": " + err.response?.data.message,
-                error: true,
-            };
-        }
-    };
-    // GANTI KE NO SELANJUTNYA
-    const handleNextNo = async (currentNo: number) => {
-        const nextNo = currentNo + 1;
-
-        // Show confirmation dialog
-        const confirmMessage = `Apakah anda yakin ingin pindah nomor ke ${nextNo}?`;
-        const confirmed = window.confirm(confirmMessage);
-
-        if (confirmed) {
-            console.log(nextNo);
-            const endpoint = `/scorer/shooter/${shooterid}/result/stage2/1/next`;
-
-            try {
-                const response = await api.patch(endpoint);
-                console.log(`Berhasil melanjutkan no stage 1 percobaan 1 ke no ${nextNo}`)
-                // Set status to the next number and trigger data refresh
-                setStatus(nextNo);
-                return {
-                    message: response.data.message,
-                    status: 200,
-                    data: null,
-                };
-            } catch (error: any) {
-                console.error(error);
-                return {
-                    message: "Error: " + error.message,
-                    status: error.response?.status,
-                    data: null,
+                        parseInt(tableData[i - 1].waktu.minute),
+                        parseInt(tableData[i - 1].waktu.second),
+                        parseInt(tableData[i - 1].waktu.millisecond),
+                    ],
                 };
             }
+
+            props.setStageTry1(updatedData);
+            // console.log(updatedData)
+        } catch (error) {
+            const err = error as AxiosError<any>;
+            console.error(err);
         }
     };
-
 
     // HANDLE DATA REACT
     const handleInputChange = <K extends keyof TableDataItem>(e: React.ChangeEvent<HTMLInputElement>, id: number, field: K) => {
@@ -281,15 +207,15 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
             ]);
 
             setTableData(updatedTableData);
-            // Clear existing timeout (if any) before setting a new one
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-            }
+            // // Clear existing timeout (if any) before setting a new one
+            // if (timeoutRef.current) {
+            //     clearTimeout(timeoutRef.current);
+            // }
 
-            // Set a new timeout to update the backend data after 500ms of inactivity
-            timeoutRef.current = setTimeout(() => {
-                updateNilaiPerkeneaanBE(updatedRow, id);
-            }, 500);
+            // // Set a new timeout to update the backend data after 500ms of inactivity
+            // timeoutRef.current = setTimeout(() => {
+            //     updateNilaiPerkeneaanBE(updatedRow, id);
+            // }, 500);
         }
     };
 
@@ -317,29 +243,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
         });
 
         setTableData(updatedTableData);
-
-        // Clear existing timeout (if any) before setting a new one
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-        }
-
-        timeoutRef.current = setTimeout(() => {
-            const updatedData = updatedTableData.find((data) => data.id === id);
-            if (updatedData) {
-                const { id, nilaiPerkenaanA, nilaiPerkenaanC, nilaiPerkenaanD, waktu, hasil } = updatedData;
-                updateNilaiPerkeneaanBE(
-                    {
-                        id,
-                        nilaiPerkenaanA,
-                        nilaiPerkenaanC,
-                        nilaiPerkenaanD,
-                        waktu,
-                        hasil,
-                    },
-                    id
-                );
-            }
-        }, 500);
     };
 
     const handleCheckboxChange = (
@@ -359,13 +262,10 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
         });
 
         setTableData(updatedTableData);
-
-        const updatedCheckmarks = updatedTableData.map((data) => data.hasil);
-        updateCheckmarksBE(updatedCheckmarks);
     };
 
     return (
-        <section>
+        <section className='flex flex-col gap-4'>
             <table>
                 <thead>
                     <tr>
@@ -376,7 +276,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                         <th colSpan={3}>Nilai Perkenaan</th>
                         <th rowSpan={2}>Waktu</th>
                         <th rowSpan={2}>Hasil</th>
-                        <th rowSpan={2}>Aksi</th>
                     </tr>
                     <tr>
                         <th>A</th>
@@ -397,7 +296,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                     onChange={(e) =>
                                         handleInputChange(e, data.id, "nilaiPerkenaanA")
                                     }
-                                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                                 />
                             </td>
                             <td>
@@ -409,7 +307,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                     onChange={(e) =>
                                         handleInputChange(e, data.id, "nilaiPerkenaanC")
                                     }
-                                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                                 />
                             </td>
                             <td>
@@ -421,7 +318,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                     onChange={(e) =>
                                         handleInputChange(e, data.id, "nilaiPerkenaanD")
                                     }
-                                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                                 />
                             </td>
                             <td rowSpan={2}>
@@ -435,7 +331,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                         placeholder="mm"
                                         value={data.waktu.minute}
                                         onChange={(e) => handleTimeChange(e, data.id, "minute")}
-                                        readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                                     />
                                     :
                                     <input
@@ -447,7 +342,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                         placeholder="ss"
                                         value={data.waktu.second}
                                         onChange={(e) => handleTimeChange(e, data.id, "second")}
-                                        readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                                     />
                                     :
                                     <input
@@ -459,7 +353,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                         placeholder="SS"
                                         value={data.waktu.millisecond}
                                         onChange={(e) => handleTimeChange(e, data.id, "millisecond")}
-                                        readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                                     />
                                 </div>
                             </td>
@@ -473,38 +366,32 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                     onChange={(e) => handleCheckboxChange(e, data.id)}
                                 />
                             </td>
-                            <td rowSpan={2}>
-                                <button
-                                    className='text-sm w-[60px] sm:w-[80px] border border-solid p-2 rounded-xl border-blue-400'
-                                    onClick={() => handleNextNo(data.id)}
-                                >
-                                    Next No
-                                </button>
-                            </td>
                         </tr>
                         <tr></tr>
                     </tbody>
                 ))}
             </table>
+            <form onSubmit={handleUpdateValues}>
+                <button className='w-full py-4 text-[#1B79B8] border text-center bg-[#fff] border-[#036BB0] rounded-lg' type='submit' >
+                    Update Try 1
+                </button>
+            </form>
         </section>
     );
 };
 
 // PERCOBAAN 2
-const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
+const Percobaan2: React.FC<PercobaanStage2Props> = (props: any) => {
     const [tableData, setTableData] = useState<TableDataItem[]>([]);
     // const [isTimeoutCleared, setIsTimeoutCleared] = useState(true);
     // STATUS INPUT
     const [status, setStatus] = useState<number>(0);
-
-    // CONVERT DATA FROM API TO TABLE DATA
+    const { examid, scorerid, shooterid } = useParams();
     // Fetch data from API and update tableData
     useEffect(() => {
         const fetchTry1Data = async () => {
             try {
-                const response = await api.get(
-                    `/scorer/shooter/${shooterid}/result/stage2`
-                );
+                const response = await api.get(`/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage2`);
                 const apiData = response.data;
                 const stage2Data = apiData.data.stage_2.try_2;
                 setStatus(parseInt(stage2Data.status, 10));
@@ -547,117 +434,40 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
         fetchTry1Data();
     }, [shooterid]);
 
-    const isReadOnly = (id: number) => {
-        return status !== 0 && id !== status;
-    };
-
-
-    // Create a ref to store the timeout ID
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
     // BACKEND HANDLER
-    // NILAI
-    const updateNilaiPerkeneaanBE = async (updatedData: TableDataItem, noBaris: number) => {
-        console.log(updatedData);
+    const handleUpdateValues = (e: React.FormEvent) => {
+        e.preventDefault();
         try {
-            const response = await api.put(
-                `/scorer/shooter/${shooterid}/result/stage2/2/no/${noBaris}`,
-                {
+            const updatedData: any = {
+                status: '2',
+                checkmarks: tableData.map(data => data.hasil),
+            };
+
+            for (let i = 1; i <= tableData.length; i++) {
+                const key = `no_${i}`;
+                updatedData[key] = {
                     scores: [
-                        updatedData.nilaiPerkenaanA,
-                        updatedData.nilaiPerkenaanC,
-                        updatedData.nilaiPerkenaanD
+                        tableData[i - 1].nilaiPerkenaanA,
+                        tableData[i - 1].nilaiPerkenaanC,
+                        tableData[i - 1].nilaiPerkenaanD,
                     ],
                     duration: [
-                        parseInt(updatedData.waktu.minute),
-                        parseInt(updatedData.waktu.second),
-                        parseInt(updatedData.waktu.millisecond)
-                    ]
-                }
-            );
-            console.log(response.data);
-            return {
-                message: response.data.message,
-                error: false,
-                response: response
-            };
-        } catch (error) {
-            const err = error as AxiosError<any>;
-            console.error(err);
-            return {
-                message:
-                    "Error: " + err.response?.status + ": " + err.response?.data.message,
-                error: true
-            };
-        }
-    };
-    // CHECKMARS
-    interface UpdateHasilResponse {
-        message: string;
-        error: boolean;
-        response?: any;
-    }
-    const updateCheckmarksBE = async (updatedCheckmarks: boolean[]): Promise<UpdateHasilResponse> => {
-        try {
-            const checkmarks = updatedCheckmarks;
-            console.log(checkmarks);
-            const response = await api.put(
-                `/scorer/shooter/${shooterid}/result/stage2/2/checkmarks`,
-                {
-                    checkmarks: checkmarks,
-                }
-            );
-            console.log(response.data);
-            return {
-                message: response.data.message,
-                error: false,
-                response: response,
-            };
-        } catch (error) {
-            const err = error as AxiosError<any>;
-            console.error(err);
-            return {
-                message:
-                    "Error: " + err.response?.status + ": " + err.response?.data.message,
-                error: true,
-            };
-        }
-    };
-    // GANTI KE NO SELANJUTNYA
-    const handleNextNo = async (currentNo: number) => {
-        const nextNo = currentNo + 1;
-
-        // Show confirmation dialog
-        const confirmMessage = `Apakah anda yakin ingin pindah nomor ke ${nextNo}?`;
-        const confirmed = window.confirm(confirmMessage);
-
-        if (confirmed) {
-            console.log(nextNo);
-            const endpoint = `/scorer/shooter/${shooterid}/result/stage2/2/next`;
-
-            try {
-                const response = await api.patch(endpoint);
-                console.log(`Berhasil melanjutkan no stage 1 percobaan 2 ke no ${nextNo}`)
-                // Set status to the next number and trigger data refresh
-                setStatus(nextNo);
-                return {
-                    message: response.data.message,
-                    status: 200,
-                    data: null,
-                };
-            } catch (error: any) {
-                console.error(error);
-                return {
-                    message: "Error: " + error.message,
-                    status: error.response?.status,
-                    data: null,
+                        parseInt(tableData[i - 1].waktu.minute),
+                        parseInt(tableData[i - 1].waktu.second),
+                        parseInt(tableData[i - 1].waktu.millisecond),
+                    ],
                 };
             }
+
+            props.setStageTry2(updatedData);
+            // console.log(updatedData)
+        } catch (error) {
+            const err = error as AxiosError<any>;
+            console.error(err);
         }
     };
 
-
-    // HANDLE DATA
+    // HANDLE DATA REACT
     const handleInputChange = <K extends keyof TableDataItem>(e: React.ChangeEvent<HTMLInputElement>, id: number, field: K) => {
         const { value } = e.target;
 
@@ -674,15 +484,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
             ]);
 
             setTableData(updatedTableData);
-            // Clear existing timeout (if any) before setting a new one
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-            }
-
-            // Set a new timeout to update the backend data after 500ms of inactivity
-            timeoutRef.current = setTimeout(() => {
-                updateNilaiPerkeneaanBE(updatedRow, id);
-            }, 500);
         }
     };
 
@@ -710,29 +511,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
         });
 
         setTableData(updatedTableData);
-
-        // Clear existing timeout (if any) before setting a new one
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-        }
-
-        timeoutRef.current = setTimeout(() => {
-            const updatedData = updatedTableData.find((data) => data.id === id);
-            if (updatedData) {
-                const { id, nilaiPerkenaanA, nilaiPerkenaanC, nilaiPerkenaanD, waktu, hasil } = updatedData;
-                updateNilaiPerkeneaanBE(
-                    {
-                        id,
-                        nilaiPerkenaanA,
-                        nilaiPerkenaanC,
-                        nilaiPerkenaanD,
-                        waktu,
-                        hasil,
-                    },
-                    id
-                );
-            }
-        }, 500);
     };
 
     const handleCheckboxChange = (
@@ -752,13 +530,10 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
         });
 
         setTableData(updatedTableData);
-
-        const updatedCheckmarks = updatedTableData.map((data) => data.hasil);
-        updateCheckmarksBE(updatedCheckmarks);
     };
 
     return (
-        <section>
+        <section className='flex flex-col gap-4'>
             <table>
                 <thead>
                     <tr>
@@ -769,7 +544,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                         <th colSpan={3}>Nilai Perkenaan</th>
                         <th rowSpan={2}>Waktu</th>
                         <th rowSpan={2}>Hasil</th>
-                        <th rowSpan={2}>Aksi</th>
                     </tr>
                     <tr>
                         <th>A</th>
@@ -790,7 +564,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                     onChange={(e) =>
                                         handleInputChange(e, data.id, "nilaiPerkenaanA")
                                     }
-                                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                                 />
                             </td>
                             <td>
@@ -802,7 +575,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                     onChange={(e) =>
                                         handleInputChange(e, data.id, "nilaiPerkenaanC")
                                     }
-                                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                                 />
                             </td>
                             <td>
@@ -814,7 +586,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                     onChange={(e) =>
                                         handleInputChange(e, data.id, "nilaiPerkenaanD")
                                     }
-                                    readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                                 />
                             </td>
                             <td rowSpan={2}>
@@ -828,7 +599,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                         placeholder="mm"
                                         value={data.waktu.minute}
                                         onChange={(e) => handleTimeChange(e, data.id, "minute")}
-                                        readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                                     />
                                     :
                                     <input
@@ -840,7 +610,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                         placeholder="ss"
                                         value={data.waktu.second}
                                         onChange={(e) => handleTimeChange(e, data.id, "second")}
-                                        readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                                     />
                                     :
                                     <input
@@ -852,7 +621,6 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                         placeholder="SS"
                                         value={data.waktu.millisecond}
                                         onChange={(e) => handleTimeChange(e, data.id, "millisecond")}
-                                        readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                                     />
                                 </div>
                             </td>
@@ -866,36 +634,89 @@ const Percobaan2: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                     onChange={(e) => handleCheckboxChange(e, data.id)}
                                 />
                             </td>
-                            <td rowSpan={2}>
-                                <button
-                                    className='text-sm w-[60px] sm:w-[80px] border border-solid p-2 rounded-xl border-blue-400'
-                                    onClick={() => handleNextNo(data.id)}
-                                >
-                                    Next No
-                                </button>
-                            </td>
                         </tr>
                         <tr></tr>
                     </tbody>
                 ))}
             </table>
+            <form onSubmit={handleUpdateValues}>
+                <button className='w-full py-4 text-[#1B79B8] border text-center bg-[#fff] border-[#036BB0] rounded-lg' type='submit' >
+                    Update Try 2
+                </button>
+            </form>
         </section>
     );
 };
 
 const Stage2 = () => {
-    const { shooterid } = useParams();
     const [isLoading, setIsLoading] = useState(true);
-    // const [stage2Data, setStage1Data] = useState();
+    const [isSaving, setIsSaving] = useState(false);
+    const [isErrorOverlay, setIsErrorOverlay] = useState(false);
+    const [stageTry1, setStageTry1] = useState();
+    const [stageTry2, setStageTry2] = useState();
     const [try2Status, setTry2Status] = useState(false);
+
+    const { examid, scorerid, shooterid } = useParams();
+    // HANLDE DATA
+    // console.log(stageTry1)
+    // BACKEND HANDLER
+    const handleUpdateValues = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            setIsSaving(true); // Start loading
+
+            const stagesData: {
+                try_1?: any;
+                try_2?: any;
+            } = {};
+
+            if (stageTry1) {
+                stagesData.try_1 = stageTry1;
+            }
+
+            // Only include try_2 if try2Status is true
+            if (try2Status && stageTry2 !== undefined) {
+                stagesData.try_2 = stageTry2;
+            }
+            console.log(stagesData)
+            const response = await api.put(
+                `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage2`,
+                stagesData
+            );
+            const response2 = await api.patch(
+                `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage2`
+            );
+
+            console.log(response.data);
+            setIsSaving(false); // Stop loading
+            return {
+                message: response.data.message,
+                error: false,
+                response: [response, response2],
+            };
+        } catch (error) {
+            const err = error as AxiosError<any>;
+            console.error(err);
+            setIsSaving(false); // Stop loading
+            // Show error overlay for 422 status
+            if (err.response?.status === 422) {
+                setIsErrorOverlay(true);
+            }
+        }
+
+    };
 
     const fetchTry1Data = async () => {
         try {
-            const response = await api.get(`/scorer/shooter/${shooterid}/result/stage2`);
+            const response = await api.get(`/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage2`);
             const apiData = response.data;
             const stage2Data = apiData.data.stage_2;
-            // setStage1Data(stage2Data);
-            setTry2Status(stage2Data.is_try_2);
+            // setstage2Data(stage2Data);
+            // console.log(stage2Data.is_try_2)
+            if (stage2Data.is_try_2) {
+                // console.log(1)
+                setTry2Status(stage2Data.is_try_2);
+            }
             setIsLoading(false);
         } catch (error) {
             console.error(error);
@@ -923,12 +744,11 @@ const Stage2 = () => {
         const confirmed = window.confirm(confirmMessage);
 
         if (confirmed) {
-            const endpoint = `/scorer/shooter/${shooterid}/result/stage2/2`;
-            setIsLoading(true);
+            const endpoint = `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage2/2`;
+
             try {
                 const response = await api.post(endpoint);
-                setIsLoading(false);
-                window.location.reload();
+                location.reload();
                 return {
                     message: response.data.message,
                     status: 200,
@@ -936,7 +756,6 @@ const Stage2 = () => {
                 };
             } catch (error: any) {
                 console.error(error);
-                setIsLoading(false);
                 return {
                     message: "Error: " + error.message,
                     status: error.response?.status,
@@ -975,22 +794,54 @@ const Stage2 = () => {
             </div>
         )
     }
+
+    // Jika data masih kosong, tampilkan pesan bahwa data belum tersedia
     return (
-        <Styles>
-            <Percobaan1 shooterid={shooterid} />
-            {!try2Status ?
-                <div className='flex items-center justify-center'>
-                    <button onClick={() => { finishPercobaan1() }} className='items-center text-white sm:w-[40%] px-2 py-4 bg-blue-400 rounded-xl'>Buat Percobaan 2</button>
-                </div> :
-                <></>
-            }
-            {try2Status ?
-                <Percobaan2 shooterid={shooterid} /> :
-                <p>Tabel Percobaan 2 Belum Dibuat</p>
-            }
-        </Styles>
+        <section className='flex flex-col gap-8'>
+            {isSaving ? (
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-[#1B79B8]"></div>
+                </div>
+            ) : null}
+            {isErrorOverlay ? (
+                <div className="fixed inset-0 bg-red-500 bg-opacity-75 flex flex-col items-center justify-center z-50">
+                    <p className="text-white font-semibold text-lg">
+                        Tolong Pastikan Try 1 atau Try 2 Sudah diupdate
+                    </p>
+                    <button
+                        className="mt-4 py-2 px-4 text-white bg-red-600 rounded-lg hover:bg-red-700"
+                        onClick={() => setIsErrorOverlay(false)}
+                    >
+                        Tutup
+                    </button>
+                </div>
+            ) : null}
+            <Styles>
+                <Percobaan1 setStageTry1={setStageTry1} shooterid={shooterid} />
+                {!try2Status ?
+                    <div className='flex items-center justify-center'>
+                        <button onClick={() => { finishPercobaan1() }} className='items-center text-white sm:w-[40%] px-2 py-4 bg-blue-400 rounded-xl'>Buat Percobaan 2</button>
+                    </div> :
+                    null
+                }
+
+                {try2Status ?
+                    <Percobaan2 setStageTry2={setStageTry2} shooterid={shooterid} /> :
+                    <p>Tabel Percobaan 2 Belum Dibuat</p>
+                }
+            </Styles>
+            <form onSubmit={handleUpdateValues}>
+                <button
+                    className={`w-full py-4 text-[#1B79B8] border text-center bg-[#fff] border-[#036BB0] rounded-lg ${isSaving || stageTry1 === undefined ? 'cursor-not-allowed opacity-60' : ''}`}
+                    type='submit'
+                    disabled={isSaving || stageTry1 === undefined}
+                >
+                    {isSaving ? 'Menyimpan...' : 'Simpan Stage 2'}
+                </button>
+            </form>
+        </section>
     );
-}
+};
 
 
 export default Stage2
