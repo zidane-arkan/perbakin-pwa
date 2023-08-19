@@ -65,9 +65,9 @@ const SuperAdmin = () => {
                 <Route path='tabs/admindashboard/editpenguji/:id' element={<EditPenguji />} />
                 <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid' element={<EditHasilUjian />} />
                 {/* ROUTE STAGE EDIT SUPER */}
-                <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid/kualifikasiform' element={<KualifikasiForm />} />
-                <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid/kualifikasiform/stage1form' element={<Stage1Form />} />
-                <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid/kualifikasiform/stage1form/stage2form' element={<Stage2Form />} />
+                <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid/kualifikasiform/' element={<KualifikasiForm />} />
+                <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid/kualifikasiform/stage1form/' element={<Stage1Form />} />
+                <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid/kualifikasiform/stage1form/stage2form/' element={<Stage2Form />} />
                 <Route path='tabs/admindashboard/edithasiujian/:examid/:scorerid/:shooterid/kualifikasiform/stage1form/stage2form/stage3form' element={<Stage3Form />} />
                 <Route path='/stage4_form/:shooterid' element={<Stage4Form />} />
                 <Route path='/stage5_form/:shooterid' element={<Stage5Form />} />
