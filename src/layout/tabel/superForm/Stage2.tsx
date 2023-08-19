@@ -683,16 +683,16 @@ const Stage2 = () => {
                 `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage2`,
                 stagesData
             );
-            const response2 = await api.patch(
-                `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage2`
-            );
+            // const response2 = await api.patch(
+            //     `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage2`
+            // );
 
             console.log(response.data);
             setIsSaving(false); // Stop loading
             return {
                 message: response.data.message,
                 error: false,
-                response: [response, response2],
+                response: [response],
             };
         } catch (error) {
             const err = error as AxiosError<any>;

@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { HeaderWhiteCustom } from '../../components/Header'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { CardText } from '../../components/ui/Card';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { ResponseData } from '../../context/response';
 // IMPORT FORM SUPER ADMIN
 import Kualifikasi from '../tabel/form/Kualifikasi';
@@ -22,7 +22,7 @@ import Stage3Super from '../tabel/superForm/Stage3';
 import Stage4Super from '../tabel/superForm/Stage4';
 import Stage5Super from '../tabel/superForm/Stage5';
 import Stage6Super from '../tabel/superForm/Stage6';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 type Penembak = {
     scorer_id: string;
@@ -170,9 +170,41 @@ const FormTableSuper = (props: PropsForm) => {
 export const FormSuper = (props: any) => {
     const { examid, scorerid, shooterid } = useParams();
     const [loading, setLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
+    const [isErrorOverlay, setIsErrorOverlay] = useState(false);
     const [shooter, setShooter] = useState<Penembak>();
+    const navigate = useNavigate();
 
+    console.log(props.ujian)
     // const classname = `${props.classname} rounded-3xl`;
+    const handleFinishStage = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const stageFinish = props.ujian === 'kualifikasi' ? '0' : props.ujian;
+        try {
+            setIsSaving(true); // Start loading
+            const response = await api.patch(
+                `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/${stageFinish}`
+            );
+            console.log(response.data);
+            setIsSaving(false); // Stop loading
+            navigate(`${props.link}`)
+            return {
+                message: response.data.message,
+                error: false,
+                response: [response],
+            };
+        } catch (error) {
+            const err = error as AxiosError<any>;
+            console.error(err);
+            setIsSaving(false); // Stop loading
+            // Show error overlay for 422 status
+            navigate(`${props.link}`)
+            if (err.response?.status === 422) {
+                setIsErrorOverlay(true);
+            }
+        }
+
+    };
 
     useEffect(() => {
         const fetchInitialShooters = async () => {
@@ -193,6 +225,24 @@ export const FormSuper = (props: any) => {
 
     return (
         <Layout className={'rounded-3xl h-auto gap-8 mt-28 pb-10 pt-[2%] justify-evenly overflow-hidden'}>
+            {isSaving ? (
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-[#1B79B8]"></div>
+                </div>
+            ) : null}
+            {isErrorOverlay ? (
+                <div className="fixed inset-0 bg-red-500 bg-opacity-75 flex flex-col items-center justify-center z-50">
+                    <p className="text-white font-semibold text-lg">
+                        Tolong Pastikan Try 1 atau Try 2 Sudah diupdate
+                    </p>
+                    <button
+                        className="mt-4 py-2 px-4 text-white bg-red-600 rounded-lg hover:bg-red-700"
+                        onClick={() => setIsErrorOverlay(false)}
+                    >
+                        Tutup
+                    </button>
+                </div>
+            ) : null}
             <HeaderWhiteCustom typeIcon='close' title={props.title} />
             <LayoutChild className='flex-col gap-0'>
                 <h6 className='text-black/60'>Nama Penembak</h6>
@@ -213,9 +263,15 @@ export const FormSuper = (props: any) => {
                     <FormTableSuper ujian={props.ujian} />
                 </div>
                 <CardText>
-                    <Link to={`${props.link}`} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
-                        Selanjutnya
-                    </Link>
+                    <form className='w-full' onSubmit={handleFinishStage}>
+                        <button
+                            className={`w-full py-4 text-[#fff] border text-center bg-[#036BB0] rounded-lg ${isSaving === undefined ? 'cursor-not-allowed opacity-60' : ''}`}
+                            type='submit'
+                            disabled={isSaving === undefined}
+                        >
+                            {isSaving ? 'Menyelesaikan...' : 'Selanjutnya'}
+                        </button>
+                    </form>
                 </CardText>
             </LayoutChild>
         </Layout>

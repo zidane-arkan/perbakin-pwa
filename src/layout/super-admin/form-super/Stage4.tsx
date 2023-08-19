@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 const Stage4 = () => {
     const { shooterid } = useParams();
     return (
-        <FormSuper ujian='stage4' title='Stage #4' link={`/penguji/stage4_konfirmasi/${shooterid}`} />
+        <FormSuper ujian='stage4' title='Stage #4' link={`stage5form`} />
     )
 }
 

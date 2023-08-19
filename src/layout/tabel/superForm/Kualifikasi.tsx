@@ -153,15 +153,15 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ kualifikasiData }) => {
         `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage0`,
         { ...updatedData.stage_0, "status": "6", }
       );
-      const response2 = await api.patch(
-        `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage0`
-      );
+      // const response2 = await api.patch(
+      //   `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage0`
+      // );
 
       console.log(response.data);
       return {
         message: response.data.message,
         error: false,
-        response: [response, response2],
+        response: [response],
       };
     } catch (error) {
       const err = error as AxiosError<any>;

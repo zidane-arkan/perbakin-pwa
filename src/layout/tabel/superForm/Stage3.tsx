@@ -154,9 +154,6 @@ const Percobaan1: React.FC<PercobaanStage3Props> = (props: any) => {
         fetchTry1Data();
     }, [shooterid]);
 
-    // Create a ref to store the timeout ID
-    // const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
     // BACKEND HANDLER
     const handleUpdateValues = (e: React.FormEvent) => {
         e.preventDefault();
@@ -207,15 +204,6 @@ const Percobaan1: React.FC<PercobaanStage3Props> = (props: any) => {
             ]);
 
             setTableData(updatedTableData);
-            // // Clear existing timeout (if any) before setting a new one
-            // if (timeoutRef.current) {
-            //     clearTimeout(timeoutRef.current);
-            // }
-
-            // // Set a new timeout to update the backend data after 500ms of inactivity
-            // timeoutRef.current = setTimeout(() => {
-            //     updateNilaiPerkeneaanBE(updatedRow, id);
-            // }, 500);
         }
     };
 
@@ -686,16 +674,16 @@ const Stage3 = () => {
                 `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage3`,
                 stagesData
             );
-            const response2 = await api.patch(
-                `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage3`
-            );
+            // const response2 = await api.patch(
+            //     `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/stage3`
+            // );
 
             console.log(response.data);
             setIsSaving(false); // Stop loading
             return {
-                message: [response.data.message, response2.data.message],
+                message: [response.data.message],
                 error: false,
-                response: [response, response2],
+                response: [response],
             };
         } catch (error) {
             const err = error as AxiosError<any>;
