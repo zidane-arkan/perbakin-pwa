@@ -323,10 +323,10 @@ export const SelesaiPengujianSuper = (props: any) => {
             // for (const [key, value] of formData.entries()) {
             //     console.log(key, value);
             // }
-            const endpoint = `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/${props.stage}`
-            const response = await api.patch(endpoint, formData);
+            const endpoint = `/super/exam/${examid}/scorer/${scorerid}/shooter/${shooterid}/result/${props.stage}/sign`
+            const response = await api.put(endpoint, formData);
             // console.log(response.data);
-            navigate('/penguji')
+            navigate('/superadmin/tabs/admindashboard/')
             return {
                 message: response.data.message,
                 error: false,
