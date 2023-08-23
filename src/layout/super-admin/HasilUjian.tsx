@@ -10,14 +10,16 @@ import { useNavigate } from 'react-router-dom';
 import arrowdown from '../../app-assets/arrowdown.png'
 // react router dom
 interface ResultData {
-    id: string;
+    id?: string;
+    examid?: string;
+    shooterid?: string;
+    scorerid?: string | null | undefined | any;
     name: string;
     province: string;
     club: string;
     failed: boolean;
     stage: string;
 }
-
 interface ApiResponse {
     message: string;
     status: number;
@@ -25,7 +27,19 @@ interface ApiResponse {
         results: ResultData[];
     };
 }
+interface ShooterData {
+    id?: string,
+    scorer_id?: string | null | undefined;
+    scorer?: string | null | undefined;
+    shooterid?: string;
 
+    // Other properties related to shooter
+}
+interface ShooterApiResponse {
+    data: {
+        shooters: ShooterData[];
+    };
+}
 interface TabelHasilUjianAllProps {
     shooterid: string;
 }
@@ -40,21 +54,44 @@ type HasilUjian = {
 
 const TabelHasilUjianAll = ({ id }: any) => {
     const superAdminCtx = useContext(AuthContext);
-    const [resultData, setResultData] = useState<ResultData[]>([]);
+    const [resultData, setResultData] = useState<ResultData[] | any>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const fetchTableData = async () => {
         try {
-            // Ganti dengan URL API yang sesuai dan shooterid dari prop atau state yang sesuai
-            const examId = superAdminCtx?.getExamId(); // Memanggil fungsi getExamId untuk mendapatkan examId
-            const response = await api.get<ApiResponse>(`/super/exam/${examId}/result`);
-            const apiData = response.data;
-            const resultData = apiData.data.results;
-            console.log(resultData);
+            const examId = superAdminCtx?.getExamId();
+
+            const [resultResponse, shooterResponse] = await Promise.all([
+                api.get<ApiResponse>(`/super/exam/${examId}/result`),
+                api.get<ShooterApiResponse>(`/super/exam/${examId}/shooter`)
+            ]);
+
+            const resultApiData = resultResponse.data.data;
+            const shooterApiData = shooterResponse.data.data;
+            // console.log(shooterApiData)
+            // Process result data
+            const resultData = resultApiData.results.map(result => ({
+                ...result,
+                examid: examId,
+                shooterid: null as string | null,
+                scorerid: null as string | null,
+                scorer: null as string | null,
+            }));
+
+            // Process shooter data and merge into resultData
+            shooterApiData.shooters.forEach(shooter => {
+                const existingResult: any = resultData.find(result => result.id === shooter.id);
+                if (existingResult) {
+                    existingResult.shooterid = shooter.id;
+                    existingResult.scorerid = shooter.scorer_id;
+                    existingResult.scorer = shooter.scorer;
+                }
+            });
+            console.log(resultData)
             setResultData(resultData);
-            setIsLoading(false); // Set isLoading to false after data is fetched and set to state
+            setIsLoading(false);
         } catch (error) {
             console.error(error);
-            setIsLoading(false); // If there is an error while fetching data, set isLoading to false to show an error message
+            setIsLoading(false);
         }
     };
     useEffect(() => {
@@ -111,13 +148,13 @@ const TabelHasilUjianAll = ({ id }: any) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {resultData.map((item) => (
+                    {resultData.map((item: any) => (
                         <tr key={item.id} className={item.failed ? "bg-[#F3FAFF] text-black" : "bg-white text-black border-blue-400"}>
                             <th scope="row" className="px-6 py-4 font-medium text-black whitespace-nowrap">
                                 {item.name}
                             </th>
                             <td className="px-6 py-4">
-                                {item.stage}
+                                {item.scorer}
                             </td>
                             <td className="px-6 py-4">
                                 {item.province}

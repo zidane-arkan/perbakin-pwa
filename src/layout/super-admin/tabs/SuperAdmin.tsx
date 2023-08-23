@@ -40,7 +40,9 @@ interface ApiResponse {
 interface ShooterData {
     id?: string,
     scorer_id?: string | null | undefined;
+    scorer?: string | null | undefined;
     shooterid?: string;
+
     // Other properties related to shooter
 }
 
@@ -89,7 +91,8 @@ const TabelHasilUjian = (props: any) => {
                 ...result,
                 examid: examId,
                 shooterid: null as string | null,
-                scorerid: null as string | null
+                scorerid: null as string | null,
+                scorer: null as string | null,
             }));
 
             // Process shooter data and merge into resultData
@@ -98,9 +101,10 @@ const TabelHasilUjian = (props: any) => {
                 if (existingResult) {
                     existingResult.shooterid = shooter.id;
                     existingResult.scorerid = shooter.scorer_id;
+                    existingResult.scorer = shooter.scorer;
                 }
             });
-            console.log(resultData)
+            // console.log(resultData)
             setResultData(resultData);
             setIsLoading(false);
         } catch (error) {
@@ -175,7 +179,7 @@ const TabelHasilUjian = (props: any) => {
                                     {item.name}
                                 </th>
                                 <td className="px-6 py-4">
-                                    {item.stage}
+                                    {item.scorer}
                                 </td>
                                 <td className="px-6 py-4">
                                     {item.province}
