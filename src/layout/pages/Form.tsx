@@ -82,6 +82,7 @@ const Form = (props: any) => {
     const [loading, setLoading] = useState(true);
     const [shooter, setShooter] = useState<Penembak>();
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [showConfirmationModalBtn, setShowConfirmationModalBtn] = useState(false);
 
     const classname = `${props.classname} rounded-3xl`;
 
@@ -101,7 +102,7 @@ const Form = (props: any) => {
 
         fetchInitialShooters();
     }, []);
-    // MODAL HANDLE
+    // MODAL X HANDLE
     const handleGoBack = () => {
         if (showConfirmationModal) {
             navigate(-1);
@@ -117,6 +118,22 @@ const Form = (props: any) => {
     const handleCancelGoBack = () => {
         setShowConfirmationModal(false);
     };
+    // MODAL Button Selanjutnya Handle
+    const handleGoBackBtn = () => {
+        if (showConfirmationModal) {
+            navigate(`${props.link}`);
+        } else {
+            setShowConfirmationModalBtn(true);
+        }
+    };
+
+    const handleConfirmGoBackBtn = () => {
+        navigate(`${props.link}`);
+    };
+
+    const handleCancelGoBackBtn = () => {
+        setShowConfirmationModalBtn(false);
+    };
     return (
         <Layout className={'rounded-3xl h-auto gap-8 mt-28 pb-10 pt-[2%] justify-evenly overflow-hidden'}>
             {showConfirmationModal && (
@@ -129,6 +146,21 @@ const Form = (props: any) => {
                             </button>
                             <button className='text-red-500' onClick={handleConfirmGoBack}>
                                 Ya, Kembali
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {showConfirmationModalBtn && (
+                <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50'>
+                    <div className='bg-white p-8 rounded-lg shadow-md'>
+                        <p className='mb-4'>Apakah Anda yakin ingin Ke Page Konfirmasi ?</p>
+                        <div className='flex justify-end'>
+                            <button className='mr-4 text-blue-500' onClick={handleCancelGoBackBtn}>
+                                Batal
+                            </button>
+                            <button className='text-red-500' onClick={handleConfirmGoBackBtn}>
+                                Ya, Lanjut
                             </button>
                         </div>
                     </div>
@@ -161,9 +193,16 @@ const Form = (props: any) => {
                     <FormTable ujian={props.ujian} />
                 </div>
                 <CardText>
-                    <Link to={`${props.link}`} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
+                    {/* <Link to={`${props.link}`} className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg' type='button'>
                         Selanjutnya
-                    </Link>
+                    </Link> */}
+                    <button
+                        className='w-full px-4 py-4 text-white text-center bg-[#036BB0] rounded-lg'
+                        onClick={handleGoBackBtn}
+                        type='button'
+                    >
+                        Selanjutnya
+                    </button>
                 </CardText>
             </LayoutChild>
         </Layout>
