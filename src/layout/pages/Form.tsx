@@ -243,7 +243,7 @@ export const FormSuper = (props: any) => {
                     </button>
                 </div>
             ) : null}
-            <HeaderWhiteCustom typeIcon='close' title={props.title} />
+            <HeaderWhiteCustomTable typeIcon='close' title={props.title} />
             <LayoutChild className='flex-col gap-0'>
                 <h6 className='text-black/60'>Nama Penembak</h6>
 
