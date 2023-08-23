@@ -180,8 +180,6 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
         const num = parseInt(no) + 1;
         return status !== 0 && num !== status;
     };
-
-
     // API HANDLE
     // NILAI
     const updateNilaiPerkenaanBE = async (updatedData: any, noBaris: number) => {

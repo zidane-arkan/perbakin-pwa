@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import api from '../../api/api';
 import { AxiosError } from 'axios';
-import { HeaderWhiteCustom } from '../../components/Header'
+import { HeaderWhiteCustom, HeaderWhiteCustomTable } from '../../components/Header'
 import { Layout, LayoutChild } from '../../components/Layout'
 import { CardText } from '../../components/ui/Card';
 import { Link, Navigate } from 'react-router-dom';
@@ -102,7 +102,7 @@ const Form = (props: any) => {
 
     return (
         <Layout className={'rounded-3xl h-auto gap-8 mt-28 pb-10 pt-[2%] justify-evenly overflow-hidden'}>
-            <HeaderWhiteCustom typeIcon='close' title={props.title} />
+            <HeaderWhiteCustomTable typeIcon='close' title={props.title} />
             <LayoutChild className='flex-col gap-0'>
                 <h6 className='text-black/60'>Nama Penembak</h6>
 
@@ -175,7 +175,7 @@ export const FormSuper = (props: any) => {
     const [shooter, setShooter] = useState<Penembak>();
     const navigate = useNavigate();
 
-    console.log(props.ujian)
+    // console.log(props.ujian)
     // const classname = `${props.classname} rounded-3xl`;
     const handleFinishStage = async (e: React.FormEvent) => {
         e.preventDefault();

@@ -104,6 +104,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
   const [tableData, setTableData] = useState<TableDataItem[]>([]);
   const [loading, setLoading] = useState(true);
   // const [isTimeoutCleared, setIsTimeoutCleared] = useState(true);
+  const [activeInput, setActiveInput] = useState<number | null>(null);
   // STATUS INPUT
   const [status, setStatus] = useState<number>(0);
 
@@ -304,8 +305,28 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
   };
 
   // HANDLE DATA
-  const handleInputChange = <K extends keyof TableDataItem>(e: React.ChangeEvent<HTMLInputElement>, id: number, field: K) => {
+  const handleInputClick = (id: number) => {
+    setActiveInput(id);
+    const updatedTableData = tableData.map((data) => {
+      if (data.id === id) {
+        return {
+          ...data,
+          nilaiPerkenaanA: 0,
+          nilaiPerkenaanC: 0,
+          nilaiPerkenaanD: 0,
+        };
+      }
+      return data;
+    });
+    setTableData(updatedTableData);
+  };
+  const handleInputChange = <K extends keyof TableDataItem>(
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: number,
+    field: K
+  ) => {
     const { value } = e.target;
+    // const parsedValue = value === "" ? 0 : +value;
 
     const updatedTableData = [...tableData];
     const updatedRow = updatedTableData.find((data) => data.id === id);
@@ -320,19 +341,16 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
       ]);
 
       setTableData(updatedTableData);
-      // WAIT UNTIL USER FINISH
-      // Clear existing timeout (if any) before setting a new one
+
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
 
-      // Set a new timeout to update the backend data after 500ms of inactivity
       timeoutRef.current = setTimeout(() => {
         updateNilaiPerkeneaanBE(updatedRow, id);
-      }, 500);
+      }, 1000);
     }
   };
-
   const handleTimeChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     id: number,
@@ -382,7 +400,6 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
       }
     }, 500);
   };
-
   const handleCheckboxChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     id: number
@@ -466,9 +483,9 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                   onChange={(e) =>
                     handleInputChange(e, data.id, "nilaiPerkenaanA")
                   }
-                  readOnly={isReadOnly(data.id)} // Set readOnly based on the "status"
                 />
               </td>
+
               <td>
                 <input
                   type="number"

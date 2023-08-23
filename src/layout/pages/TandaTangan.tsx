@@ -87,10 +87,11 @@ const TandaTangan = (props: any) => {
                 const bloPenembak = dataURLtoBlob(imageURLPeserta);
                 formData.append("shooter_sign", bloPenembak);
             }
-            // console.log("FormData entries:");
-            // for (const [key, value] of formData.entries()) {
-            //     console.log(key, value);
-            // }
+            // console.log(formData)
+            console.log("FormData entries:");
+            for (const [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
             const endpoint = `/scorer/shooter/${shooterid}/result/${props.stage}/finish`
             const response = await api.patch(endpoint, formData);
             console.log(response.data);

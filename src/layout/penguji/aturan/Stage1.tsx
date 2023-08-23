@@ -10,9 +10,9 @@ const Stage1 = () => {
         <Aturan
             title="Stage #1"
             jarak="7"
-            waktu="6"
+            waktu="3"
             sasaran="1"
-            tembakMaks='18'
+            tembakMaks='6'
             link={`stage1_form/${shooterid}`}
             posisiAwal='Berdiri rileks menghadap sasaran, kedua tangan disamping.'
         >
