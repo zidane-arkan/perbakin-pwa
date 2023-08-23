@@ -11,12 +11,14 @@ import { useNavigate } from 'react-router-dom';
 
 
 const TandaTangan = (props: any) => {
+    const navigate = useNavigate();
     const sigCanvasPenguji = useRef<SignaturePad>(null);
     const sigCanvasPeserta = useRef<SignaturePad>(null);
     const [stageStatus, setStageStatus] = useState<any>(false);
     const [imageURL, setImageURL] = useState<String | null>(null);
     const [imageURLPeserta, setImageURLPeserta] = useState<String | null>(null);
-    const navigate = useNavigate();
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
     const { shooterid } = useParams();
 
     console.log(props.stageStatus)
@@ -147,9 +149,48 @@ const TandaTangan = (props: any) => {
             };
         }
     };
+    // modal Handle
+    const handleGoBack = () => {
+        if (showConfirmationModal) {
+            navigate(-1);
+        } else {
+            setShowConfirmationModal(true);
+        }
+    };
+
+    const handleConfirmGoBack = () => {
+        navigate(-1);
+    };
+
+    const handleCancelGoBack = () => {
+        setShowConfirmationModal(false);
+    };
+
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pb-8 sm:pb-4 pt-[10%] sm:pt-[7%]'}>
-            <HeaderBlueCustom typeIcon='close' title={props.title} />
+            {showConfirmationModal && (
+                <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50'>
+                    <div className='bg-white p-8 rounded-lg shadow-md'>
+                        <p className='mb-4'>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
+                        <div className='flex justify-end'>
+                            <button className='mr-4 text-blue-500' onClick={handleCancelGoBack}>
+                                Batal
+                            </button>
+                            <button className='text-red-500' onClick={handleConfirmGoBack}>
+                                Ya, Kembali
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            <HeaderBlueCustom
+                typeIcon='close'
+                title={props.title}
+                showConfirmationModal={showConfirmationModal}
+                handleGoBack={handleGoBack}
+                handleConfirmGoBack={handleConfirmGoBack}
+                handleCancelGoBack={handleCancelGoBack}
+            />
             {props.children}
             <LayoutChild className='justify-between gap-6'>
                 <button onClick={handleSuccessButton} className='py-2 h-[48px] w-[165px] sm:w-1/2 sm:h-[50px] sm:rounded-2xl rounded-xl bg-[#62DE5F]'>Berhasil</button>

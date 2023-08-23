@@ -77,9 +77,11 @@ const FormTable = (props: PropsForm) => {
     );
 }
 const Form = (props: any) => {
+    const navigate = useNavigate();
     const { shooterid } = useParams();
     const [loading, setLoading] = useState(true);
     const [shooter, setShooter] = useState<Penembak>();
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
     const classname = `${props.classname} rounded-3xl`;
 
@@ -99,10 +101,47 @@ const Form = (props: any) => {
 
         fetchInitialShooters();
     }, []);
+    // MODAL HANDLE
+    const handleGoBack = () => {
+        if (showConfirmationModal) {
+            navigate(-1);
+        } else {
+            setShowConfirmationModal(true);
+        }
+    };
 
+    const handleConfirmGoBack = () => {
+        navigate(-1);
+    };
+
+    const handleCancelGoBack = () => {
+        setShowConfirmationModal(false);
+    };
     return (
         <Layout className={'rounded-3xl h-auto gap-8 mt-28 pb-10 pt-[2%] justify-evenly overflow-hidden'}>
-            <HeaderWhiteCustomTable typeIcon='close' title={props.title} />
+            {showConfirmationModal && (
+                <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50'>
+                    <div className='bg-white p-8 rounded-lg shadow-md'>
+                        <p className='mb-4'>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
+                        <div className='flex justify-end'>
+                            <button className='mr-4 text-blue-500' onClick={handleCancelGoBack}>
+                                Batal
+                            </button>
+                            <button className='text-red-500' onClick={handleConfirmGoBack}>
+                                Ya, Kembali
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            <HeaderWhiteCustomTable
+                typeIcon='close'
+                title={props.title}
+                showConfirmationModal={showConfirmationModal}
+                handleGoBack={handleGoBack}
+                handleConfirmGoBack={handleConfirmGoBack}
+                handleCancelGoBack={handleCancelGoBack}
+            />
             <LayoutChild className='flex-col gap-0'>
                 <h6 className='text-black/60'>Nama Penembak</h6>
 

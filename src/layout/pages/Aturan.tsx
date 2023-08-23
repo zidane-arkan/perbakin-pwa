@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { HeaderBlueCustom } from '../../components/Header';
 import { Layout, LayoutChild } from '../../components/Layout'
 import { Card, CardText } from '../../components/ui/Card'
@@ -23,10 +24,50 @@ type Props = {
 }
 
 const Aturan = (props: Props) => {
+    const navigate = useNavigate();
     const sasaran = props.name === 'kualifikasi' ? 'buah Ring Target Pistol' : 'buah Sasaran IPSC';
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
+    const handleGoBack = () => {
+        if (showConfirmationModal) {
+            navigate(-1);
+        } else {
+            setShowConfirmationModal(true);
+        }
+    };
+
+    const handleConfirmGoBack = () => {
+        navigate(-1);
+    };
+
+    const handleCancelGoBack = () => {
+        setShowConfirmationModal(false);
+    };
     return (
         <Layout className={'rounded-3xl mt-28 mb-[5%] pt-[10%]'}>
-            <HeaderBlueCustom typeIcon='close' title={props.title} />
+            {showConfirmationModal && (
+                <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50'>
+                    <div className='bg-white p-8 rounded-lg shadow-md'>
+                        <p className='mb-4'>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
+                        <div className='flex justify-end'>
+                            <button className='mr-4 text-blue-500' onClick={handleCancelGoBack}>
+                                Batal
+                            </button>
+                            <button className='text-red-500' onClick={handleConfirmGoBack}>
+                                Ya, Kembali
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            <HeaderBlueCustom
+                typeIcon='close'
+                title={props.title}
+                showConfirmationModal={showConfirmationModal}
+                handleGoBack={handleGoBack}
+                handleConfirmGoBack={handleConfirmGoBack}
+                handleCancelGoBack={handleCancelGoBack}
+            />
             <LayoutChild className='flex-col gap-4 justify-between'>
                 <section className='flex flex-col gap-4'>
                     <section className='flex justify-between w-full gap-4'>
