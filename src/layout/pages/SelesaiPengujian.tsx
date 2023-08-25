@@ -233,7 +233,9 @@ export const SelesaiPengujianSuper = (props: any) => {
     const [stageStatus, setStageStatus] = useState<any>(false);
     const [imageURL, setImageURL] = useState<String | null>(null);
     const [imageURLPeserta, setImageURLPeserta] = useState<String | null>(null);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const navigate = useNavigate();
+
     const { examid, scorerid, shooterid } = useParams();
 
     console.log(props.stage)
@@ -343,10 +345,49 @@ export const SelesaiPengujianSuper = (props: any) => {
             };
         }
     };
+
+    // modal Handle
+    const handleGoBack = () => {
+        if (showConfirmationModal) {
+            navigate(-1);
+        } else {
+            setShowConfirmationModal(true);
+        }
+    };
+
+    const handleConfirmGoBack = () => {
+        navigate(-1);
+    };
+
+    const handleCancelGoBack = () => {
+        setShowConfirmationModal(false);
+    };
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pb-8 pt-[10%]'}>
             {isLoading && <LoadingModal />}
-            <HeaderBlueCustom typeIcon='close' title="Hasil Ujian" />
+            {showConfirmationModal && (
+                <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50'>
+                    <div className='bg-white p-8 rounded-lg shadow-md'>
+                        <p className='mb-4'>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
+                        <div className='flex justify-end'>
+                            <button className='mr-4 text-blue-500' onClick={handleCancelGoBack}>
+                                Batal
+                            </button>
+                            <button className='text-red-500' onClick={handleConfirmGoBack}>
+                                Ya, Kembali
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            <HeaderBlueCustom
+                typeIcon='close'
+                title={"Hasil Ujian"}
+                showConfirmationModal={showConfirmationModal}
+                handleGoBack={handleGoBack}
+                handleConfirmGoBack={handleConfirmGoBack}
+                handleCancelGoBack={handleCancelGoBack}
+            />
             <LayoutChild>
                 <section className='w-full flex flex-row items-center justify-between gap-4'>
                     <div className='flex flex-col gap-2'>
