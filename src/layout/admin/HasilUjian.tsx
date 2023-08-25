@@ -54,6 +54,8 @@ const TabelHasilUjianAll = ({ id }: any) => {
     const superAdminCtx = useContext(AuthContext);
     const [resultData, setResultData] = useState<ResultData[] | any>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [searchQuery, setSearchQuery] = useState<string>('');
+    // HANDLE DOWNLOAD PDF
     const handleDownloadPdf = () => {
         // Membuat screenshot dari tabel menggunakan html2canvas
         html2canvas(document.querySelector('#tabelHasilUjianAll') as HTMLElement).then((canvas) => {
@@ -145,7 +147,12 @@ const TabelHasilUjianAll = ({ id }: any) => {
                             <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#1B79B8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
                         </svg>
                     </span>
-                    <input type="text" className="w-full py-3 pl-10 pr-4 shadow-md text-gray-700 bg-white border rounded-full focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" placeholder="Cari" />
+                    <input
+                        type="text" className="w-full py-3 pl-10 pr-4 shadow-md text-gray-700 bg-white border rounded-full focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        placeholder="Cari Nama"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
                 </div>
                 <button onClick={handleDownloadPdf} type='button' className="flex items-center justify-center w-[15%] h-full sm:w-auto sm:px-4 sm:py-4 rounded-full bg-[#1B79B8]">
                     <img src={arrowdown} alt='arrow-down' />
@@ -170,22 +177,26 @@ const TabelHasilUjianAll = ({ id }: any) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {resultData.map((item: any) => (
-                            <tr key={item.id} className={item.failed ? "bg-[#F3FAFF] text-black" : "bg-white text-black border-blue-400"}>
-                                <th scope="row" className="px-6 py-4 font-medium text-black whitespace-nowrap">
-                                    {item.name}
-                                </th>
-                                <td className="px-6 py-4">
-                                    {item.scorer}
-                                </td>
-                                <td className="px-6 py-4">
-                                    {item.province}
-                                </td>
-                                <td className="px-6 py-4">
-                                    {item.failed ? "Gagal" : "Lulus"} / Stage {item.stage}
-                                </td>
-                            </tr>
-                        ))}
+                        {resultData
+                            .filter((item: any) =>
+                                item.name.toLowerCase().includes(searchQuery.toLowerCase())
+                            )
+                            .map((item: any) => (
+                                <tr key={item.id} className={item.failed ? "bg-[#F3FAFF] text-black" : "bg-white text-black border-blue-400"}>
+                                    <th scope="row" className="px-6 py-4 font-medium text-black whitespace-nowrap">
+                                        {item.name}
+                                    </th>
+                                    <td className="px-6 py-4">
+                                        {item.scorer}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {item.province}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {item.failed ? "Gagal" : "Lulus"} / Stage {item.stage}
+                                    </td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
             </div>
@@ -212,7 +223,7 @@ const HasilUjian = () => {
                         <img src={arrowdown} alt='arrow-down' />
                     </button>
                 </form> */}
-                <TabelHasilUjianAll  />
+                <TabelHasilUjianAll />
                 <section className='flex w-full justify-between items-start'>
                     <div className='flex flex-col gap-4 items-start'>
                         <span className='flex gap-2 text-[#62DE5F]'>
