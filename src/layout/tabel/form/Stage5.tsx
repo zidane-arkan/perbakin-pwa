@@ -502,6 +502,7 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
                         <td rowSpan={1}>{item.no}</td>
                         <td>
                             <input
+                                className='w-[30px] sm:w-[40px]'
                                 type="number"
                                 min={0}
                                 max={2 - item.nilaiPerkenaanC - item.nilaiPerkenaanD}
@@ -513,6 +514,7 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
                         </td>
                         <td>
                             <input
+                                className='w-[30px] sm:w-[40px]'
                                 type="number"
                                 min={0}
                                 max={2 - item.nilaiPerkenaanA - item.nilaiPerkenaanD}
@@ -524,6 +526,7 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
                         </td>
                         <td>
                             <input
+                                className='w-[30px] sm:w-[40px]'
                                 type="number"
                                 min={0}
                                 max={2 - item.nilaiPerkenaanA - item.nilaiPerkenaanC}
@@ -544,6 +547,7 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
                                     <td rowSpan={3}>
                                         <div className="stopwatch">
                                             <input
+                                                className='w-[30px] sm:w-[40px]'
                                                 type="number"
                                                 name="minute"
                                                 max="59"
@@ -554,6 +558,7 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
                                             />
                                             :
                                             <input
+                                                className='w-[30px] sm:w-[40px]'
                                                 type="number"
                                                 name="second"
                                                 max="59"
@@ -564,6 +569,7 @@ const Percobaan1 = ({ apiData, shooterid }: any) => {
                                             />
                                             :
                                             <input
+                                                className='w-[30px] sm:w-[40px]'
                                                 type="number"
                                                 name="millisecond"
                                                 max="99"

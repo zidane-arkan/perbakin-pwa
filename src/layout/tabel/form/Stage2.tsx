@@ -419,6 +419,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                             <td rowSpan={2}>{data.id}</td>
                             <td>
                                 <input
+                                    className='w-[30px] sm:w-[40px]'
                                     type="number"
                                     min={0}
                                     max={2 - data.nilaiPerkenaanC - data.nilaiPerkenaanD}
@@ -431,6 +432,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                             </td>
                             <td>
                                 <input
+                                    className='w-[30px] sm:w-[40px]'
                                     type="number"
                                     min={0}
                                     max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanD}
@@ -443,6 +445,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                             </td>
                             <td>
                                 <input
+                                    className='w-[30px] sm:w-[40px]'
                                     type="number"
                                     min={0}
                                     max={2 - data.nilaiPerkenaanA - data.nilaiPerkenaanC}
@@ -456,6 +459,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                             <td rowSpan={2}>
                                 <div className="stopwatch">
                                     <input
+                                        className='w-[30px] sm:w-[40px]'
                                         id={`minutes-${data.id}`}
                                         type="number"
                                         name="minute"
@@ -468,6 +472,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                     />
                                     :
                                     <input
+                                        className='w-[30px] sm:w-[40px]'
                                         id={`seconds-${data.id}`}
                                         type="number"
                                         name="second"
@@ -480,6 +485,7 @@ const Percobaan1: React.FC<Percobaan1Props> = ({ shooterid }: any) => {
                                     />
                                     :
                                     <input
+                                        className='w-[30px] sm:w-[40px]'
                                         id={`milliseconds-${data.id}`}
                                         type="number"
                                         name="millisecond"
