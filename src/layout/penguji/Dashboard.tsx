@@ -25,7 +25,7 @@ const Dashboard = () => {
             try {
                 const response = await api.get(`/scorer`);
                 const penguji = response.data.data.scorer;
-                console.log(penguji)
+                // console.log(penguji)
                 setPenguji(penguji);
             } catch (error) {
                 const err = error as AxiosError<ResponseData<null>>;
@@ -40,14 +40,14 @@ const Dashboard = () => {
     return (
         <>
             <BgHeader>
-                <div className='flex items-start sm:items-end justify-between w-full'>
+                <div className='flex items-start sm:items-center justify-between w-full'>
                     <section className='flex flex-col items-start'>
                         <h2>Halo, Penguji</h2>
                         <h5>{loading ? 'Loading...' : `${penguji?.name}`}</h5>
                     </section>
                     <section>
                         <Link to={'penguji/editprofile'}>
-                            <img className='w-[45px] sm:w-[60px]' src={perbakinLogo} />
+                            <img className='w-[45px] sm:w-[70px] rounded-full' src={`${import.meta.env.VITE_API_URL}/media/${penguji?.image_path}`} />
                         </Link>
                     </section>
                 </div>

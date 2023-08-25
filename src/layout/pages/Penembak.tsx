@@ -80,7 +80,7 @@ export const Penembak = (props: any) => {
                 const shooterData: Penembak[] = shooterResponse.data.data.shooters;
                 const resultData: Penembak[] = resultResponse.data.data.results;
 
-                console.log(resultData)
+                // console.log(resultData)
                 const updatedShooters = shooterData.map(shooter => {
                     const correspondingResult = resultData.find(result => result.id === shooter.id);
                     if (correspondingResult) {
