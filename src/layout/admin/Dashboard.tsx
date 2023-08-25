@@ -49,7 +49,7 @@ const Dashboard = () => {
                         </section>
                         <section>
                             <Link to={'admindashboard/editprofile'}>
-                                <img src={perbakinLogo}  / >
+                                <img className='w-[45px] sm:w-[60px]' src={perbakinLogo}  / >
                             </Link>
                         </section>
                     </div>
