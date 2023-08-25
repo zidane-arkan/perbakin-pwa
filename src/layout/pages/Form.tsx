@@ -251,6 +251,8 @@ export const FormSuper = (props: any) => {
     const [isSaving, setIsSaving] = useState(false);
     const [isErrorOverlay, setIsErrorOverlay] = useState(false);
     const [shooter, setShooter] = useState<Penembak>();
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [showConfirmationModalBtn, setShowConfirmationModalBtn] = useState(false);
     const navigate = useNavigate();
 
     // console.log(props.ujian)
@@ -301,6 +303,39 @@ export const FormSuper = (props: any) => {
         fetchInitialShooters();
     }, []);
 
+    // MODAL X HANDLE
+    const handleGoBack = () => {
+        if (showConfirmationModal) {
+            navigate(-1);
+        } else {
+            setShowConfirmationModal(true);
+        }
+    };
+
+    const handleConfirmGoBack = () => {
+        navigate(-1);
+    };
+
+    const handleCancelGoBack = () => {
+        setShowConfirmationModal(false);
+    };
+    // MODAL Button Selanjutnya Handle
+    const handleGoBackBtn = () => {
+        if (showConfirmationModal) {
+            navigate(`${props.link}`);
+        } else {
+            setShowConfirmationModalBtn(true);
+        }
+    };
+
+    const handleConfirmGoBackBtn = () => {
+        navigate(`${props.link}`);
+    };
+
+    const handleCancelGoBackBtn = () => {
+        setShowConfirmationModalBtn(false);
+    };
+
     return (
         <Layout className={'rounded-3xl h-auto gap-8 mt-28 pb-10 pt-[2%] justify-evenly overflow-hidden'}>
             {isSaving ? (
@@ -321,7 +356,44 @@ export const FormSuper = (props: any) => {
                     </button>
                 </div>
             ) : null}
-            <HeaderWhiteCustomTable typeIcon='close' title={props.title} />
+            {showConfirmationModal && (
+                <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50'>
+                    <div className='bg-white p-8 rounded-lg shadow-md'>
+                        <p className='mb-4'>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
+                        <div className='flex justify-end'>
+                            <button className='mr-4 text-blue-500' onClick={handleCancelGoBack}>
+                                Batal
+                            </button>
+                            <button className='text-red-500' onClick={handleConfirmGoBack}>
+                                Ya, Kembali
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {showConfirmationModalBtn && (
+                <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50'>
+                    <div className='bg-white p-8 rounded-lg shadow-md'>
+                        <p className='mb-4'>Apakah Anda yakin ingin Ke Page Konfirmasi ?</p>
+                        <div className='flex justify-end'>
+                            <button className='mr-4 text-blue-500' onClick={handleCancelGoBackBtn}>
+                                Batal
+                            </button>
+                            <button className='text-red-500' onClick={handleConfirmGoBackBtn}>
+                                Ya, Lanjut
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            <HeaderWhiteCustomTable
+                typeIcon='close'
+                title={props.title}
+                showConfirmationModal={showConfirmationModal}
+                handleGoBack={handleGoBack}
+                handleConfirmGoBack={handleConfirmGoBack}
+                handleCancelGoBack={handleCancelGoBack}
+            />
             <LayoutChild className='flex-col gap-0'>
                 <h6 className='text-black/60'>Nama Penembak</h6>
 
