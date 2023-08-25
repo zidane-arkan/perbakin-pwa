@@ -78,11 +78,7 @@ export const Penembak = (props: any) => {
                 const resultResponse = await api.get(`/scorer/result`);
 
                 const shooterData: Penembak[] = shooterResponse.data.data.shooters;
-                // console.log(shooterData[1].id)
-                const resultResponseShooter = await api.get(`/scorer/shooter/${shooterData[shooterData.length - 1].id}`);
-                console.log(resultResponseShooter)
                 const resultData: Penembak[] = resultResponse.data.data.results;
-
                 // console.log(resultData)
                 const updatedShooters = shooterData.map(shooter => {
                     const correspondingResult = resultData.find(result => result.id === shooter.id);
@@ -112,6 +108,30 @@ export const Penembak = (props: any) => {
         // const interval = setInterval(fetchData, 5000);
         // return () => clearInterval(interval);
     }, []);
+
+    useEffect(() => {
+        if (initialFetchDone) {
+            const fetchResultData = async () => {
+                try {
+                    const latestShooterId = shooters[shooters.length - 1]?.id;
+
+                    if (latestShooterId) {
+                        const resultResponseShooter = await api.get(`/scorer/shooter/${latestShooterId}/result`);
+                        console.log(resultResponseShooter);
+
+                        // You can handle the resultResponseShooter here as needed
+                    }
+                } catch (error) {
+                    const err = error as AxiosError<ResponseData<null>>;
+                    console.error("Error:", err);
+                }
+            };
+            fetchResultData();
+            // const interval = setInterval(fetchResultData, 5000);
+
+            // return () => clearInterval(interval);
+        }
+    }, [initialFetchDone, shooters]);
 
     if (loading) {
         return (
