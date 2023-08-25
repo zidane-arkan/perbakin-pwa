@@ -3,7 +3,7 @@ import { LayoutAdmin, LayoutChild } from '../../components/Layout'
 import { BgHeader } from '../../components/Header'
 import Tabs from '../../components/ui/Tabs'
 import { Outlet } from 'react-router-dom'
-import avatar from '../../app-assets/avatar.png'
+import perbakinLogo from '../../app-assets/perbakin-logo.png'
 import { Link } from 'react-router-dom'
 import { AxiosError } from 'axios'
 import api from '../../api/api'
@@ -49,7 +49,7 @@ const Dashboard = () => {
                         </section>
                         <section>
                             <Link to={'admindashboard/editprofile'}>
-                                <img src={avatar} />
+                                <img src={perbakinLogo}  / >
                             </Link>
                         </section>
                     </div>
