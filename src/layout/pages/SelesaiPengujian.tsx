@@ -22,16 +22,20 @@ const SelesaiPengujian = (props: any) => {
             </div>
         );
     };
-
+    // CANVAS PENGUJI DAN PESERTA
     const sigCanvasPenguji = useRef<SignaturePad>(null);
     const sigCanvasPeserta = useRef<SignaturePad>(null);
+    // STATUS STAGE
     const [stageStatus, setStageStatus] = useState<any>(false);
+    // SIMPAN TANDA TANGAN
     const [imageURL, setImageURL] = useState<String | null>(null);
     const [imageURLPeserta, setImageURLPeserta] = useState<String | null>(null);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
     const navigate = useNavigate();
     const { shooterid } = useParams();
 
-    console.log(props.stage)
+    // console.log(props.stage)
 
     const handleSuccessButton = () => {
         setIsLoading(true);
@@ -138,10 +142,49 @@ const SelesaiPengujian = (props: any) => {
             };
         }
     };
+    // MODAL HANDLE
+    const handleGoBack = () => {
+        if (showConfirmationModal) {
+            navigate(-1);
+        } else {
+            setShowConfirmationModal(true);
+        }
+    };
+
+    const handleConfirmGoBack = () => {
+        navigate(-1);
+    };
+
+    const handleCancelGoBack = () => {
+        setShowConfirmationModal(false);
+    };
+
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pb-8 pt-[10%]'}>
             {isLoading && <LoadingModal />}
-            <HeaderBlueCustom typeIcon='close' title="Selesai Pengujian" />
+            {showConfirmationModal && (
+                <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50'>
+                    <div className='bg-white p-8 rounded-lg shadow-md'>
+                        <p className='mb-4'>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
+                        <div className='flex justify-end'>
+                            <button className='mr-4 text-blue-500' onClick={handleCancelGoBack}>
+                                Batal
+                            </button>
+                            <button className='text-red-500' onClick={handleConfirmGoBack}>
+                                Ya, Kembali
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            <HeaderBlueCustom
+                typeIcon='close'
+                title="Selesai Pengujian"
+                showConfirmationModal={showConfirmationModal}
+                handleGoBack={handleGoBack}
+                handleConfirmGoBack={handleConfirmGoBack}
+                handleCancelGoBack={handleCancelGoBack}
+            />
             <LayoutChild>
                 <section className='w-full flex flex-row items-center justify-between gap-4'>
                     <div className='flex flex-col gap-2'>
@@ -215,6 +258,7 @@ const SelesaiPengujian = (props: any) => {
 }
 export default SelesaiPengujian
 
+// SELESAI PENGUJIAN UNTUK SUPER ADMIN
 export const SelesaiPengujianSuper = (props: any) => {
     const [isLoading, setIsLoading] = useState(false);
 
@@ -346,7 +390,7 @@ export const SelesaiPengujianSuper = (props: any) => {
         }
     };
 
-    // modal Handle
+    // MODAL HANDLE
     const handleGoBack = () => {
         if (showConfirmationModal) {
             navigate(-1);
