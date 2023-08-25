@@ -54,6 +54,19 @@ const TabelHasilUjianAll = ({ id }: any) => {
     const superAdminCtx = useContext(AuthContext);
     const [resultData, setResultData] = useState<ResultData[] | any>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const handleDownloadPdf = () => {
+        // Membuat screenshot dari tabel menggunakan html2canvas
+        html2canvas(document.querySelector('#tabelHasilUjianAll') as HTMLElement).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save('hasil_ujian.pdf');
+        });
+    };
     const fetchTableData = async () => {
         try {
             const examId = superAdminCtx?.getExamId();
@@ -124,67 +137,69 @@ const TabelHasilUjianAll = ({ id }: any) => {
         )
     }
     return (
-        <section id={id} className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100">
-                <thead className="text-xs text-black uppercase bg-white">
-                    <tr>
-                        <th scope="col" className="px-6 py-3">
-                            Nama Peserta
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Nama Penguji
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Tempat Pengujian
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Hasil Ujian
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {resultData.map((item: any) => (
-                        <tr key={item.id} className={item.failed ? "bg-[#F3FAFF] text-black" : "bg-white text-black border-blue-400"}>
-                            <th scope="row" className="px-6 py-4 font-medium text-black whitespace-nowrap">
-                                {item.name}
+        <section>
+            <form className='flex w-full h-auto items-center justify-between pb-8'>
+                <div className="w-[80%] relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 ">
+                        <svg className="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none">
+                            <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#1B79B8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+                        </svg>
+                    </span>
+                    <input type="text" className="w-full py-3 pl-10 pr-4 shadow-md text-gray-700 bg-white border rounded-full focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" placeholder="Cari" />
+                </div>
+                <button onClick={handleDownloadPdf} type='button' className="flex items-center justify-center w-[15%] h-full sm:w-auto sm:px-4 sm:py-4 rounded-full bg-[#1B79B8]">
+                    <img src={arrowdown} alt='arrow-down' />
+                </button>
+            </form>
+            <div id="tabelHasilUjianAll" className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100">
+                    <thead className="text-xs text-black uppercase bg-white">
+                        <tr>
+                            <th scope="col" className="px-6 py-3">
+                                Nama Peserta
                             </th>
-                            <td className="px-6 py-4">
-                                {item.scorer}
-                            </td>
-                            <td className="px-6 py-4">
-                                {item.province}
-                            </td>
-                            <td className="px-6 py-4">
-                                {item.failed ? "Gagal" : "Lulus"} / Stage {item.stage}
-                            </td>
+                            <th scope="col" className="px-6 py-3">
+                                Nama Penguji
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Tempat Pengujian
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Hasil Ujian
+                            </th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {resultData.map((item: any) => (
+                            <tr key={item.id} className={item.failed ? "bg-[#F3FAFF] text-black" : "bg-white text-black border-blue-400"}>
+                                <th scope="row" className="px-6 py-4 font-medium text-black whitespace-nowrap">
+                                    {item.name}
+                                </th>
+                                <td className="px-6 py-4">
+                                    {item.scorer}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {item.province}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {item.failed ? "Gagal" : "Lulus"} / Stage {item.stage}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </section>
     );
 }
 
 const HasilUjian = () => {
-    const navigate = useNavigate();
-    const handleDownloadPdf = () => {
-        // Membuat screenshot dari tabel menggunakan html2canvas
-        html2canvas(document.querySelector('#tabelHasilUjianAll') as HTMLElement).then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const imgProps = pdf.getImageProperties(imgData);
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save('hasil_ujian.pdf');
-        });
-    };
+    // const navigate = useNavigate();
     return (
         <Layout className={'rounded-3xl gap-8 mt-28 pt-[2%] overflow-hidden'}>
             <HeaderWhiteCustom typeIcon='returnblack' title='Hasil Ujian' />
             <LayoutChild className='flex-col gap-4 h-auto'>
-                <form className='flex w-full h-auto items-center justify-between'>
+                {/* <form className='flex w-full h-auto items-center justify-between'>
                     <div className="w-[80%] relative">
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 ">
                             <svg className="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none">
@@ -196,8 +211,8 @@ const HasilUjian = () => {
                     <button onClick={handleDownloadPdf} type='button' className="flex items-center justify-center w-[15%] h-full sm:w-auto sm:px-4 sm:py-4 rounded-full bg-[#1B79B8]">
                         <img src={arrowdown} alt='arrow-down' />
                     </button>
-                </form>
-                <TabelHasilUjianAll id="tabelHasilUjianAll" />
+                </form> */}
+                <TabelHasilUjianAll  />
                 <section className='flex w-full justify-between items-start'>
                     <div className='flex flex-col gap-4 items-start'>
                         <span className='flex gap-2 text-[#62DE5F]'>
