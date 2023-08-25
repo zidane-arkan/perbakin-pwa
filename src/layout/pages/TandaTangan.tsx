@@ -15,28 +15,44 @@ const TandaTangan = (props: any) => {
     const sigCanvasPenguji = useRef<SignaturePad>(null);
     const sigCanvasPeserta = useRef<SignaturePad>(null);
     const [stageStatus, setStageStatus] = useState<any>(false);
+    // SIMPAN TANDA TANGAN
     const [imageURL, setImageURL] = useState<String | null>(null);
     const [imageURLPeserta, setImageURLPeserta] = useState<String | null>(null);
+    // CEK TANDA TANGAN
+    const [pengujiTandaTanganFilled, setPengujiTandaTanganFilled] = useState(false);
+    const [pesertaTandaTanganFilled, setPesertaTandaTanganFilled] = useState(false);
+    // STATE BERHASIL DAN GAGAL
+    const [successButtonClicked, setSuccessButtonClicked] = useState(false);
+    const [failureButtonClicked, setFailureButtonClicked] = useState(false);
+    // MODAL
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
     const { shooterid } = useParams();
 
-    console.log(props.stageStatus)
+    // console.log(props.stageStatus)
 
+    // Handle Button Success dan Gagal
     const handleSuccessButton = () => {
         setStageStatus(true);
+        setSuccessButtonClicked(true);
+        setFailureButtonClicked(false);
     };
+
     const handleGagalButton = () => {
         setStageStatus(false);
+        setSuccessButtonClicked(false);
+        setFailureButtonClicked(true);
     };
     // RESET TANDA TANGAN
     const resetSigPenguji = () => {
         if (sigCanvasPenguji.current !== null) {
+            setPengujiTandaTanganFilled(false);
             return sigCanvasPenguji.current.clear();
         }
     }
     const resetSigPeserta = () => {
         if (sigCanvasPeserta.current !== null) {
+            setPesertaTandaTanganFilled(false);
             return sigCanvasPeserta.current.clear();
         }
     }
@@ -57,9 +73,9 @@ const TandaTangan = (props: any) => {
             const trimmedCanvas = sigCanvasPenguji.current.getTrimmedCanvas();
             if (trimmedCanvas) {
                 const dataURL = trimmedCanvas.toDataURL('image/png');
-
                 // Ubah data URL menjadi Blob
                 setImageURL(dataURL);
+                setPengujiTandaTanganFilled(true);
                 const blob = dataURLtoBlob(dataURL);
                 // Simpan tanda tangan dalam bentuk Blob
                 // Misalnya, untuk mengirim ke API sebagai file, Anda dapat menyimpannya dalam state atau melakukan sesuatu dengan Blob ini.
@@ -72,6 +88,7 @@ const TandaTangan = (props: any) => {
             const trimmedCanvas = sigCanvasPeserta.current.getTrimmedCanvas();
             if (trimmedCanvas) {
                 setImageURLPeserta(trimmedCanvas.toDataURL('image/png'));
+                setPesertaTandaTanganFilled(true);
             }
         }
     }
@@ -193,8 +210,33 @@ const TandaTangan = (props: any) => {
             />
             {props.children}
             <LayoutChild className='justify-between gap-6'>
-                <button onClick={handleSuccessButton} className='py-2 h-[48px] w-[165px] sm:w-1/2 sm:h-[50px] sm:rounded-2xl rounded-xl bg-[#62DE5F]'>Berhasil</button>
-                <button onClick={handleGagalButton} className='button-gagal py-2 rounded-xl h-[48px] w-[165px] sm:rounded-2xl sm:w-1/2 sm:h-[50px]'>Gagal</button>
+                <button
+                    className={
+                        `
+                        py-2 border-[2px] text-gray-600 border-solid border-gray-300 rounded-xl h-[48px] w-[165px] sm:rounded-2xl sm:w-1/2 sm:h-[50px] 
+                        ${successButtonClicked ? 'bg-green-500 text-white' : ''}
+                        ${failureButtonClicked ? 'bg-transparent text-gray-600' : ''}
+                        `
+                    }
+                    disabled={!pengujiTandaTanganFilled || !pesertaTandaTanganFilled}
+                    onClick={handleSuccessButton}
+                >
+                    Berhasil
+                </button>
+                {/* ${!pengujiTandaTanganFilled || !pesertaTandaTanganFilled ? 'bg-red-500 text-white' : ''} */}
+                <button
+                    className={
+                        `
+                        py-2 border-[2px] text-gray-600 border-solid border-gray-300 rounded-xl h-[48px] w-[165px] sm:rounded-2xl sm:w-1/2 sm:h-[50px]
+                        ${successButtonClicked ? 'bg-transparent text-gray-600' : ''}
+                        ${failureButtonClicked ? 'bg-red-500 text-white' : ''}
+                        `
+                    }
+                    disabled={!pengujiTandaTanganFilled || !pesertaTandaTanganFilled}
+                    onClick={handleGagalButton}
+                >
+                    Gagal
+                </button>
             </LayoutChild>
             <LayoutChild className='flex-col gap-12'>
                 <section className='flex flex-col gap-2'>
@@ -208,7 +250,8 @@ const TandaTangan = (props: any) => {
                                 className: "signatureCanvas"
                             }} />
                         <div className='flex w-full gap-4 sm:gap-8'>
-                            <button onClick={savePenguji} className='text-white py-2 h-[48px] w-[165px] sm:w-1/2 sm:h-[50px] sm:rounded-2xl rounded-xl bg-[#62DE5F]'>Simpan</button>
+                            <button
+                                onClick={savePenguji} className='text-white py-2 h-[48px] w-[165px] sm:w-1/2 sm:h-[50px] sm:rounded-2xl rounded-xl bg-[#62DE5F]'>Simpan</button>
                             <button onClick={resetSigPenguji} className='button-gagal py-2 rounded-xl h-[48px] w-[165px] sm:rounded-2xl sm:w-1/2 sm:h-[50px]'>Reset</button>
                         </div>
                     </div>
@@ -241,7 +284,7 @@ const TandaTangan = (props: any) => {
                             <button onClick={finishingShooter} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>
                                 Selesai Pengujian
                             </button> :
-                            <button onClick={sendFinishData} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>
+                            <button disabled={!successButtonClicked} onClick={sendFinishData} className={`w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg ${!successButtonClicked && !failureButtonClicked ? 'bg-red-500' : ''}`} type='button'>
                                 Selesai Pengujian {props.title}
                             </button>
                     }
