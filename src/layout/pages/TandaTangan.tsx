@@ -284,7 +284,7 @@ const TandaTangan = (props: any) => {
                             <button onClick={finishingShooter} className='w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg' type='button'>
                                 Selesai Pengujian
                             </button> :
-                            <button disabled={!successButtonClicked} onClick={sendFinishData} className={`w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg ${!successButtonClicked && !failureButtonClicked ? 'bg-red-500' : ''}`} type='button'>
+                            <button disabled={!successButtonClicked && !failureButtonClicked} onClick={sendFinishData} className={`w-full text-center px-4 py-4 text-white bg-[#036BB0] rounded-lg ${!successButtonClicked && !failureButtonClicked ? 'bg-red-500' : ''}`} type='button'>
                                 Selesai Pengujian {props.title}
                             </button>
                     }

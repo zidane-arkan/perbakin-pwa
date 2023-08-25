@@ -78,6 +78,9 @@ export const Penembak = (props: any) => {
                 const resultResponse = await api.get(`/scorer/result`);
 
                 const shooterData: Penembak[] = shooterResponse.data.data.shooters;
+                // console.log(shooterData[1].id)
+                const resultResponseShooter = await api.get(`/scorer/shooter/${shooterData[shooterData.length - 1].id}`);
+                console.log(resultResponseShooter)
                 const resultData: Penembak[] = resultResponse.data.data.results;
 
                 // console.log(resultData)
