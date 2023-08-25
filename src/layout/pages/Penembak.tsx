@@ -34,67 +34,81 @@ export const Penembak = (props: any) => {
 
     const classname = `${props.classname} rounded-3xl`;
 
+    // useEffect(() => {
+    //     const fetchInitialShooters = async () => {
+    //         try {
+    //             const response = await api.get(`/scorer/shooter`);
+    //             const shooters = response.data.data.shooters;
+    //             setShooters(shooters);
+    //             setInitialFetchDone(true);
+    //         } catch (error) {
+    //             const err = error as AxiosError<ResponseData<null>>;
+    //             console.error("Error:", err);
+    //         }
+    //         setLoading(false);
+    //     };
+
+    //     fetchInitialShooters();
+    // }, []);
+
+    // useEffect(() => {
+    //     console.log('initial Fect Done!')
+    //     // console.log(shooters)
+    //     if (initialFetchDone) {
+    //         const fetchShooters = async () => {
+    //             try {
+    //                 const response = await api.get(`/scorer/result`);
+    //                 const shooters = response.data.data.results;
+    //                 setShooters(shooters);
+    //             } catch (error) {
+    //                 const err = error as AxiosError<ResponseData<null>>;
+    //                 console.error("Error:", err);
+    //             }
+    //         };
+    //         const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
+
+    //         return () => clearInterval(interval);
+    //     }
+    // }, [initialFetchDone]);
+
     useEffect(() => {
-        const fetchInitialShooters = async () => {
+        const fetchData = async () => {
             try {
-                const response = await api.get(`/scorer/shooter`);
-                const shooters = response.data.data.shooters;
-                setShooters(shooters);
+                const shooterResponse = await api.get(`/scorer/shooter`);
+                const resultResponse = await api.get(`/scorer/result`);
+
+                const shooterData: Penembak[] = shooterResponse.data.data.shooters;
+                const resultData: Penembak[] = resultResponse.data.data.results;
+
+                console.log(resultData)
+                const updatedShooters = shooterData.map(shooter => {
+                    const correspondingResult = resultData.find(result => result.id === shooter.id);
+                    if (correspondingResult) {
+                        return {
+                            ...shooter,
+                            failed: correspondingResult.failed,
+                            stage: correspondingResult.stage
+                        };
+                    } else {
+                        return shooter;
+                    }
+                });
+                // console.log(updatedShooters)
+                setShooters(updatedShooters);
                 setInitialFetchDone(true);
+                setLoading(false);
             } catch (error) {
                 const err = error as AxiosError<ResponseData<null>>;
                 console.error("Error:", err);
+                setLoading(false);
             }
-            setLoading(false);
         };
 
-        fetchInitialShooters();
+        fetchData();
+
+        // const interval = setInterval(fetchData, 5000);
+        // return () => clearInterval(interval);
     }, []);
-
-    useEffect(() => {
-        console.log('initial Fect Done!')
-        // console.log(shooters)
-        if (initialFetchDone) {
-            const fetchShooters = async () => {
-                try {
-                    const response = await api.get(`/scorer/result`);
-                    const shooters = response.data.data.results;
-                    setShooters(shooters);
-                } catch (error) {
-                    const err = error as AxiosError<ResponseData<null>>;
-                    console.error("Error:", err);
-                }
-            };
-            const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
-
-            return () => clearInterval(interval);
-        }
-    }, [initialFetchDone]);
-
-
-    // useEffect Untuk POST User
-    // useEffect(() => {
-    //     console.log(shooters)
-    //     // useEffect ketiga untuk fetch data lain setelah kedua useEffect sebelumnya selesai
-    //     if (shooters.length > 0) {
-    //         const fetchShooterResults = async (shooterId: string) => {
-    //             try {
-    //                 const response = await api.get(`/scorer/shooter/${shooterId}/result`);
-    //                 const shooterResults = response.data.data.results;
-    //                 // Lakukan apa pun yang ingin Anda lakukan dengan data hasil shooter (shooterResults)
-    //             } catch (error) {
-    //                 console.error(`Error fetching results for shooter with ID ${shooterId}:`, error);
-    //             }
-    //         };
-
-    //         // Loop melalui setiap shooter dalam array shooters dan panggil fetchShooterResults untuk masing-masing
-    //         shooters.forEach((shooter) => {
-    //             const { id: shooterId } = shooter; // Destructuring to get the shooter_id
-    //             fetchShooterResults(shooterId);
-    //         });
-    //     }
-    // }, [shooters]);
-
 
     if (loading) {
         return (
@@ -133,6 +147,7 @@ export const Penembak = (props: any) => {
                             key={index}
                             penembak={shooter.name}
                             scorerId={shooter.scorer_id}
+                            image_path={shooter.image_path}
                             klub={shooter.club}
                             stage={shooter.stage || 0}
                             statusPenembak={shooter.failed}
@@ -151,6 +166,28 @@ export const Penembak = (props: any) => {
         </>
     )
 }
+// useEffect Untuk POST User
+// useEffect(() => {
+//     console.log(shooters)
+//     // useEffect ketiga untuk fetch data lain setelah kedua useEffect sebelumnya selesai
+//     if (shooters.length > 0) {
+//         const fetchShooterResults = async (shooterId: string) => {
+//             try {
+//                 const response = await api.get(`/scorer/shooter/${shooterId}/result`);
+//                 const shooterResults = response.data.data.results;
+//                 // Lakukan apa pun yang ingin Anda lakukan dengan data hasil shooter (shooterResults)
+//             } catch (error) {
+//                 console.error(`Error fetching results for shooter with ID ${shooterId}:`, error);
+//             }
+//         };
+
+//         // Loop melalui setiap shooter dalam array shooters dan panggil fetchShooterResults untuk masing-masing
+//         shooters.forEach((shooter) => {
+//             const { id: shooterId } = shooter; // Destructuring to get the shooter_id
+//             fetchShooterResults(shooterId);
+//         });
+//     }
+// }, [shooters]);
 
 export const PenembakAdmin: React.FC<PenembakAdminProps> = (props: any) => {
     const classname = `${props.classname} rounded-3xl`;

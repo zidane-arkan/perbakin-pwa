@@ -23,7 +23,7 @@ const Dashboard = () => {
     const [admin, setAdmin] = useState<Admin>();
 
     useEffect(() => {
-        const fetchInitialShooters = async () => {
+        const fetchInitialAdmin = async () => {
             try {
                 const response = await api.get(`/admin`);
                 const admin = response.data.data.admin;
@@ -35,7 +35,7 @@ const Dashboard = () => {
             setLoading(false);
         };
 
-        fetchInitialShooters();
+        fetchInitialAdmin();
     }, []);
     return (
         <>

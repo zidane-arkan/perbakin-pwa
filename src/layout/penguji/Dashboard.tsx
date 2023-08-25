@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import avatar from '../../app-assets/avatar.png';
+import perbakinLogo from '../../app-assets/perbakin-logo.png';
 import { Penembak } from '../pages/Penembak'
 import { Layout } from '../../components/Layout';
 import { BgHeader } from '../../components/Header';
@@ -8,20 +8,46 @@ import api from '../../api/api';
 import { AxiosError } from 'axios';
 import { Link } from 'react-router-dom'
 
+type Penguji = {
+    id: string;
+    exam_id: string;
+    image_path: string;
+    user_id: string;
+    username: string;
+    name: string;
+}
 const Dashboard = () => {
+    const [loading, setLoading] = useState(true);
+    const [penguji, setPenguji] = useState<Penguji>();
 
+    useEffect(() => {
+        const fetchInitialPenguji = async () => {
+            try {
+                const response = await api.get(`/scorer`);
+                const penguji = response.data.data.scorer;
+                console.log(penguji)
+                setPenguji(penguji);
+            } catch (error) {
+                const err = error as AxiosError<ResponseData<null>>;
+                console.error("Error:", err);
+            }
+            setLoading(false);
+        };
+
+        fetchInitialPenguji();
+    }, []);
 
     return (
         <>
             <BgHeader>
-                <div className='flex items-start justify-between w-full'>
+                <div className='flex items-start sm:items-end justify-between w-full'>
                     <section className='flex flex-col items-start'>
                         <h2>Halo, Penguji</h2>
-                        <h5>Nama Penguji 1</h5>
+                        <h5>{loading ? 'Loading...' : `${penguji?.name}`}</h5>
                     </section>
                     <section>
                         <Link to={'penguji/editprofile'}>
-                            <img src={avatar} />
+                            <img className='w-[45px] sm:w-[60px]' src={perbakinLogo} />
                         </Link>
                     </section>
                 </div>
