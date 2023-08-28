@@ -220,10 +220,11 @@ const SuperAdmin = (props: any) => {
         try {
             // console.log(superAdminCtx?.getExamId())
             const examId = superAdminCtx?.getExamId(); // Memanggil fungsi getExamId untuk mendapatkan examId
-            // console.log(examId);
+            console.log(examId);
             if (examId) {
                 const response = await api.get(`/super/exam/${examId}`);
                 const { location, begin, finish } = response.data.data.exam;
+                console.log(response)
                 setLocation(location);
                 setTime({
                     begin: formatDate(begin),

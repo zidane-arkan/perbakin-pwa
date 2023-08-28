@@ -1,10 +1,12 @@
 export type ResponseData<T> = {
+  dataExam?: any;
   message: string;
   status: number;
   data: T;
 };
 
 export type HandlerResponse = {
+  dataExam?: any;
   message: string;
   error: boolean;
   response?: string | any;

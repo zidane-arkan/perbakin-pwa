@@ -41,25 +41,26 @@ const UjianBaru = () => {
         }
     };
 
-    const getExamId = async (): Promise<string | null> => {
-        try {
-            const response = await api.get("/super/exam");
-            const exams = response.data.data.exams;
-            if (exams.length > 0) {
-                const lastExam = exams[exams.length - 1];
-                const lastExamId = lastExam.id;
+    // const getExamId = async (): Promise<string | null> => {
+    //     try {
+    //         const response = await api.get("/super/exam");
+    //         const exams = response.data.data.exams;
+    //         if (exams.length > 0) {
+    //             const lastExam = exams[exams.length - 1];
+    //             const lastExamId = lastExam.id;
 
-                return lastExamId;
-            } else {
-                return null;
-            }
-        } catch (error) {
-            const err = error as AxiosError<ResponseData<null>>;
-            console.error("Error:", err);
+    //             return lastExamId;
+    //         } else {
+    //             return null;
+    //         }
+    //     } catch (error) {
+    //         const err = error as AxiosError<ResponseData<null>>;
+    //         console.error("Error:", err);
 
-            return null;
-        }
-    };
+    //         return null;
+    //     }
+    // };
+
     const createExamHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setResponse({ message: "", error: false })
@@ -82,6 +83,9 @@ const UjianBaru = () => {
             ?.then((res) => {
                 setResponse(res);
                 setFormState([false, ""]);
+                console.log(res.dataExam)
+                examContext &&
+                    examContext.selectExamAfterCreate(res.dataExam.id);
                 if (!res.error) {
                     navigate("/superadmin/adminregis");
                 }

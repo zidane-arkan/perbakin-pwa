@@ -47,7 +47,7 @@ const Dashboard = () => {
                     </section>
                     <section>
                         <Link to={'penguji/editprofile'}>
-                            <img className='w-[45px] sm:w-[70px] rounded-full' src={`${import.meta.env.VITE_API_URL}/media/${penguji?.image_path}`} />
+                            <img className='w-[45px] h-[45px] sm:w-[70px] sm:h-[70px] rounded-full' src={`${import.meta.env.VITE_API_URL}/media/${penguji?.image_path}`} />
                         </Link>
                     </section>
                 </div>

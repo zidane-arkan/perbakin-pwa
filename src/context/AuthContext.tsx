@@ -37,6 +37,7 @@ type UserData = {
 
 interface authContextInterface {
   userData: UserData | null;
+  selectExamAfterCreate: (examId?: string | any) => any;
   login: ({ username, password, role }: LoginRequest) => Promise<HandlerResponse>;
   selectExam: (examId?: string | null) => Promise<string | null>;
   getExamId: (examId?: string | null) => Promise<string | null>;
@@ -155,8 +156,8 @@ function AuthProvider(props: { children: JSX.Element }) {
   const createExam = async (examData: CreateExamRequest): Promise<HandlerResponse> => {
     try {
       const response = await api.post<ResponseData<CreateExamResponse>>("/super/exam", examData);
-      console.log(response)
-      return { message: response.data.message, error: false };
+      // console.log(response)
+      return { message: response.data.message, error: false, dataExam: response.data.data.exam };
     }
     catch (error) {
       const err = error as AxiosError<ResponseData<null>>;
@@ -193,8 +194,13 @@ function AuthProvider(props: { children: JSX.Element }) {
     }
   };
 
+  const selectExamAfterCreate = (examId: string | any) => {
+    setSelectedExamId(examId);
+    localStorage.setItem(SELECTED_EXAM_STORAGE_KEY, examId); // Save the selected exam ID to local storage
+  };
+
   const getExamId = () => {
-    // console.log(selectedExamId)
+    console.log(selectedExamId)
     return selectedExamId;
   };
 
@@ -541,7 +547,8 @@ function AuthProvider(props: { children: JSX.Element }) {
         createScorerAdmin,
         createShooterAdmin,
         updateShooterAdmin,
-        updateShooterAdminImg
+        updateShooterAdminImg,
+        selectExamAfterCreate
       }}
     >
       {props.children}
