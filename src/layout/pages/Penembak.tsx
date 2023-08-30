@@ -106,70 +106,6 @@ export const Penembak = (props: any) => {
         // return () => clearInterval(interval);
     }, []);
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const shooterResponse = await api.get(`/scorer/shooter`);
-    //             const resultResponse = await api.get(`/scorer/result`);
-
-    //             const shooterData: Penembak[] = shooterResponse.data.data.shooters;
-    //             const resultData: Penembak[] = resultResponse.data.data.results;
-    //             // console.log(resultData)
-    //             const updatedShooters = shooterData.map(shooter => {
-    //                 const correspondingResult = resultData.find(result => result.id === shooter.id);
-    //                 if (correspondingResult) {
-    //                     return {
-    //                         ...shooter,
-    //                         failed: correspondingResult.failed,
-    //                         stage: correspondingResult.stage
-    //                     };
-    //                 } else {
-    //                     return shooter;
-    //                 }
-    //             });
-    //             // console.log(updatedShooters)
-    //             setShooters(updatedShooters);
-    //             setInitialFetchDone(true);
-    //             setLoading(false);
-    //         } catch (error) {
-    //             const err = error as AxiosError<ResponseData<null>>;
-    //             console.error("Error:", err);
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     fetchData();
-
-    //     // const interval = setInterval(fetchData, 5000);
-    //     // return () => clearInterval(interval);
-    // }, []);
-
-    // useEffect(() => {
-    //     if (initialFetchDone) {
-    //         const fetchResultData = async () => {
-    //             try {
-    //                 for (const shooter of shooters) {
-    //                     const { id: shooterId } = shooter; // Ambil id dari objek shooter
-    //                     if (shooterId) {
-    //                         const resultResponseShooter = await api.get(`/scorer/shooter/${shooterId}/result`);
-    //                         console.log(resultResponseShooter);
-
-    //                         // Anda dapat mengelola resultResponseShooter di sini sesuai kebutuhan
-    //                     }
-    //                 }
-    //             } catch (error) {
-    //                 const err = error as AxiosError<ResponseData<null>>;
-    //                 console.error("Error:", err);
-    //             }
-    //         };
-
-    //         fetchResultData();
-    //         const interval = setInterval(fetchResultData, 5000);
-
-    //         return () => clearInterval(interval);
-    //     }
-    // }, [initialFetchDone, shooters]);
-
     if (loading) {
         return (
             <section className=' flex max-w-full sm:justify-center sm:w-full px-8 pt-60' >
@@ -227,6 +163,71 @@ export const Penembak = (props: any) => {
     )
 }
 
+
+
+// useEffect(() => {
+//     const fetchData = async () => {
+//         try {
+//             const shooterResponse = await api.get(`/scorer/shooter`);
+//             const resultResponse = await api.get(`/scorer/result`);
+
+//             const shooterData: Penembak[] = shooterResponse.data.data.shooters;
+//             const resultData: Penembak[] = resultResponse.data.data.results;
+//             // console.log(resultData)
+//             const updatedShooters = shooterData.map(shooter => {
+//                 const correspondingResult = resultData.find(result => result.id === shooter.id);
+//                 if (correspondingResult) {
+//                     return {
+//                         ...shooter,
+//                         failed: correspondingResult.failed,
+//                         stage: correspondingResult.stage
+//                     };
+//                 } else {
+//                     return shooter;
+//                 }
+//             });
+//             // console.log(updatedShooters)
+//             setShooters(updatedShooters);
+//             setInitialFetchDone(true);
+//             setLoading(false);
+//         } catch (error) {
+//             const err = error as AxiosError<ResponseData<null>>;
+//             console.error("Error:", err);
+//             setLoading(false);
+//         }
+//     };
+
+//     fetchData();
+
+//     // const interval = setInterval(fetchData, 5000);
+//     // return () => clearInterval(interval);
+// }, []);
+
+// useEffect(() => {
+//     if (initialFetchDone) {
+//         const fetchResultData = async () => {
+//             try {
+//                 for (const shooter of shooters) {
+//                     const { id: shooterId } = shooter; // Ambil id dari objek shooter
+//                     if (shooterId) {
+//                         const resultResponseShooter = await api.get(`/scorer/shooter/${shooterId}/result`);
+//                         console.log(resultResponseShooter);
+
+//                         // Anda dapat mengelola resultResponseShooter di sini sesuai kebutuhan
+//                     }
+//                 }
+//             } catch (error) {
+//                 const err = error as AxiosError<ResponseData<null>>;
+//                 console.error("Error:", err);
+//             }
+//         };
+
+//         fetchResultData();
+//         const interval = setInterval(fetchResultData, 5000);
+
+//         return () => clearInterval(interval);
+//     }
+// }, [initialFetchDone, shooters]);
 
 // useEffect(() => {
 //     if (initialFetchDone) {
