@@ -17,12 +17,6 @@ const Login = () => {
   const [formState, setFormState] = useState<[boolean, string]>([false, ""]); //buttonDisabled, stateMessage
   const [response, setResponse] = useState<HandlerResponse>({ message: "", error: false }); //responseMessage, isError
 
-  const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
-  
-  const closeErrorDialog = () => {
-    setIsErrorDialogOpen(false);
-  };
-  
   const loginHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setResponse({ message: "", error: false });
@@ -114,7 +108,7 @@ const Login = () => {
               </select>
             </div>
           </section>
-          {response.message && (
+          {/* {response.message && (
             <div className="fixed inset-0 flex items-center justify-center">
               <div className="fixed z-0 inset-0 bg-gray-900 opacity-75"></div>
               <div
@@ -125,6 +119,33 @@ const Login = () => {
                 }
               >
                 {response.message}
+              </div>
+            </div>
+          )} */}
+          {response.message && (
+            <div className="fixed inset-0 flex items-center justify-center">
+              <div className="fixed z-0 inset-0 bg-gray-900 opacity-75"></div>
+              <div
+                className={
+                  response.error
+                    ? "flex flex-col items-center sm:px-5 px-4 sm:py-5 py-4 gap-4 sm:gap-4 text-md sm:text-lg bg-red-50 z-10 border-2 border-red-300 text-red-700 text-sm rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 p-2.5"
+                    : "bg-gray-50 z-10 border-2 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                }
+              >
+                {response.message}
+                {response.error && (
+                  <button
+                    className="text-white border border-solid rounded-lg px-4 sm:px-8 py-2 sm:py-4 text-sm sm:text-md bg-red-500 hover:text-red-800 focus:outline-none"
+                    onClick={() => {
+                      // Add your logic here to handle the error and possibly perform some action
+
+                      // Set the state to close the modal
+                      setResponse({ message: "", error: false });
+                    }}
+                  >
+                    Keluar
+                  </button>
+                )}
               </div>
             </div>
           )}
