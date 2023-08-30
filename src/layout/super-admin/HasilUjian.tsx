@@ -140,6 +140,14 @@ const TabelHasilUjianAll = () => {
             </div>
         )
     }
+    // IF RESULT DATA EMPTY
+    if (resultData.length === 0) {
+        return (
+            <p className="text-center text-gray-500 mt-4">
+                Maaf Data Hasil Ujian Kosong, Pastikan Penembak Sudah Dibuat
+            </p>
+        );
+    }
     return (
         <section>
             <form className='flex w-full h-auto items-center justify-between pb-8'>

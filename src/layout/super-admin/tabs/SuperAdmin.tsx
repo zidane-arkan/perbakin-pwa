@@ -97,7 +97,7 @@ const TabelHasilUjian = (props: any) => {
 
             // Process shooter data and merge into resultData
             shooterApiData.shooters.forEach(shooter => {
-                const existingResult : any = resultData.find(result => result.id === shooter.id);
+                const existingResult: any = resultData.find(result => result.id === shooter.id);
                 if (existingResult) {
                     existingResult.shooterid = shooter.id;
                     existingResult.scorerid = shooter.scorer_id;
@@ -143,6 +143,13 @@ const TabelHasilUjian = (props: any) => {
             </div>
         )
     }
+    if (resultData.length === 0) {
+        return (
+            <p className="text-center text-gray-500 mt-4">
+                Maaf Data Hasil Ujian Kosong, Pastikan Penembak Sudah Melakukan Ujian
+            </p>
+        );
+    }
     return (
         <section>
             <div className='flex w-full justify-between items-center sm:mb-6'>
@@ -151,7 +158,8 @@ const TabelHasilUjian = (props: any) => {
                     <span className='text-[#1B79B8]' >Lihat Selengkapnya</span>
                 </Link>
             </div>
-            <section className="relative overflow-x-auto shadow-md sm:rounded-lg">
+
+            <section className="relative overflow-x-auto shadow-md sm:rounded-lg">          
                 <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100">
                     <thead className="text-xs text-black uppercase bg-white">
                         <tr>
@@ -173,7 +181,7 @@ const TabelHasilUjian = (props: any) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {resultData.map((item : any) => (
+                        {resultData.map((item: any) => (
                             <tr key={item.shooterid} className={item.failed ? "bg-[#F3FAFF] text-black" : "bg-white text-black border-blue-400"}>
                                 <th scope="row" className="px-6 py-4 font-medium text-black whitespace-nowrap">
                                     {item.name}
