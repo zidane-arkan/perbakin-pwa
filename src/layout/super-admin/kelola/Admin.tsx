@@ -15,7 +15,7 @@ type Admin = {
     username: string;
 }
 
-
+// KELOLA ADMIN AS SUPER ADMIN
 const SuperAdmin: React.FC = () => {
     const superAdminCtx = useContext(AuthContext);
     const [admins, setAdmins] = useState<Admin[]>([]);

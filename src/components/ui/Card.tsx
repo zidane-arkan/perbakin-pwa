@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import user1 from '../../app-assets/user1.png';
+import avatarBig from '../../app-assets/avatar_big.png';
 // import user12 from '{{VITE_API_URL}}/media/{properti image di data json penguji}}';
 import { Link } from 'react-router-dom'
 import { Detail, DetailPenembakAdmin, DetailSuperAdmin, DetailPenembakAdminBiasa } from '../overlay/Detail';
@@ -66,6 +67,7 @@ export const CardPenguji2 = (props: any) => {
         </>
     );
 }
+
 export const CardAdmin = (props: any) => {
     const [isCartShown, setIsCardShown] = useState(false);
     const shownCardHandler = () => {
@@ -83,7 +85,7 @@ export const CardAdmin = (props: any) => {
             }
             <section className="flex items-center max-w-md sm:max-w-full sm:w-full overflow-hidden bg-[#F3FAFF] rounded-xl px-3 py-4 gap-4 shadow-custom">
                 <div className="flex items-center w-1/6">
-                    <img className='min-w-[65px] sm:min-w-[80px]' src={user1} />
+                    <img className='min-w-[65px] sm:min-w-[80px]' src={avatarBig} />
                 </div>
                 <div className="inline-block w-4/6 pl-6 md:p-4">
                     <h1 className="text-base sm:text-lg font-bold text-gray-800">{props.admin}</h1>
