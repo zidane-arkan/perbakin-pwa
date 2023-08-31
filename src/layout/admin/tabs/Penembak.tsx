@@ -30,55 +30,6 @@ const Penembak = () => {
     const [loading, setLoading] = useState(true);
     const [initialFetchDone, setInitialFetchDone] = useState(false);
 
-    // useEffect(() => {
-    //     const fetchShooters = async () => {
-    //         try {
-    //             // const examId = await getExamId();
-    //             const response = await api.get(`/admin/shooter`);
-    //             const shooters = response.data.data.shooters;
-    //             setShooters(shooters);
-    //             setInitialFetchDone(true);
-    //         } catch (error) {
-    //             const err = error as AxiosError<ResponseData<null>>;
-    //             console.error("Error:", err);
-    //         }
-    //         setLoading(false);
-    //     };
-
-    //     fetchShooters();
-    // }, []);
-
-    // useEffect(() => {
-    //     console.log('initial Fect Done!')
-    //     console.log(initialFetchDone)
-    //     if (initialFetchDone) {
-    //         const fetchShooters = async () => {
-    //             try {
-    //                 // const examId = superAdminCtx?.getExamId();
-    //                 const response = await api.get(`/admin/result`);
-    //                 const shootersStage: Stage[] = response.data.data.results;
-
-    //                 const updatedShooters = shooters.map((shooter: Shooter) => {
-    //                     const matchingStage = shootersStage.find(stage => stage.id === shooter.id);
-    //                     return {
-    //                         ...shooter,
-    //                         stage: matchingStage ? matchingStage.stage : 'N/A'
-    //                     };
-    //                 });
-
-    //                 setShooters(updatedShooters);
-    //             } catch (error) {
-    //                 const err = error as AxiosError<ResponseData<null>>;
-    //                 console.error("Error:", err);
-    //             }
-    //         };
-    //         fetchShooters();
-    //         // const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
-
-    //         // return () => clearInterval(interval);
-    //     }
-    // }, [initialFetchDone]);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -129,6 +80,54 @@ const Penembak = () => {
 
 export default Penembak
 
+// useEffect(() => {
+    //     const fetchShooters = async () => {
+    //         try {
+    //             // const examId = await getExamId();
+    //             const response = await api.get(`/admin/shooter`);
+    //             const shooters = response.data.data.shooters;
+    //             setShooters(shooters);
+    //             setInitialFetchDone(true);
+    //         } catch (error) {
+    //             const err = error as AxiosError<ResponseData<null>>;
+    //             console.error("Error:", err);
+    //         }
+    //         setLoading(false);
+    //     };
+
+    //     fetchShooters();
+    // }, []);
+
+    // useEffect(() => {
+    //     console.log('initial Fect Done!')
+    //     console.log(initialFetchDone)
+    //     if (initialFetchDone) {
+    //         const fetchShooters = async () => {
+    //             try {
+    //                 // const examId = superAdminCtx?.getExamId();
+    //                 const response = await api.get(`/admin/result`);
+    //                 const shootersStage: Stage[] = response.data.data.results;
+
+    //                 const updatedShooters = shooters.map((shooter: Shooter) => {
+    //                     const matchingStage = shootersStage.find(stage => stage.id === shooter.id);
+    //                     return {
+    //                         ...shooter,
+    //                         stage: matchingStage ? matchingStage.stage : 'N/A'
+    //                     };
+    //                 });
+
+    //                 setShooters(updatedShooters);
+    //             } catch (error) {
+    //                 const err = error as AxiosError<ResponseData<null>>;
+    //                 console.error("Error:", err);
+    //             }
+    //         };
+    //         fetchShooters();
+    //         // const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
+
+    //         // return () => clearInterval(interval);
+    //     }
+    // }, [initialFetchDone]);
  // const getExamId = async (): Promise<string | null> => {
     //     try {
     //         const response = await api.get("/admin/exam");

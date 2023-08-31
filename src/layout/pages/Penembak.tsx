@@ -34,43 +34,6 @@ export const Penembak = (props: any) => {
 
     const classname = `${props.classname} rounded-3xl`;
 
-    // useEffect(() => {
-    //     const fetchInitialShooters = async () => {
-    //         try {
-    //             const response = await api.get(`/scorer/shooter`);
-    //             const shooters = response.data.data.shooters;
-    //             setShooters(shooters);
-    //             setInitialFetchDone(true);
-    //         } catch (error) {
-    //             const err = error as AxiosError<ResponseData<null>>;
-    //             console.error("Error:", err);
-    //         }
-    //         setLoading(false);
-    //     };
-
-    //     fetchInitialShooters();
-    // }, []);
-
-    // useEffect(() => {
-    //     console.log('initial Fect Done!')
-    //     // console.log(shooters)
-    //     if (initialFetchDone) {
-    //         const fetchShooters = async () => {
-    //             try {
-    //                 const response = await api.get(`/scorer/result`);
-    //                 const shooters = response.data.data.results;
-    //                 setShooters(shooters);
-    //             } catch (error) {
-    //                 const err = error as AxiosError<ResponseData<null>>;
-    //                 console.error("Error:", err);
-    //             }
-    //         };
-    //         const interval = setInterval(fetchShooters, 5000); // Fetch every 5 seconds, you can adjust the interval as needed
-
-    //         return () => clearInterval(interval);
-    //     }
-    // }, [initialFetchDone]);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -122,18 +85,6 @@ export const Penembak = (props: any) => {
         );
     }
 
-    if (shooters === null || shooters.length === 0) {
-        return (
-            <Layout className={classname}>
-                <LayoutChild className='flex-col pb-[10rem] gap-4 items-center '>
-                    <div className="relative items-center block max-w-sm p-6 bg-white border border-gray-100 rounded-lg shadow-md">
-                        <h5 className="mb-2 text-center text-xl font-bold tracking-tight text-gray-900">Data Penembak Belum ada</h5>
-                    </div>
-                </LayoutChild>
-            </Layout>
-        );
-    }
-
     return (
         <>
             <Layout className={classname}>
@@ -141,21 +92,27 @@ export const Penembak = (props: any) => {
                     <span className='inline text-left'>
                         <h3 className='text-lg sm:text-xl font-bold'>List Penembak</h3>
                     </span>
-                    {shooters.map((shooter: Penembak, index: number) => (
-                        <CardPenembak
-                            id={shooter.id}
-                            key={index}
-                            penembak={shooter.name}
-                            scorerId={shooter.scorer_id}
-                            image_path={shooter.image_path}
-                            klub={shooter.club}
-                            stage={shooter.stage || 0}
-                            statusPenembak={shooter.failed}
-                            pengprov={shooter.province}
-                            penguji={shooter.scorer}
-                        />
-                    ))
-
+                    {shooters && shooters.length > 0 ? (
+                        shooters.map((shooter: Penembak, index: number) => (
+                            <CardPenembak
+                                id={shooter.id}
+                                key={index}
+                                penembak={shooter.name}
+                                scorerId={shooter.scorer_id}
+                                image_path={shooter.image_path}
+                                klub={shooter.club}
+                                stage={shooter.stage || 0}
+                                statusPenembak={shooter.failed}
+                                pengprov={shooter.province}
+                                penguji={shooter.scorer}
+                            />
+                        ))
+                    ) : (
+                        <div className="relative items-center block max-w-sm p-6 bg-white border border-gray-100 rounded-lg shadow-md">
+                            <h5 className="mb-2 text-center text-xl font-bold tracking-tight text-gray-900">Data Penembak Belum ada</h5>
+                        </div>
+                    )}
+                    {
                     }
                     {/* <CardPenembak penembak="Testing 2" klub="Asal Klub 2" stage={'Gagal'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} /> */}
                     {props.statusAuth && <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full' to='/admin/admindashboard/tambahpenembak'>
@@ -167,7 +124,97 @@ export const Penembak = (props: any) => {
     )
 }
 
+// PENEMBAK ADMIN
+export const PenembakAdmin: React.FC<PenembakAdminProps> = (props: any) => {
+    const classname = `${props.classname} rounded-3xl`;
+    // if (!props.shooters || props.shooters.length === 0) {
+    //     return (
+    //         <Layout className={classname}>
+    //             <LayoutChild className='flex-col pb-[10rem] gap-4 '>
+    //                 <span className='inline text-left'>
+    //                     <h3 className='text-lg font-bold'>List Penembak</h3>
+    //                 </span>
+    //                 <p className="text-center text-gray-500 mt-4">
+    //                     Data Penembak Tidak Ada
+    //                 </p>
+    //             </LayoutChild>
+    //         </Layout>
+    //     );
+    // }
+    return (
+        <>
+            <Layout className={classname}>
+                <LayoutChild className='flex-col pb-[10rem] gap-4 '>
+                    <span className='inline text-left'>
+                        <h3 className='text-lg font-bold'>List Penembak</h3>
+                    </span>
+                    {/* <CardPenembakAdmin penembak="Testing 1" klub="Asal Klub 1" stage={'Stage #2'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} /> */}
+                    {props.shooters && props.shooters.length > 0 ? (
+                        props.shooters.map((shooter: Penembak, index: string) => (
+                            <CardPenembakAdminBiasa
+                                id={shooter.id}
+                                key={index}
+                                penembak={shooter.name}
+                                scorerId={shooter.scorer_id}
+                                image_path={shooter.image_path}
+                                klub={shooter.club}
+                                stage={shooter.stage === '0' ? 'Ujian Kualifikasi' : (shooter.stage !== undefined && shooter.stage !== null ? `Stage ${shooter.stage}` : 'Loading...')}
+                                pengprov={shooter.province}
+                                penguji={shooter.scorer}
+                            />
+                        ))
+                    ) : (
+                        <section className='flex justify-center'>
+                            <div className="items-center block max-w-sm p-6 bg-white border border-gray-100 rounded-lg shadow-md">
+                                <h5 className="mb-2 text-center text-xl font-bold tracking-tight text-gray-900">Data Penembak Belum ada</h5>
+                            </div>
+                        </section>
+                    )}
+                    {props.statusAuth && <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full' to='/admin/admindashboard/tambahpenembak'>
+                        <span className='font-xl'>Tambah Penembak</span>
+                    </Link>}
+                </LayoutChild>
+            </Layout>
+        </>
+    )
+}
 
+export const PenembakSuperAdmin: React.FC<PenembakAdminProps> = (props: any) => {
+    const classname = `${props.classname} rounded-3xl`;
+    // console.log(props.stage)
+    return (
+        <>
+            <Layout className={classname}>
+                <LayoutChild className='flex-col pb-[10rem] gap-4 '>
+                    <span className='inline text-left'>
+                        <h3 className='text-lg font-bold'>List Penembak</h3>
+                    </span>
+                    {/* <CardPenembakAdmin penembak="Testing 1" klub="Asal Klub 1" stage={'Stage #2'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} /> */}
+                    {props.shooters && props.shooters.length > 0 ? (
+                        props.shooters.map((shooter: Penembak, index: string) => (
+                            <CardPenembakAdmin
+                                id={shooter.id}
+                                scorerId={shooter.scorer_id}
+                                key={index}
+                                image_path={shooter.image_path}
+                                penembak={shooter.name}
+                                klub={shooter.club}
+                                stage={shooter.stage ? `Stage ${shooter.stage}` : 'Loading...'}
+                                pengprov={shooter.province}
+                                penguji={shooter.scorer}
+                            />
+                        ))
+                    ) : (
+                        <div className="text-center">Anda belum menambahkan penembak</div>
+                    )}
+                    {props.statusAuth && <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full' to='/admin/admindashboard/tambahpenembak'>
+                        <span className='font-xl'>Tambah Penembak</span>
+                    </Link>}
+                </LayoutChild>
+            </Layout>
+        </>
+    )
+}
 
 // useEffect(() => {
 //     const fetchData = async () => {
@@ -279,73 +326,3 @@ export const Penembak = (props: any) => {
 //         });
 //     }
 // }, [shooters]);
-
-export const PenembakAdmin: React.FC<PenembakAdminProps> = (props: any) => {
-    const classname = `${props.classname} rounded-3xl`;
-    return (
-        <>
-            <Layout className={classname}>
-                <LayoutChild className='flex-col pb-[10rem] gap-4 '>
-                    <span className='inline text-left'>
-                        <h3 className='text-lg font-bold'>List Penembak</h3>
-                    </span>
-                    {/* <CardPenembakAdmin penembak="Testing 1" klub="Asal Klub 1" stage={'Stage #2'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} /> */}
-                    {props.shooters.map((shooter: Penembak, index: string) => (
-
-                        <CardPenembakAdminBiasa
-                            id={shooter.id}
-                            key={index}
-                            penembak={shooter.name}
-                            scorerId={shooter.scorer_id}
-                            image_path={shooter.image_path}
-                            klub={shooter.club}
-                            stage={shooter.stage === '0' ? 'Ujian Kualifikasi' : (shooter.stage !== undefined && shooter.stage !== null ? `Stage ${shooter.stage}` : 'Loading...')}
-                            pengprov={shooter.province}
-                            penguji={shooter.scorer}
-                        />
-                    ))}
-                    {props.statusAuth && <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full' to='/admin/admindashboard/tambahpenembak'>
-                        <span className='font-xl'>Tambah Penembak</span>
-                    </Link>}
-                </LayoutChild>
-            </Layout>
-        </>
-    )
-}
-
-export const PenembakSuperAdmin: React.FC<PenembakAdminProps> = (props: any) => {
-    const classname = `${props.classname} rounded-3xl`;
-    // console.log(props.stage)
-    return (
-        <>
-            <Layout className={classname}>
-                <LayoutChild className='flex-col pb-[10rem] gap-4 '>
-                    <span className='inline text-left'>
-                        <h3 className='text-lg font-bold'>List Penembak</h3>
-                    </span>
-                    {/* <CardPenembakAdmin penembak="Testing 1" klub="Asal Klub 1" stage={'Stage #2'} pengprov={'Pengprov 1'} penguji={'Penguji 1'} /> */}
-                    {props.shooters && props.shooters.length > 0 ? (
-                        props.shooters.map((shooter: Penembak, index: string) => (
-                            <CardPenembakAdmin
-                                id={shooter.id}
-                                scorerId={shooter.scorer_id}
-                                key={index}
-                                image_path={shooter.image_path}
-                                penembak={shooter.name}
-                                klub={shooter.club}
-                                stage={shooter.stage ? `Stage ${shooter.stage}` : 'Loading...'}
-                                pengprov={shooter.province}
-                                penguji={shooter.scorer}
-                            />
-                        ))
-                    ) : (
-                        <div className="text-center">Anda belum menambahkan penembak</div>
-                    )}
-                    {props.statusAuth && <Link className='flex pl-1 bg-white shadow-md pr-16 py-2 rounded-full' to='/admin/admindashboard/tambahpenembak'>
-                        <span className='font-xl'>Tambah Penembak</span>
-                    </Link>}
-                </LayoutChild>
-            </Layout>
-        </>
-    )
-}
