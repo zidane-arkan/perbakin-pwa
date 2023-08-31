@@ -17,12 +17,12 @@ import Profile from '../admin/edit/Profile';
 import { DetailPengujiAdmin, DetailPengujiAdmin2 } from '../pages/DetailPenguji';
 import HasilUjian from '../admin/HasilUjian'
 const Admin = () => {
-    const userPenguji = [
-        { id: '1', penguji: 'Penguji 1' },
-        { id: '2', penguji: 'Penguji 2' },
-        { id: '3', penguji: 'Penguji 3' },
-        { id: '4', penguji: 'Penguji 4' },
-    ];
+    // const userPenguji = [
+    //     { id: '1', penguji: 'Penguji 1' },
+    //     { id: '2', penguji: 'Penguji 2' },
+    //     { id: '3', penguji: 'Penguji 3' },
+    //     { id: '4', penguji: 'Penguji 4' },
+    // ];
     return (
         <>
             <Routes>

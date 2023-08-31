@@ -120,6 +120,17 @@ const TabelHasilUjian = (props: any) => {
             </div>
         )
     }
+    // IF HASIL UJIAN EMPTY
+    if (resultData.length === 0) {
+        return (
+             <div className='flex w-full flex-col gap-2 sm:gap-4 justify-between mt-4 sm:mb-6'>
+                <h2 className='font-bold text-center'>Hasil Ujian</h2>
+                <p className="text-center items-center text-gray-500 mt-4">
+                    Maaf Data Hasil Ujian Kosong, Pastikan Penembak Ada dan Pernah Melakukan Ujian
+                </p>
+            </div>
+        );
+    }
     return (
         <section>
             <div className='flex w-full justify-between items-center sm:mb-6'>
